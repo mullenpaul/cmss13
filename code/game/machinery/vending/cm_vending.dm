@@ -41,6 +41,7 @@
 	var/vend_y_offset = 0
 
 	var/list/listed_products = list()
+	var/list/product_icon_list = list()
 
 /*
 Explanation on stat flags:
@@ -627,6 +628,228 @@ IN_USE						used for vending/denying
 	vendor_theme = VENDOR_THEME_USCM
 	show_points = FALSE
 
+/obj/structure/machinery/cm_vending/clothing/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+	var/mob/living/carbon/human/H = usr
+	switch (action)
+		if ("vend")
+			if(stat & IN_USE)
+				return
+
+			var/list/has_access = can_access_to_vend(usr)
+			if (!has_access)
+				return
+
+			var/idx=params["prod_index"]
+			var/list/topic_listed_products = get_listed_products(usr)
+			var/list/L = topic_listed_products[idx]
+			var/cost = L[2]
+
+			if((!H.assigned_squad && squad_tag) || (!H.assigned_squad?.omni_squad_vendor && (squad_tag && H.assigned_squad.name != squad_tag)))
+				to_chat(H, SPAN_WARNING("This machine isn't for your squad."))
+				vend_fail()
+				return
+
+			var/turf/T = get_appropriate_vend_turf()
+			if(T.contents.len > 25)
+				to_chat(H, SPAN_WARNING("The floor is too cluttered, make some space."))
+				vend_fail()
+				return
+
+			var/bitf = L[4]
+			if(bitf)
+				if(bitf == MARINE_CAN_BUY_ESSENTIALS && vendor_role.Find(JOB_SYNTH))
+					if(H.job != JOB_SYNTH)
+						to_chat(H, SPAN_WARNING("Only USCM Synthetics may vend experimental tool tokens."))
+						vend_fail()
+						return
+
+			if(use_points)
+				if(use_snowflake_points)
+					if(H.marine_snowflake_points < cost)
+						to_chat(H, SPAN_WARNING("Not enough points."))
+						vend_fail()
+						return
+					else
+						H.marine_snowflake_points -= cost
+				else
+					if(H.marine_points < cost)
+						to_chat(H, SPAN_WARNING("Not enough points."))
+						vend_fail()
+						return
+					else
+						H.marine_points -= cost
+
+			if(L[4])
+				if(!handle_vend(L, H))
+					to_chat(H, SPAN_WARNING("You can't buy things from this category anymore."))
+					vend_fail()
+					return
+
+			vend_succesfully(L, H, T)
+
+	add_fingerprint(usr)
+/obj/structure/machinery/cm_vending/clothing/ui_static_data(mob/user)
+	to_chat(user, SPAN_WARNING("in ui static"))
+	build_icons(listed_products)
+	to_chat(user, SPAN_WARNING("post icons"))
+	var/list/data = list()
+	data["vendor_name"] = name
+	data["theme"] = vendor_theme
+	var/list/ui_listed_products = get_listed_products(user)
+	var/list/ui_categories = list()
+	for (var/i in 1 to length(ui_listed_products))
+		var/list/myprod = ui_listed_products[i]	//we take one list from listed_products
+		var/p_name = myprod[1]					//taking it's name
+		var/result = product_icon_list[p_name]
+
+		var/cost = myprod[2]
+		var/is_category = myprod[3] == null
+
+		//forming new list with index, name, amount, available or not, color and add it to display_list
+		var/display_item = list(
+			"prod_index" = i,
+			"prod_name" = p_name,
+			"prod_color" = myprod[5],
+			"prod_cost" = cost,
+			"prod_icon" = result,
+			"prod_flag" = myprod[3]
+		)
+
+		if (is_category == 1)
+			ui_categories += list(list(
+				"name" = p_name,
+				"items" = list(),
+				"restricted" = FALSE
+			))
+			continue
+
+		if (!LAZYLEN(ui_categories))
+			ui_categories += list(list(
+				"name" = "",
+				"items" = list(),
+				"restricted" = FALSE
+			))
+		var/last_index = LAZYLEN(ui_categories)
+		var/last_category = ui_categories[last_index]
+		last_category["items"] += list(display_item)
+		if(display_item["prod_cost"] > 0)
+			last_category["restricted"] = TRUE
+
+	data["displayed_categories"] = ui_categories
+	to_chat(user, SPAN_WARNING("output static"))
+	return data
+
+/obj/structure/machinery/cm_vending/clothing/ui_data(mob/user)
+	var/list/data = list()
+
+	var/list/ui_listed_products = get_listed_products(user)
+
+	var/list/stock_values = list()
+
+	var/mob/living/carbon/human/H = user
+	var/buy_flags = NO_FLAGS
+	if(use_snowflake_points)
+		available_points_to_display = H.marine_snowflake_points
+	else if(use_points)
+		available_points_to_display = H.marine_points
+	buy_flags = H.marine_buy_flags
+
+	for (var/i in 1 to length(ui_listed_products))
+		var/list/myprod = ui_listed_products[i]	//we take one list from listed_products
+		var/prod_available = FALSE
+		var/p_cost = myprod[2]
+		var/avail_flag = myprod[4]
+		if(available_points_to_display >= p_cost && (!avail_flag || buy_flags & avail_flag))
+			prod_available = TRUE
+		stock_values += list(prod_available)
+
+
+	data["stock_listing"] = stock_values
+	data["show_points"] = show_points
+	data["current_m_points"] = available_points_to_display
+	return data
+
+/obj/structure/machinery/cm_vending/clothing/proc/build_icons(var/list/items)
+	for (var/i in 1 to length(items))
+		// initial item count setup
+		var/item_name = items[i][1]
+		// icon setup
+		var/typepath = items[i][3]
+
+		var/icon_ref = null
+		var/icon_state = null
+		var/desc = ""
+		var/icon/r = null
+
+		if (ispath(typepath, /obj/effect/essentials_set))
+			var/obj/effect/essentials_set/I = new typepath()
+			var/list/spawned_list = I.spawned_gear_list
+			if(LAZYLEN(spawned_list))
+				var/obj/item/target = spawned_list[1]
+				icon_ref = initial(target.icon)
+				icon_state = initial(target.icon_state)
+				desc = initial(target.desc)
+				var/target_obj = new target()
+				r = getFlatIcon(target_obj)
+				qdel(target_obj)
+		else if (ispath(typepath, /obj/item))
+			var/obj/item/I = typepath
+			desc = initial(I.desc)
+			var/map_decor = initial(I.map_specific_decoration)
+			if (map_decor)
+				icon_state = initial(I.icon_state)
+				icon_ref = "icons/obj/items/weapons/guns/guns_by_map/classic/guns_obj.dmi"
+				r = icon(icon_ref, icon_state, SOUTH, 1)
+			else
+				var/target_obj = new I()
+				r = getFlatIcon(target_obj)
+				qdel(target_obj)
+		else
+			continue
+
+		var/result = icon2html(r, world, icon_state, sourceonly=TRUE)
+		product_icon_list[item_name] = list(
+			"href"=result,
+			"desc"=desc
+		)
+
+/obj/structure/machinery/cm_vending/clothing/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if (!ui)
+		ui = new(user, src, "VendingClothing", name)
+		ui.open()
+
+/obj/structure/machinery/cm_vending/clothing/attack_hand(mob/user)
+	if(stat & TIPPED_OVER)
+		if(user.action_busy)
+			return
+		user.visible_message(SPAN_NOTICE("[user] begins to heave the vending machine back into place!"),SPAN_NOTICE("You start heaving the vending machine back into place."))
+		if(do_after(user, 80, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY))
+			user.visible_message(SPAN_NOTICE("[user] rights the [src]!"),SPAN_NOTICE("You right the [src]!"))
+			flip_back()
+		return
+
+	if(inoperable())
+		return
+
+	if(user.client && user.client.remote_control)
+		tgui_interact(user)
+		return
+
+	if(!ishuman(user))
+		vend_fail()
+		return
+
+	var/has_access = can_access_to_vend(user)
+	if (!has_access)
+		return
+
+	user.set_interaction(src)
+	tgui_interact(user)
+
 /obj/structure/machinery/cm_vending/clothing/Topic(href, href_list)
 	. = ..()
 	if(.)
@@ -778,7 +1001,6 @@ IN_USE						used for vending/denying
 	vendor_theme = VENDOR_THEME_USCM
 
 	var/list/initial_product_count = list()
-	var/list/product_icon_list = list()
 
 	//this here is made to provide ability to restock vendors with different subtypes of same object, like handmade and manually filled ammo boxes.
 	var/list/corresponding_types_list = list(
