@@ -96,6 +96,71 @@ IN_USE						used for vending/denying
 			return
 	return
 
+
+// Icon procs
+/obj/structure/machinery/cm_vending/proc/preload_assets()
+	var/datum/asset/simple/dynamic_icons/dyn = get_asset_datum(/datum/asset/simple/dynamic_icons)
+	for (var/list/i in product_icon_list)
+		var/filename = i["href"]
+		if(filename)
+			dyn.update(filename)
+
+/obj/structure/machinery/cm_vending/proc/build_icons(var/list/items, var/name_index=1, var/type_index=3)
+	for (var/list/item in items)
+		// initial item count setup
+		var/item_name = item[name_index]
+		// icon setup
+		var/typepath = item[type_index]
+		if (item_name == null || item_name == "" || typepath == null)
+			continue
+
+		var/icon_ref = null
+		var/icon_state = null
+		var/desc = ""
+		var/icon/r = null
+
+		if (ispath(typepath, /obj/effect/essentials_set))
+			var/obj/effect/essentials_set/I = new typepath()
+			var/list/spawned_list = I.spawned_gear_list
+			if(LAZYLEN(spawned_list))
+				var/obj/item/target = spawned_list[1]
+				icon_ref = initial(target.icon)
+				icon_state = initial(target.icon_state)
+				desc = initial(target.desc)
+				var/target_obj = new target()
+				r = getFlatIcon(target_obj)
+				qdel(target_obj)
+		else if (ispath(typepath, /obj/item))
+			var/obj/item/I = typepath
+			desc = initial(I.desc)
+			var/map_decor = initial(I.map_specific_decoration)
+			if (map_decor)
+				icon_state = initial(I.icon_state)
+				icon_ref = "icons/obj/items/weapons/guns/guns_by_map/classic/guns_obj.dmi"
+				r = icon(icon_ref, icon_state, SOUTH, 1)
+			else
+				var/target_obj = new I()
+				r = getFlatIcon(target_obj)
+				qdel(target_obj)
+		if(!(item_name in product_icon_list))
+			product_icon_list[item_name] = list(
+				"href" = "",
+				"desc" = ""
+			)
+		if(!r)
+			continue
+		var/asset_name = generate_asset_name(r)
+		var/key = "[asset_name].png"
+		if(asset_name != null && asset_name != "" && r != null)
+			if(!SSassets.cache[key])
+				SSassets.transport.register_asset(key, r)
+		if(asset_name != null)
+			product_icon_list[item_name] = list(
+				"href"=SSassets.transport.get_asset_url(key),
+				"desc"=desc
+			)
+
+
 //get which turf the vendor will dispense its products on.
 /obj/structure/machinery/cm_vending/proc/get_appropriate_vend_turf()
 	var/turf/T = loc
@@ -628,6 +693,11 @@ IN_USE						used for vending/denying
 	vendor_theme = VENDOR_THEME_USCM
 	show_points = FALSE
 
+/obj/structure/machinery/cm_vending/clothing/Initialize()
+	. = ..()
+	build_icons(get_listed_products(), 1, 3)
+	preload_assets()
+
 /obj/structure/machinery/cm_vending/clothing/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
@@ -1096,72 +1166,8 @@ IN_USE						used for vending/denying
 /obj/structure/machinery/cm_vending/sorted/Initialize()
 	. = ..()
 	populate_product_list(1.2)
-	build_icons(listed_products)
+	build_icons(get_listed_products(), 1, 3)
 	preload_assets()
-
-/obj/structure/machinery/cm_vending/sorted/proc/preload_assets()
-	var/datum/asset/simple/dynamic_icons/dyn = get_asset_datum(/datum/asset/simple/dynamic_icons)
-	for (var/list/i in product_icon_list)
-		var/filename = i["href"]
-		if(filename)
-			dyn.update(filename)
-
-/obj/structure/machinery/cm_vending/sorted/proc/build_icons(var/list/items)
-	for (var/list/item in items)
-		// initial item count setup
-		var/item_name = item[1]
-		var/initial_count = item[2]
-		initial_product_count[item_name] = initial_count
-		// icon setup
-		var/typepath = item[3]
-		if (item_name == null || item_name == "" || typepath == null)
-			continue
-
-		var/icon_ref = null
-		var/icon_state = null
-		var/desc = ""
-		var/icon/r = null
-
-		if (ispath(typepath, /obj/effect/essentials_set))
-			var/obj/effect/essentials_set/I = new typepath()
-			var/list/spawned_list = I.spawned_gear_list
-			if(LAZYLEN(spawned_list))
-				var/obj/item/target = spawned_list[1]
-				icon_ref = initial(target.icon)
-				icon_state = initial(target.icon_state)
-				desc = initial(target.desc)
-				var/target_obj = new target()
-				r = getFlatIcon(target_obj)
-				qdel(target_obj)
-		else if (ispath(typepath, /obj/item))
-			var/obj/item/I = typepath
-			desc = initial(I.desc)
-			var/map_decor = initial(I.map_specific_decoration)
-			if (map_decor)
-				icon_state = initial(I.icon_state)
-				icon_ref = "icons/obj/items/weapons/guns/guns_by_map/classic/guns_obj.dmi"
-				r = icon(icon_ref, icon_state, SOUTH, 1)
-			else
-				var/target_obj = new I()
-				r = getFlatIcon(target_obj)
-				qdel(target_obj)
-		if(!(item_name in product_icon_list))
-			product_icon_list[item_name] = list(
-				"href" = "",
-				"desc" = ""
-			)
-		if(!r)
-			continue
-		var/asset_name = generate_asset_name(r)
-		var/key = "[asset_name].png"
-		if(asset_name != null && asset_name != "" && r != null)
-			if(!SSassets.cache[key])
-				SSassets.transport.register_asset(key, r)
-		if(asset_name != null)
-			product_icon_list[item_name] = list(
-				"href"=SSassets.transport.get_asset_url(key),
-				"desc"=desc
-			)
 
 //this proc, well, populates product list based on roundstart amount of players
 /obj/structure/machinery/cm_vending/sorted/proc/populate_product_list(var/scale)
