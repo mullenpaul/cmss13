@@ -762,9 +762,6 @@ IN_USE						used for vending/denying
 
 	add_fingerprint(usr)
 /obj/structure/machinery/cm_vending/clothing/ui_static_data(mob/user)
-	to_chat(user, SPAN_WARNING("in ui static"))
-	build_icons(listed_products)
-	to_chat(user, SPAN_WARNING("post icons"))
 	var/list/data = list()
 	data["vendor_name"] = name
 	data["theme"] = vendor_theme
@@ -809,7 +806,6 @@ IN_USE						used for vending/denying
 			last_category["restricted"] = TRUE
 
 	data["displayed_categories"] = ui_categories
-	to_chat(user, SPAN_WARNING("output static"))
 	return data
 
 /obj/structure/machinery/cm_vending/clothing/ui_data(mob/user)
@@ -841,50 +837,6 @@ IN_USE						used for vending/denying
 	data["show_points"] = show_points
 	data["current_m_points"] = available_points_to_display
 	return data
-
-/obj/structure/machinery/cm_vending/clothing/proc/build_icons(var/list/items)
-	for (var/i in 1 to length(items))
-		// initial item count setup
-		var/item_name = items[i][1]
-		// icon setup
-		var/typepath = items[i][3]
-
-		var/icon_ref = null
-		var/icon_state = null
-		var/desc = ""
-		var/icon/r = null
-
-		if (ispath(typepath, /obj/effect/essentials_set))
-			var/obj/effect/essentials_set/I = new typepath()
-			var/list/spawned_list = I.spawned_gear_list
-			if(LAZYLEN(spawned_list))
-				var/obj/item/target = spawned_list[1]
-				icon_ref = initial(target.icon)
-				icon_state = initial(target.icon_state)
-				desc = initial(target.desc)
-				var/target_obj = new target()
-				r = getFlatIcon(target_obj)
-				qdel(target_obj)
-		else if (ispath(typepath, /obj/item))
-			var/obj/item/I = typepath
-			desc = initial(I.desc)
-			var/map_decor = initial(I.map_specific_decoration)
-			if (map_decor)
-				icon_state = initial(I.icon_state)
-				icon_ref = "icons/obj/items/weapons/guns/guns_by_map/classic/guns_obj.dmi"
-				r = icon(icon_ref, icon_state, SOUTH, 1)
-			else
-				var/target_obj = new I()
-				r = getFlatIcon(target_obj)
-				qdel(target_obj)
-		else
-			continue
-
-		var/result = icon2html(r, world, icon_state, sourceonly=TRUE)
-		product_icon_list[item_name] = list(
-			"href"=result,
-			"desc"=desc
-		)
 
 /obj/structure/machinery/cm_vending/clothing/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
