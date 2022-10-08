@@ -18,6 +18,8 @@
 	else if(user.job == JOB_CMO)
 		///defined in senior_officers.dm
 		return GLOB.cm_vending_clothing_cmo
+	else if(user.job == JOB_DOCTOR)
+		return GLOB.cm_vending_clothing_doctor
 	return ..()
 
 

@@ -2,6 +2,7 @@ import { useBackend, useLocalState } from '../backend';
 import { Button, Section, Flex, Box, Tooltip, Input, NoticeBox, Icon } from '../components';
 import { Window } from '../layouts';
 import { classes } from 'common/react';
+import { logger } from '../logging';
 
 type IconRecord = {
   icon_sheet: string;
@@ -15,7 +16,7 @@ type VendingRecord = {
   prod_available: number,
   prod_initial: number,
   prod_color?: number;
-  prod_icon: IconRecord;
+  prod_icon?: IconRecord;
   prod_desc?: string;
   prod_cost: number;
 }
@@ -157,40 +158,47 @@ const VendableItem = (props: VenableItem, context) => {
   const quantity = data.stock_listing[record.prod_index - 1];
   const available = quantity > 0;
   const cost = record.prod_cost;
+  const isMandatory = record.prod_color === VENDOR_ITEM_MANDATORY;
+  const isRecommended = record.prod_color === VENDOR_ITEM_RECOMMENDED;
+
+  logger.info(record)
   return (
     <Flex align="center" justify="space-between" align-items="stretch" className="VendingSorted__ItemBox">
       <Flex.Item>
-        <img className="VendingSorted__Icon" src={record.prod_icon.href} />
-      </Flex.Item>
-
-      <Flex.Item>
-        <Box className="VendingSorted__Spacer" />
-      </Flex.Item>
-      <Flex.Item grow={1}>
-        <RecordName record={record} />
+        <img className="VendingSorted__Icon" src={record.prod_icon?.href} />
       </Flex.Item>
 
       <Flex.Item>
         <Box className="VendingSorted__Spacer" />
       </Flex.Item>
 
-      <Flex.Item width={5}>
-        <span className={classes(['VendingSorted__Text', !available && 'VendingSorted__Failure'])}>
-          {cost}
-        </span>
-      </Flex.Item>
-
-      <Flex.Item>
-        <Box className="VendingSorted__Spacer" />
-      </Flex.Item>
       <Flex.Item justify="right">
         <Button
-          className={classes(["VendingSorted__Button", 'VendingSorted__VendButton'])}
+          className={classes([
+            "VendingSorted__Button",
+            'VendingSorted__VendButton',
+            isRecommended && 'VendingSorted__RecommendedVendButton',
+            isMandatory && 'VendingSorted__MandatoryVendButton',
+          ])}
           preserveWhitespace
           icon={available ? "circle-down" : "xmark"}
           onClick={() => act('vend', record)}
           textAlign="center"
           disabled={!available} />
+      </Flex.Item>
+
+      <Flex.Item>
+        <Box className="VendingSorted__Spacer" />
+      </Flex.Item>
+
+      <Flex.Item width={2}>
+        <span className={classes(['VendingSorted__Text', !available && 'VendingSorted__Failure'])}>
+          {cost}
+        </span>
+      </Flex.Item>
+
+      <Flex.Item grow={1}>
+        <RecordName record={record} />
       </Flex.Item>
     </Flex>
   );
