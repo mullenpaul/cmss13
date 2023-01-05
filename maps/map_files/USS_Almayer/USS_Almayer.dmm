@@ -37543,6 +37543,10 @@
 	tag = "icon-greencorner (EAST)"
 	},
 /area/almayer/hallways/starboard_hallway)
+"dEG" = (
+/obj/docking_port/stationary/emergency_response/external/port5,
+/turf/open/space/basic,
+/area/shuttle/distress/arrive_n_engi)
 "dEQ" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/condiment/hotsauce/tabasco,
@@ -37596,6 +37600,10 @@
 	tag = "icon-sterile"
 	},
 /area/almayer/hull/lower_hull/l_f_p)
+"dGf" = (
+/obj/docking_port/stationary/emergency_response/external/port4,
+/turf/open/space/basic,
+/area/shuttle/distress/arrive_s_engi)
 "dGr" = (
 /obj/structure/pipes/vents/scrubber{
 	dir = 8
@@ -133678,7 +133686,7 @@ aaa
 aaa
 aaa
 aaa
-fHa
+dEG
 fHa
 fHa
 fHa
@@ -133733,7 +133741,7 @@ aag
 aag
 aag
 ajZ
-pyn
+dGf
 pyn
 pyn
 pyn
@@ -135357,12 +135365,12 @@ aaa
 aaa
 aaa
 aaa
-bdH
 pyn
 pyn
 pyn
 pyn
-bdH
+pyn
+pyn
 aaa
 aaa
 aaa

@@ -117,54 +117,10 @@
 	tag = "icon-sterile_green_corner (NORTH)"
 	},
 /area/tdome)
-"aG" = (
-/turf/open/space/transit/north/shuttlespace_ns10,
-/area/space)
-"aH" = (
-/turf/open/space/transit/north/shuttlespace_ns15,
-/area/space)
 "aK" = (
 /obj/structure/closet/cabinet,
 /turf/open/floor/carpet,
 /area/adminlevel/ert_station)
-"aN" = (
-/turf/open/space/transit/north/shuttlespace_ns11,
-/area/space)
-"aO" = (
-/turf/open/space/transit/north/shuttlespace_ns14,
-/area/space)
-"aP" = (
-/turf/open/space/transit/north/shuttlespace_ns12,
-/area/space)
-"aQ" = (
-/turf/open/space/transit/north/shuttlespace_ns13,
-/area/space)
-"aT" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns13,
-/area/space)
-"aU" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns12,
-/area/space)
 "aX" = (
 /obj/effect/step_trigger/teleporter/random{
 	affect_ghosts = 1;
@@ -178,80 +134,6 @@
 	},
 /turf/open/space/transit/north/shuttlespace_ns4,
 /area/space)
-"aY" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns11,
-/area/space)
-"aZ" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns9,
-/area/space)
-"be" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns3,
-/area/space)
-"bg" = (
-/turf/open/space/transit/north/shuttlespace_ns9,
-/area/space)
-"bh" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns2,
-/area/space)
-"bi" = (
-/turf/open/space/transit/north/shuttlespace_ns8,
-/area/space)
-"bj" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns1,
-/area/space)
-"bm" = (
-/turf/open/space/transit/north/shuttlespace_ns7,
-/area/space)
 "bn" = (
 /obj/structure/closet/boxinggloves,
 /turf/open/floor/almayer{
@@ -259,101 +141,8 @@
 	tag = "icon-silver"
 	},
 /area/adminlevel/ert_station)
-"bs" = (
-/turf/open/space/transit/north/shuttlespace_ns6,
-/area/space)
-"bx" = (
-/turf/open/space/transit/north/shuttlespace_ns5,
-/area/space)
 "bz" = (
 /turf/open/space/transit/north/shuttlespace_ns4,
-/area/space)
-"bA" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns5,
-/area/space)
-"bM" = (
-/turf/open/space/transit/north/shuttlespace_ns3,
-/area/space)
-"bN" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns6,
-/area/space)
-"bO" = (
-/turf/open/space/transit/north/shuttlespace_ns2,
-/area/space)
-"bP" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns7,
-/area/space)
-"bQ" = (
-/turf/open/space/transit/north/shuttlespace_ns1,
-/area/space)
-"bR" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns8,
-/area/space)
-"bS" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns10,
-/area/space)
-"bT" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns14,
 /area/space)
 "bU" = (
 /turf/open/space/transit/north/shuttlespace_ns4,
@@ -415,15 +204,6 @@
 	tag = "icon-sterile"
 	},
 /area/adminlevel/ert_station)
-"cx" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 4
-	},
-/turf/open/floor/almayer{
-	icon_state = "plate";
-	tag = "icon-sterile"
-	},
-/area/shuttle/distress/start_small)
 "cz" = (
 /turf/open/space/transit/north/shuttlespace_ns4,
 /area/almayer/evacuation/stranded/pod15)
@@ -588,17 +368,6 @@
 "ej" = (
 /turf/open/floor/plating/bare_catwalk,
 /area/supply/dock)
-"eu" = (
-/obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = "icon-S"
-	},
-/obj/effect/decal/warning_stripes{
-	icon_state = "E";
-	tag = "icon-E-corner"
-	},
-/turf/open/floor/plating/almayer,
-/area/shuttle/distress/start_small)
 "ev" = (
 /turf/open/floor/carpet{
 	dir = 9;
@@ -649,9 +418,6 @@
 	tag = "icon-redfull"
 	},
 /area/adminlevel/ert_station)
-"eJ" = (
-/turf/open/space,
-/area/shuttle/distress/transit_big)
 "eQ" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/almayer{
@@ -692,11 +458,6 @@
 	tag = "icon-carpetside (EAST)"
 	},
 /area/centcom/living)
-"fj" = (
-/turf/closed/shuttle/lifeboat{
-	icon_state = "0,6"
-	},
-/area/shuttle/distress/start_small)
 "fn" = (
 /turf/closed/wall/almayer/outer{
 	name = "reinforced hull"
@@ -750,18 +511,6 @@
 	icon_state = "mono"
 	},
 /area/centcom/control)
-"fH" = (
-/obj/structure/machinery/door/airlock/almayer/generic,
-/obj/effect/decal/warning_stripes{
-	icon_state = "N";
-	tag = "icon-N"
-	},
-/obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = "icon-S"
-	},
-/turf/open/floor/plating/almayer,
-/area/shuttle/distress/start_small)
 "fL" = (
 /turf/open/floor/carpet{
 	dir = 10;
@@ -1324,17 +1073,6 @@
 	tag = "icon-sterile_green_side (NORTHEAST)"
 	},
 /area/adminlevel/ert_station)
-"rF" = (
-/obj/effect/decal/warning_stripes{
-	icon_state = "N";
-	tag = "icon-N"
-	},
-/obj/effect/decal/warning_stripes{
-	icon_state = "E";
-	tag = "icon-E-corner"
-	},
-/turf/open/floor/plating/almayer,
-/area/shuttle/distress/start_small)
 "rR" = (
 /obj/structure/closet/secure_closet/freezer/fridge/full,
 /obj/item/reagent_container/food/condiment/enzyme,
@@ -1363,12 +1101,6 @@
 	},
 /turf/open/space/transit/east/shuttlespace_ew5,
 /area/space)
-"sL" = (
-/obj/structure/machinery/door/poddoor/shutters/transit{
-	id = "n_engi"
-	},
-/turf/open/floor/plating/almayer,
-/area/shuttle/distress/start_small)
 "th" = (
 /obj/structure/machinery/medical_pod/bodyscanner,
 /turf/open/floor/almayer{
@@ -1397,18 +1129,6 @@
 	tag = "icon-sterile"
 	},
 /area/adminlevel/ert_station)
-"tZ" = (
-/obj/structure/bed/chair/dropship/passenger{
-	dir = 4
-	},
-/obj/structure/machinery/cm_vending/sorted/medical/wall_med/lifeboat{
-	pixel_y = -32
-	},
-/turf/open/floor/almayer{
-	icon_state = "plate";
-	tag = "icon-sterile"
-	},
-/area/shuttle/distress/start_small)
 "uc" = (
 /obj/docking_port/stationary/lifeboat_dock/admin{
 	id = "admin-lifeboat2";
@@ -1695,11 +1415,6 @@
 	icon_state = "kitchen"
 	},
 /area/adminlevel/ert_station)
-"yY" = (
-/turf/closed/shuttle/lifeboat{
-	icon_state = "0,5"
-	},
-/area/shuttle/distress/start_small)
 "zg" = (
 /obj/structure/machinery/chem_dispenser/soda{
 	density = 0;
@@ -1807,13 +1522,6 @@
 	tag = "icon-blue (NORTHEAST)"
 	},
 /area/tdome/tdome2)
-"BN" = (
-/obj/effect/decal/warning_stripes{
-	icon_state = "W";
-	tag = "icon-W"
-	},
-/turf/open/floor/plating/almayer,
-/area/shuttle/distress/start_small)
 "BO" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "NW-out";
@@ -1891,25 +1599,6 @@
 	},
 /turf/open/floor/wood/ship,
 /area/adminlevel/ert_station)
-"CO" = (
-/obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = "icon-S"
-	},
-/obj/effect/decal/warning_stripes{
-	icon_state = "E";
-	tag = "icon-E-corner"
-	},
-/obj/effect/decal/warning_stripes{
-	icon_state = "NW-out";
-	layer = 2.5;
-	tag = "icon-NW-out"
-	},
-/obj/effect/landmark/ert_spawns/distress_pizza,
-/turf/open/floor/almayer{
-	icon_state = "tcomms"
-	},
-/area/shuttle/distress/start_small)
 "CU" = (
 /turf/open/floor/prison{
 	icon_state = "kitchen"
@@ -1994,9 +1683,6 @@
 	},
 /turf/open/space/transit/east/shuttlespace_ew9,
 /area/space)
-"Ek" = (
-/turf/open/space/basic,
-/area/shuttle/distress/transit_small)
 "En" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/item/book/manual/chef_recipes,
@@ -2044,15 +1730,6 @@
 	tag = "icon-silver (WEST)"
 	},
 /area/adminlevel/ert_station/shuttle_dispatch)
-"Fd" = (
-/obj/structure/surface/table/almayer,
-/obj/structure/machinery/computer/security{
-	network = list("Military","Almayer")
-	},
-/turf/open/floor/almayer{
-	icon_state = "tcomms"
-	},
-/area/shuttle/distress/start_small)
 "Fo" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -2217,10 +1894,8 @@
 	},
 /area/adminlevel/ert_station)
 "Hj" = (
-/turf/closed/shuttle/lifeboat{
-	icon_state = "0,0"
-	},
-/area/shuttle/distress/start_small)
+/turf/open/floor/plating/almayer,
+/area/almayer/ert_port)
 "HB" = (
 /turf/open/space/transit/north/shuttlespace_ns4,
 /area/almayer/evacuation/stranded/pod18)
@@ -2249,21 +1924,6 @@
 	tag = "icon-sterile"
 	},
 /area/adminlevel/ert_station)
-"Ia" = (
-/obj/effect/decal/warning_stripes{
-	icon_state = "E";
-	tag = "icon-E-corner"
-	},
-/obj/structure/closet/hydrant{
-	pixel_x = 32
-	},
-/obj/item/storage/toolbox/emergency{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/tool/crowbar,
-/turf/open/floor/plating/almayer,
-/area/shuttle/distress/start_small)
 "Il" = (
 /obj/structure/machinery/bioprinter{
 	stored_metal = 1000
@@ -2319,21 +1979,15 @@
 /turf/closed/wall/r_wall/unmeltable,
 /area/adminlevel/simulation)
 "Jc" = (
-/turf/closed/wall/r_wall/biodome/biodome_unmeltable,
-/area/shuttle/distress/start_small)
+/obj/docking_port/stationary/emergency_response/idle_port4,
+/turf/open/floor/plating/almayer,
+/area/almayer/ert_port)
 "Ji" = (
 /turf/open/space/transit/east/shuttlespace_ew13,
 /area/space)
 "Jl" = (
 /turf/open/floor/plating,
 /area/almayer/ert_port)
-"Jo" = (
-/obj/structure/machinery/door/poddoor/shutters/transit{
-	id = "s_engi"
-	},
-/obj/structure/machinery/door/airlock/multi_tile/almayer/generic2,
-/turf/open/floor/plating/almayer,
-/area/shuttle/distress/start_small)
 "Js" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -2362,26 +2016,6 @@
 /obj/structure/machinery/cm_vending/sorted/walkman,
 /turf/open/floor/wood/ship,
 /area/adminlevel/ert_station)
-"JZ" = (
-/obj/structure/bed/chair/office/light{
-	dir = 4;
-	tag = ""
-	},
-/obj/effect/decal/warning_stripes{
-	icon_state = "E";
-	tag = "icon-E-corner"
-	},
-/obj/effect/decal/warning_stripes{
-	icon_state = "N";
-	tag = "icon-N"
-	},
-/obj/effect/decal/warning_stripes{
-	icon_state = "W";
-	tag = "icon-W"
-	},
-/obj/effect/landmark/ert_spawns/distress_pizza,
-/turf/open/floor/plating/almayer,
-/area/shuttle/distress/start_small)
 "Kk" = (
 /turf/closed/wall/mineral/gold,
 /area/adminlevel/ert_station)
@@ -2421,9 +2055,6 @@
 	},
 /turf/open/floor/wood/ship,
 /area/adminlevel/ert_station)
-"KO" = (
-/turf/open/space/basic,
-/area/almayer/ert_port)
 "KQ" = (
 /obj/structure/machinery/cm_vending/sorted/boozeomat,
 /turf/open/floor/wood/ship,
@@ -2649,19 +2280,6 @@
 	},
 /turf/open/space,
 /area/space)
-"Ou" = (
-/obj/effect/step_trigger/teleporter/random{
-	affect_ghosts = 1;
-	name = "escapeshuttle_leave";
-	teleport_x = 25;
-	teleport_x_offset = 245;
-	teleport_y = 25;
-	teleport_y_offset = 245;
-	teleport_z = 1;
-	teleport_z_offset = 1
-	},
-/turf/open/space/transit/north/shuttlespace_ns15,
-/area/space)
 "OC" = (
 /obj/structure/sign/poster/hunk,
 /obj/structure/window/framed/colony/reinforced/hull,
@@ -2697,17 +2315,6 @@
 	tag = "icon-blue (NORTHEAST)"
 	},
 /area/tdome/tdome1)
-"OR" = (
-/obj/effect/decal/warning_stripes{
-	icon_state = "W";
-	tag = "icon-W"
-	},
-/obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = "icon-S"
-	},
-/turf/open/floor/plating/almayer,
-/area/shuttle/distress/start_small)
 "OT" = (
 /turf/closed/wall/almayer/outer,
 /area/tdome/tdomeobserve)
@@ -2904,23 +2511,6 @@
 /obj/structure/machinery/newscaster/security_unit,
 /turf/closed/wall/r_wall/unmeltable,
 /area/adminlevel/ert_station)
-"Sz" = (
-/obj/structure/surface/table/almayer,
-/obj/structure/machinery/computer/shuttle_control/ert/terminal{
-	dir = 8;
-	shuttle_tag = "Distress_Small"
-	},
-/turf/open/floor/almayer{
-	icon_state = "tcomms"
-	},
-/area/shuttle/distress/start_small)
-"SM" = (
-/obj/structure/surface/table/almayer,
-/obj/structure/machinery/computer/station_alert{
-	dir = 1
-	},
-/turf/open/floor/plating/almayer,
-/area/shuttle/distress/start_small)
 "ST" = (
 /obj/structure/machinery/door/airlock/almayer/medical/glass{
 	dir = 1;
@@ -3334,9 +2924,6 @@
 	},
 /turf/open/floor/plating/plating_catwalk,
 /area/adminlevel/ert_station)
-"Zb" = (
-/turf/open/floor/plating,
-/area/adminlevel/ert_station/shuttle_dispatch)
 "Zd" = (
 /turf/open/floor/almayer{
 	icon_state = "bluefull";
@@ -9669,29 +9256,29 @@ as
 as
 as
 as
-be
-bh
-bj
-bS
-aY
-aU
-aT
-bT
-Ou
-bT
-aT
-aU
-bN
-bS
-aZ
-bR
-bP
-bN
-bA
-aX
-be
-bh
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aC
@@ -9821,29 +9408,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aH
-aO
-aQ
-aP
-aN
-aG
-bg
-bi
-bm
-bs
-bx
-bz
-bM
-bO
-bQ
-aH
-aO
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -9973,29 +9560,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aG
-aN
-aP
-aQ
-aO
-aC
-aC
-aC
-aC
-aC
-aC
-aC
-bi
-bm
-bs
-bx
-bz
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -10125,29 +9712,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aH
-aO
-aQ
-aP
-aC
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aC
-bO
-bQ
-aH
-aO
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -10277,29 +9864,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aG
-aN
-aP
-aQ
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bm
-bs
-bx
-bz
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -10429,29 +10016,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aH
-aC
-aC
-aC
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aC
-aC
-aC
-aO
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -10581,29 +10168,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aC
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aC
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -10733,29 +10320,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -10885,29 +10472,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -11037,29 +10624,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -11189,29 +10776,29 @@ as
 as
 as
 as
-be
-bO
-aC
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aC
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -11341,29 +10928,29 @@ as
 as
 as
 as
-aT
-aP
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -11424,11 +11011,11 @@ FT
 Oi
 Pq
 Jc
-qr
 Hj
-fj
-yY
-Jc
+Hj
+Hj
+Hj
+Hj
 DD
 Oi
 as
@@ -11493,29 +11080,29 @@ as
 as
 as
 as
-be
-bO
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -11575,12 +11162,12 @@ Ur
 FT
 Oi
 Pq
-Jc
-Jc
-Jc
-Jc
-Jc
-Jc
+Hj
+Hj
+Hj
+Hj
+Hj
+Hj
 Bw
 Oi
 as
@@ -11645,29 +11232,29 @@ as
 as
 as
 as
-aT
-aP
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -11727,12 +11314,12 @@ gX
 vN
 Oi
 Pq
-Jc
-cx
-cx
-cx
-tZ
-Jc
+Hj
+Hj
+Hj
+Hj
+Hj
+Hj
 DD
 Oi
 as
@@ -11797,29 +11384,29 @@ as
 as
 as
 as
-be
-bO
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -11879,12 +11466,12 @@ gX
 nP
 wY
 Pq
-Jo
-pE
-BN
-BN
-OR
-pi
+Hj
+Hj
+Hj
+Hj
+Hj
+Hj
 DD
 Oi
 as
@@ -11949,29 +11536,29 @@ as
 as
 as
 as
-aT
-aP
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -12031,12 +11618,12 @@ gX
 VI
 dG
 Pq
-dP
-rF
-Ia
-nu
-eu
-sL
+Hj
+Hj
+Hj
+Hj
+Hj
+Hj
 DD
 Oi
 as
@@ -12101,29 +11688,29 @@ as
 as
 as
 as
-be
-bO
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -12183,12 +11770,12 @@ Dv
 FT
 Oi
 Pq
-Jc
-Jc
-Jc
-fH
-Jc
-Jc
+Hj
+Hj
+Hj
+Hj
+Hj
+Hj
 DD
 Oi
 as
@@ -12253,29 +11840,29 @@ as
 as
 as
 as
-aT
-aP
-aC
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aC
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -12335,12 +11922,12 @@ Ur
 FT
 Oi
 Pq
-Jc
-Fd
-JZ
-CO
-SM
-Jc
+Hj
+Hj
+Hj
+Hj
+Hj
+Hj
 DD
 Oi
 as
@@ -12405,29 +11992,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -12487,12 +12074,12 @@ gX
 FT
 Oi
 Pq
-Jc
-Jc
-Sz
-St
-Jc
-Jc
+Hj
+Hj
+Hj
+Hj
+Hj
+Hj
 DD
 Oi
 as
@@ -12557,29 +12144,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -12639,12 +12226,12 @@ Ur
 vN
 Oi
 Pq
-Zb
-Jc
-nF
-nF
-Jc
-Zb
+Hj
+Hj
+Hj
+Hj
+Hj
+Hj
 DD
 Oi
 as
@@ -12709,29 +12296,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -12861,29 +12448,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -13013,29 +12600,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aC
-aC
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aC
-aC
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -13165,29 +12752,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aH
-aO
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aH
-aO
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -13317,29 +12904,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aG
-aN
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bx
-bz
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -13469,29 +13056,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aH
-aO
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aH
-aO
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -13621,29 +13208,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aG
-aN
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bx
-bz
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -13773,29 +13360,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aH
-aO
-aC
-aC
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aC
-aC
-aH
-aO
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -13925,29 +13512,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aG
-aN
-aP
-aQ
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bm
-bs
-bx
-bz
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -14077,29 +13664,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aH
-aO
-aQ
-aP
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bO
-bQ
-aH
-aO
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -14229,29 +13816,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aG
-aN
-aP
-aQ
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-bm
-bs
-bx
-bz
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -14381,29 +13968,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aH
-aO
-aQ
-aP
-aC
-aC
-eJ
-eJ
-eJ
-eJ
-eJ
-aC
-aC
-bO
-bQ
-aH
-aO
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -14533,29 +14120,29 @@ as
 as
 as
 as
-be
-bO
-bQ
-aG
-aN
-aP
-aQ
-aO
-aC
-aC
-aC
-aC
-aC
-aC
-aC
-bi
-bm
-bs
-bx
-bz
-bM
-bO
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -14685,29 +14272,29 @@ as
 as
 as
 as
-aT
-aP
-aN
-aH
-aO
-aQ
-aP
-aN
-aG
-bg
-bi
-bm
-bs
-bx
-bz
-bM
-bO
-bQ
-aH
-aO
-aQ
-aP
-aY
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aa
 aC
 aa
@@ -14835,31 +14422,31 @@ as
 as
 as
 as
-aa
-aa
-be
-bh
-bj
-bS
-aY
-aU
-aT
-bT
-Ou
-bT
-aT
-aU
-bN
-bS
-aZ
-bR
-bP
-bN
-bA
-aX
-be
-bh
-bj
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 aC
 aC
 aC
@@ -15007,11 +14594,11 @@ as
 as
 as
 as
-aa
-aa
-aa
-aa
-aa
+as
+as
+as
+as
+as
 aC
 aa
 aa
@@ -15375,9 +14962,9 @@ as
 as
 as
 as
-aa
-aa
-aa
+as
+as
+as
 as
 as
 as
@@ -15527,8 +15114,8 @@ as
 as
 as
 as
-aa
-aa
+as
+as
 as
 as
 as
@@ -15679,8 +15266,8 @@ as
 as
 as
 as
-aa
-aa
+as
+as
 as
 as
 as
@@ -15831,8 +15418,8 @@ as
 as
 as
 as
-aa
-aa
+as
+as
 as
 as
 as
@@ -15983,8 +15570,8 @@ as
 as
 as
 as
-aa
-aa
+as
+as
 as
 as
 as
@@ -16135,8 +15722,8 @@ as
 as
 as
 as
-aa
-aa
+as
+as
 as
 as
 as
@@ -16287,8 +15874,8 @@ as
 as
 as
 as
-aa
-aa
+as
+as
 as
 as
 as
@@ -16442,24 +16029,24 @@ as
 as
 as
 as
-TT
-nB
-nB
-nB
-nB
-nB
-Ek
-Ek
-Ek
-Ek
-Ek
-Ek
-nB
-nB
-nB
-nB
-nB
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -16594,24 +16181,24 @@ as
 as
 as
 as
-TT
-Uz
-Uz
-Uz
-Uz
-Uz
-Ek
-Ek
-Ek
-Ek
-Ek
-Ek
-Uz
-Uz
-Uz
-Uz
-Uz
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -16746,24 +16333,24 @@ as
 as
 as
 as
-TT
-TS
-TS
-TS
-TS
-TS
-Ek
-Ek
-Ek
-Ek
-Ek
-Ek
-TS
-TS
-TS
-TS
-TS
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -16898,24 +16485,24 @@ as
 as
 as
 as
-TT
-cJ
-cJ
-cJ
-cJ
-cJ
-Ek
-Ek
-Ek
-Ek
-Ek
-Ek
-cJ
-cJ
-cJ
-cJ
-cJ
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -17050,24 +16637,24 @@ as
 as
 as
 as
-TT
-ne
-ne
-ne
-ne
-ne
-Ek
-Ek
-Ek
-Ek
-Ek
-Ek
-ne
-ne
-ne
-ne
-ne
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -17202,24 +16789,24 @@ as
 as
 as
 as
-TT
-GE
-GE
-GE
-GE
-GE
-GE
-Ek
-Ek
-Ek
-Ek
-GE
-GE
-GE
-GE
-GE
-GE
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -17354,24 +16941,24 @@ as
 as
 as
 as
-TT
-ii
-ii
-ii
-ii
-ii
-ii
-ii
-ii
-ii
-ii
-ii
-ii
-ii
-ii
-ii
-ii
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -17506,24 +17093,24 @@ as
 as
 as
 as
-TT
-Db
-Db
-Db
-Db
-Db
-Db
-Db
-Db
-Db
-Db
-Db
-Db
-Db
-Db
-Db
-Db
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -17658,24 +17245,6 @@ as
 as
 as
 as
-TT
-xX
-xX
-xX
-xX
-xX
-xX
-xX
-xX
-xX
-xX
-xX
-xX
-xX
-xX
-xX
-xX
-TT
 as
 as
 as
@@ -17687,7 +17256,25 @@ as
 as
 as
 as
-KO
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -17810,24 +17397,24 @@ as
 as
 as
 as
-TT
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-Ji
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -17962,24 +17549,24 @@ as
 as
 as
 as
-TT
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-Gw
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -18114,24 +17701,24 @@ as
 as
 as
 as
-TT
-PK
-PK
-PK
-PK
-PK
-PK
-PK
-PK
-PK
-PK
-PK
-PK
-PK
-PK
-PK
-PK
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -18266,24 +17853,24 @@ as
 as
 as
 as
-TT
-AH
-AH
-AH
-AH
-AH
-AH
-AH
-AH
-AH
-AH
-AH
-AH
-AH
-AH
-AH
-AH
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
@@ -18418,24 +18005,24 @@ as
 as
 as
 as
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
-TT
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
+as
 as
 as
 as
