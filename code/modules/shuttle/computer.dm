@@ -230,6 +230,20 @@
 		return TRUE
 	tgui_interact(user)
 
+/obj/structure/machinery/computer/shuttle/ert/small
+	name = "transport shuttle"
+	desc = "A transport shuttle flight computer."
+	icon_state = "comm_alt"
+	req_access = list()
+	breakable = FALSE
+
+/obj/structure/machinery/computer/shuttle/ert/big
+	name = "transport shuttle"
+	desc = "A transport shuttle flight computer."
+	icon_state = "comm_alt"
+	req_access = list()
+	breakable = FALSE
+
 /obj/structure/machinery/computer/shuttle/lifeboat
 	name = "lifeboat console"
 	desc = "A lifeboat control computer."
