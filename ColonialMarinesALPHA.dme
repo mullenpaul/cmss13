@@ -2026,6 +2026,7 @@
 #include "code\modules\security_levels\security_levels.dm"
 #include "code\modules\shuttle\computer.dm"
 #include "code\modules\shuttle\docking.dm"
+#include "code\modules\shuttle\helpers.dm"
 #include "code\modules\shuttle\computers\dropship_computer.dm"
 #include "code\modules\shuttle\shuttles\dropship.dm"
 #include "code\modules\shuttle\shuttles\ert.dm"
