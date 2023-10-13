@@ -418,6 +418,8 @@
 	add_current_round_status_to_end_results("Round End")
 	handle_round_results_statistics_output()
 
+	SSinfluxstats.run_round_completed_statistics()
+
 	return 1
 
 // for the toolbox

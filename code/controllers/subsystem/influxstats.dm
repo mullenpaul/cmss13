@@ -54,9 +54,20 @@ SUBSYSTEM_DEF(influxstats)
 /datum/controller/subsystem/influxstats/proc/run_special_round_statistics()
 	for(var/hive_tag in GLOB.hive_datum)
 		var/datum/hive_status/hive = GLOB.hive_datum[hive_tag]
-		SSinfluxdriver.enqueue_stats("pooled_larva", list("hive" = hive.reporting_id), list("count" = hive.stored_larva))
+		SSinfluxdriver.enqueue_round_stats("pooled_larva", list("hive" = hive.reporting_id), list("count" = hive.stored_larva))
 		var/burst_larvas = GLOB.larva_burst_by_hive[hive] || 0
-		SSinfluxdriver.enqueue_stats("burst_larva", list("hive" = hive.reporting_id), list("count" = burst_larvas))
+		SSinfluxdriver.enqueue_round_stats("burst_larva", list("hive" = hive.reporting_id), list("count" = burst_larvas))
+
+		SSinfluxdriver.enqueue_round_stats(
+			"hive_data",
+			list(
+				"hive" = hive.reporting_id
+			),
+			list(
+				"pooled_larva"=hive.stored_larva,
+				"burst_larva"=burst_larvas
+			)
+		)
 
 /datum/controller/subsystem/influxstats/proc/run_round_statistics()
 	var/datum/entity/statistic/round/stats = SSticker?.mode?.round_stats
@@ -69,15 +80,41 @@ SUBSYSTEM_DEF(influxstats)
 
 	var/list/participants = flatten_entity_list(stats.participants)
 	if(length(participants))
-		SSinfluxdriver.enqueue_stats("participants", list(), participants)
+		SSinfluxdriver.enqueue_round_stats("participants", list(), participants)
 
 	var/list/total_deaths = flatten_entity_list(stats.total_deaths)
 	if(length(total_deaths))
-		SSinfluxdriver.enqueue_stats("deaths", list(), total_deaths)
+		SSinfluxdriver.enqueue_round_stats("deaths", list(), total_deaths)
 
-	SSinfluxdriver.enqueue_stats("shots", list(),
+	SSinfluxdriver.enqueue_round_stats("shots", list(),
 		list("fired" = stats.total_projectiles_fired, "hits" = stats.total_projectiles_hit,
 		"hits_human" = stats.total_projectiles_hit_human, "hits_xeno" = stats.total_projectiles_hit_xeno)
+	)
+
+	SSinfluxdriver.enqueue_round_stats(
+		"round_data",
+		list(),
+		list(
+			"chestbursts"=stats.total_larva_burst,
+			"hugged"=stats.total_huggers_applied,
+			"friendlyfire"=stats.total_friendly_fire_instances,
+			"shots_fired"=stats.total_projectiles_fired,
+			"shots_hits"=stats.total_projectiles_hit,
+			"shots_hits_human"=stats.total_projectiles_hit_human,
+			"shots_hits_xeno"=stats.total_projectiles_hit_xeno
+		)
+	)
+
+/datum/controller/subsystem/influxstats/proc/run_round_completed_statistics()
+	SSinfluxdriver.enqueue_round_stats(
+		"round_results",
+		list(
+			"result"=round_statistics.round_result
+		),
+		list(
+			"round_length"=round_statistics.round_length,
+			"end_players"=round_statistics.end_round_player_population
+		)
 	)
 
 /datum/controller/subsystem/influxstats/proc/run_player_statistics()
@@ -88,19 +125,34 @@ SUBSYSTEM_DEF(influxstats)
 			staff_count++
 		else if(CLIENT_HAS_RIGHTS(client, R_MENTOR))
 			mentor_count++
-	SSinfluxdriver.enqueue_stats("online", null, list("count" = length(GLOB.clients)))
+	SSinfluxdriver.enqueue_round_stats("online", null, list("count" = length(GLOB.clients)))
 
 	var/list/adm = get_admin_counts()
 	var/present_admins = length(adm["present"])
 	var/afk_admins = length(adm["afk"])
-	SSinfluxdriver.enqueue_stats("online_staff", null, list("total" = staff_count, "mentors" = mentor_count, "present" = present_admins, "afk" = afk_admins))
+	SSinfluxdriver.enqueue_round_stats("online_staff", null, list("total" = staff_count, "mentors" = mentor_count, "present" = present_admins, "afk" = afk_admins))
 
 	// Grab ahelp stats
-	SSinfluxdriver.enqueue_stats("tickets", null, list(
+	SSinfluxdriver.enqueue_round_stats("tickets", null, list(
 		"open" = length(GLOB.ahelp_tickets.active_tickets),
 		"closed" = length(GLOB.ahelp_tickets.closed_tickets),
 		"resolved" = length(GLOB.ahelp_tickets.resolved_tickets),
 	))
+
+	SSinfluxdriver.enqueue_round_stats(
+		"player_data",
+		list(),
+		list(
+			"total_players" = length(GLOB.clients),
+			"total_staff" = staff_count,
+			"mentor_count" = mentor_count,
+			"admin_count" = present_admins,
+			"admin_afk" = afk_admins,
+			"open_tickets" = length(GLOB.ahelp_tickets.active_tickets),
+			"closed_tickets" = length(GLOB.ahelp_tickets.closed_tickets),
+			"resolved_tickets" = length(GLOB.ahelp_tickets.resolved_tickets),
+		)
+	)
 
 /datum/controller/subsystem/influxstats/proc/run_job_statistics()
 	var/list/team_job_stats = list()
@@ -149,8 +201,8 @@ SUBSYSTEM_DEF(influxstats)
 
 	for(var/team in team_job_stats)
 		for(var/job in team_job_stats[team])
-			SSinfluxdriver.enqueue_stats("job_stats", list("team" = team, "job" = job), list("count" = team_job_stats[team][job]))
+			SSinfluxdriver.enqueue_round_stats("job_stats", list("team" = team, "job" = job), list("count" = team_job_stats[team][job]))
 
 	for(var/squad in squad_job_stats)
 		for(var/job in squad_job_stats[squad])
-			SSinfluxdriver.enqueue_stats("job_stats", list("team" = "humans", "job" = job, "squad" = squad), list("count" = squad_job_stats[squad][job]))
+			SSinfluxdriver.enqueue_round_stats("job_stats", list("team" = "humans", "job" = job, "squad" = squad), list("count" = squad_job_stats[squad][job]))

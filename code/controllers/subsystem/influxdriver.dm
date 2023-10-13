@@ -76,19 +76,26 @@ SUBSYSTEM_DEF(influxdriver)
 	request.begin_async()
 	// TODO possibly check back result of request later
 
+/datum/controller/subsystem/influxdriver/proc/enqueue_round_stats(measurement, list/tags, list/fields)
+	if(!tags)
+		tags=list()
+	tags["round_id"] = GLOB.round_id
+	tags["map_name"] = round_statistics.map_name
+	return enqueue_stats(measurement, tags, fields)
+
 /// Enqueues sending to InfluxDB Backend selected measurement values - round_id and timestamp are filled in automatically
 /datum/controller/subsystem/influxdriver/proc/enqueue_stats(measurement, list/tags, list/fields)
 	. = FALSE
 	var/valid = FALSE
-	var/serialized = "[measurement],round_id=[GLOB.round_id]"
+	var/serialized = "[measurement]"
 	if(tags)
-		for(var/tag in tags)
+		for(var/tag in sortAssoc(tags))
 			var/serialized_tag = serialize_field(tag, tags[tag])
 			if(serialized_tag)
 				serialized += ",[serialized_tag]"
 	serialized += " "
 	var/comma = ""
-	for(var/field in fields)
+	for(var/field in sortAssoc(fields))
 		var/serialized_field = serialize_field(field, fields[field])
 		if(serialized_field)
 			valid = TRUE
@@ -104,15 +111,7 @@ SUBSYSTEM_DEF(influxdriver)
 
 /// Enqueues sending varied stats in a dumb and simpler format directly as: measurement count=
 /datum/controller/subsystem/influxdriver/proc/enqueue_stats_crude(measurement, value, field_name = "count")
-	. = FALSE
-	var/serialized_field = serialize_field(field_name, value)
-	if(!length(serialized_field))
-		return
-	if(timestamp_cache_worldtime != world.time)
-		update_timestamp()
-	var/serialized = "[measurement],round_id=[GLOB.round_id] [serialized_field] [timestamp_cache_realtime]"
-	send_queue += serialized
-	return TRUE
+	return enqueue_round_stats(measurement, null, list(field_name=value))
 
 /// Puts a single field or tag value into InfluxDB Line format
 /datum/controller/subsystem/influxdriver/proc/serialize_field(field, value)
