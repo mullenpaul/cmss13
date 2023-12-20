@@ -62,6 +62,9 @@
 	/// Default sound environment to use for the area, as list or int BYOND preset: http://www.byond.com/docs/ref/#/sound/var/environment
 	var/sound_environment = SOUND_ENVIRONMENT_ROOM
 
+	///Typepath to limit the areas (subtypes included) that atoms in this area can smooth with. Used for shuttles.
+	var/area/area_limited_icon_smoothing
+
 	//Power stuff
 	var/powernet_name = "default" //Default powernet name. Change to something else to make completely separate powernets
 	var/requires_power = 1

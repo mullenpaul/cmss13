@@ -55,7 +55,8 @@
 	update_appearance()
 
 //Updates strings and icon appropriately based on seed datum.
-/obj/item/seeds/proc/update_appearance()
+/obj/item/seeds/update_appearance()
+	. = ..()
 	if(!seed) return
 	icon_state = seed.packet_icon
 	src.name = "packet of [seed.seed_name] [seed.seed_noun]"

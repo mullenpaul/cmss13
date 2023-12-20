@@ -198,7 +198,8 @@
 	fabricating = FALSE
 	update_overlays()
 
-/obj/item/device/portable_vendor/proc/update_overlays()
+/obj/item/device/portable_vendor/update_overlays()
+	..()
 	if(overlays) overlays.Cut()
 	if (broken)
 		overlays += image(icon, "securespark")

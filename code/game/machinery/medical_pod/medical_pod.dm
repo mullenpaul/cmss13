@@ -2,7 +2,7 @@
 	name = "generic medical pod"
 	icon = 'icons/obj/structures/machinery/cryogenics.dmi'
 	icon_state = "sleeper_open"
-	var/base_icon_state = "sleeper"
+	base_icon_state = "sleeper"
 
 	unslashable = TRUE
 	density = TRUE

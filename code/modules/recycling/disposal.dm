@@ -623,7 +623,6 @@
 	health = 10 //Health points 0-10
 	plane = FLOOR_PLANE
 	layer = DISPOSAL_PIPE_LAYER //Slightly lower than wires and other pipes
-	var/base_icon_state //Initial icon state on map
 
 	//New pipe, set the icon_state as on map
 /obj/structure/disposalpipe/Initialize(mapload, ...)

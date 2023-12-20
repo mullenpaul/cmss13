@@ -27,7 +27,8 @@
 	update_desc()
 
 
-/obj/item/reagent_container/food/snacks/fishable/proc/update_desc()
+/obj/item/reagent_container/food/snacks/fishable/update_desc()
+	. = ..()
 	var/gut_desc
 	if(guttable)
 		desc = initial_desc + "\n\nIt can still be gutted and cleaned."

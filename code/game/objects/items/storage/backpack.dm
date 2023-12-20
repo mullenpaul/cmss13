@@ -415,7 +415,7 @@
 	max_w_class = SIZE_MASSIVE
 	throw_range = 0
 	xeno_types = null
-	var/base_icon_state = "ammo_pack"
+	base_icon_state = "ammo_pack"
 	var/move_delay_mult = 0.4
 
 /obj/item/storage/backpack/marine/ammo_rack/update_icon()

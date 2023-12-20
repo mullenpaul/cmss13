@@ -162,7 +162,7 @@
 	drop_sound = 'sound/handling/weldingtool_drop.ogg'
 	flags_atom = FPRINT|CONDUCT
 	flags_equip_slot = SLOT_WAIST
-	var/base_icon_state = ""
+	base_icon_state = ""
 
 	//Amount of OUCH when it's thrown
 	force = 3

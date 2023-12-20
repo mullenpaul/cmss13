@@ -25,7 +25,8 @@
 	QDEL_NULL(circuit)
 	return ..()
 
-/obj/structure/machinery/constructable_frame/proc/update_desc()
+/obj/structure/machinery/constructable_frame/update_desc()
+	. = ..()
 	if(state == CONSTRUCTION_STATE_BEGIN)
 		requirements_left = " Requires 5 lengths of cable."
 	else if(state == CONSTRUCTION_STATE_PROGRESS)

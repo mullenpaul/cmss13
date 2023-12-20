@@ -168,6 +168,12 @@
 
 #define CINEMATIC_LAYER 21
 
+// NOTE! You can only ever have planes greater then -10000, if you add too many with large offsets you will brick multiz
+// Same can be said for large multiz maps. Tread carefully mappers
+#define HIGHEST_EVER_PLANE RENDER_PLANE_MASTER
+/// The range unique planes can be in
+#define PLANE_RANGE (HIGHEST_EVER_PLANE - LOWEST_EVER_PLANE)
+
 /// for areas, so they appear above everything else on map file.
 #define AREAS_LAYER 999
 

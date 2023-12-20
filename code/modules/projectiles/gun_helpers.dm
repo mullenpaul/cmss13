@@ -410,7 +410,8 @@ DEFINES in setup.dm, referenced here.
 	if(attachable_offset && attachments[attachable])
 		update_overlays(attachments[attachable], attachable)
 
-/obj/item/weapon/gun/proc/update_overlays(obj/item/attachable/attachment, slot)
+/obj/item/weapon/gun/update_overlays(obj/item/attachable/attachment, slot)
+	. = ..()
 	var/image/gun_image = attachable_overlays[slot]
 	overlays -= gun_image
 	attachable_overlays[slot] = null

@@ -2,7 +2,6 @@
 //explosive items (grenades, plastic c4, onetankbomb, etc)
 
 /obj/item/explosive
-	var/base_icon_state
 	var/active = FALSE
 	var/customizable = FALSE
 	var/datum/cause_data/cause_data

@@ -1357,7 +1357,7 @@
 	name = "cassette pouch"
 	desc = "A finely crafted pouch, made specifically to keep cassettes safe during wartime."
 	icon_state = "cassette_pouch_closed"
-	var/base_icon_state = "cassette_pouch"
+	base_icon_state = "cassette_pouch"
 	w_class = SIZE_SMALL
 	can_hold = list(/obj/item/device/cassette_tape, /obj/item/tape/regulation)
 	storage_slots = 3

@@ -29,8 +29,6 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 	/// The Phone_ID of the last person to call this telephone.
 	var/last_caller
 
-	var/base_icon_state
-
 	var/timeout_timer_id
 	var/timeout_duration = 30 SECONDS
 

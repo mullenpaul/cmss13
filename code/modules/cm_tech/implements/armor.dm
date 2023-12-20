@@ -4,7 +4,7 @@
 	desc = "A metal trauma plate, able to absorb some blows."
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "regular2_100"
-	var/base_icon_state = "regular2"
+	base_icon_state = "regular2"
 
 	slot = ACCESSORY_SLOT_ARMOR_C
 	var/armor_health = 10

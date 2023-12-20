@@ -16,7 +16,6 @@
 	anchored = FALSE
 	density = TRUE
 	var/state = STATE_STANDARD
-	var/base_icon_state = ""
 	var/base_name = "airlock"
 	var/obj/item/circuitboard/airlock/electronics = null
 	var/airlock_type = "generic" //the type path of the airlock once completed

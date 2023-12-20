@@ -122,7 +122,8 @@
 	. = ..()
 	update_name()
 
-/obj/item/stack/points/proc/update_name()
+/obj/item/stack/points/update_name()
+	. = ..()
 	if(amount == 1)
 		name = "[amount] [initial(singular_name)]"
 	else

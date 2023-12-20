@@ -1105,7 +1105,7 @@
 	name = "plasma caster"
 	desc = "A powerful, shoulder-mounted energy weapon."
 	icon_state = "plasma_ebony"
-	var/base_icon_state = "plasma"
+	base_icon_state = "plasma"
 	var/base_item_state = "plasma_wear"
 	item_icons = list(
 		WEAR_BACK = 'icons/mob/humans/onmob/hunter/pred_gear.dmi',

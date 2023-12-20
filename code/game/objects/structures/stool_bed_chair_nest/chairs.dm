@@ -162,7 +162,8 @@
 	I.throw_atom(starting_turf, rand(2, 5), SPEED_FAST, null, TRUE)
 	qdel(src)
 
-/obj/structure/bed/chair/proc/update_overlays()
+/obj/structure/bed/chair/update_overlays()
+	. = ..()
 	overlays.Cut()
 	if(!stacked_size)
 		name = initial(name)

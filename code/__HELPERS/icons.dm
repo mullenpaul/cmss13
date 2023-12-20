@@ -844,6 +844,12 @@ world
 	dummySave = null
 	fdel("tmp/dummySave.sav")  //if you get the idea to try and make this more optimized, make sure to still call unlock on the savefile after every write to unlock it.
 
+//Hook, override to run code on- wait this is images
+//Images have dir without being an atom, so they get their own definition.
+//Lame.
+/image/proc/setDir(newdir)
+	dir = newdir
+
 /**
  * Center's an image.
  * Requires:

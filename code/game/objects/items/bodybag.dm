@@ -82,7 +82,8 @@
 	. = ..()
 	storage_capacity = (mob_size * 2) - 1
 
-/obj/structure/closet/bodybag/proc/update_name()
+/obj/structure/closet/bodybag/update_name()
+	. = ..()
 	if(opened)
 		name = bag_name
 	else

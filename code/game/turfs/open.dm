@@ -473,7 +473,8 @@
 	..()
 	update_overlays()
 
-/turf/open/gm/river/proc/update_overlays()
+/turf/open/gm/river/update_overlays()
+	. = ..()
 	overlays.Cut()
 	if(no_overlay)
 		return

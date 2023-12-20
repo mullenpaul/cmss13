@@ -4,7 +4,7 @@
 	desc = "That looks like it doesn't open easily."
 	icon = 'icons/obj/structures/doors/rapid_pdoor.dmi'
 	icon_state = "pdoor1"
-	var/base_icon_state = "pdoor"
+	base_icon_state = "pdoor"
 	id = 1
 	dir = NORTH
 	unslashable = TRUE

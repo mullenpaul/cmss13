@@ -32,6 +32,7 @@
 
 //Enforces perspective layering like it's contemporary; windows.
 /obj/structure/machinery/door/window/update_icon(loc, direction)
+	. = ..(TRUE)
 	if(direction)
 		setDir(direction)
 	switch(dir)

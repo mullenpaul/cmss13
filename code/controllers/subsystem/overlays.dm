@@ -52,20 +52,20 @@ SUBSYSTEM_DEF(overlays)
 
 /atom/proc/cut_overlays()
 	overlays = null
-	POST_OVERLAY_CHANGE(src)
+	// POST_OVERLAY_CHANGE(src)
 
 /atom/proc/cut_overlay(list/remove_overlays)
 	if(!overlays)
 		return
 	overlays -= build_appearance_list(remove_overlays)
-	POST_OVERLAY_CHANGE(src)
+	// POST_OVERLAY_CHANGE(src)
 
 /atom/proc/add_overlay(list/add_overlays)
 	if(!overlays)
 		return
 	overlays += build_appearance_list(add_overlays)
-	VALIDATE_OVERLAY_LIMIT(src)
-	POST_OVERLAY_CHANGE(src)
+	// VALIDATE_OVERLAY_LIMIT(src)
+	// POST_OVERLAY_CHANGE(src)
 
 /atom/proc/copy_overlays(atom/other, cut_old) //copys our_overlays from another atom
 	if(!other)
@@ -79,12 +79,12 @@ SUBSYSTEM_DEF(overlays)
 			overlays = cached_other
 		else
 			overlays = null
-		VALIDATE_OVERLAY_LIMIT(src)
-		POST_OVERLAY_CHANGE(src)
+		// VALIDATE_OVERLAY_LIMIT(src)
+		// POST_OVERLAY_CHANGE(src)
 	else if(cached_other)
 		overlays += cached_other
-		VALIDATE_OVERLAY_LIMIT(src)
-		POST_OVERLAY_CHANGE(src)
+		// VALIDATE_OVERLAY_LIMIT(src)
+		// POST_OVERLAY_CHANGE(src)
 
 //TODO: Better solution for these?
 /image/proc/add_overlay(x)

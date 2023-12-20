@@ -31,6 +31,9 @@
 	///Highest-intensity light affecting us, which determines our visibility.
 	var/affecting_dynamic_lumi = 0
 
+	///Used for the calculate_adjacencies proc for icon smoothing.
+	var/can_be_unanchored = FALSE
+
 //===========================================================================
 /atom/movable/Destroy(force)
 	for(var/atom/movable/I in contents)

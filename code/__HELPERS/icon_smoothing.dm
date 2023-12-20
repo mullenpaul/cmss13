@@ -104,7 +104,7 @@ xxx xxx xxx
 		(GLOB.adjacent_direction_lookup[border_obj.dir][direction + 1]) ? REVERSE_DIR(direction) : NONE \
 	)
 
-#define DEFAULT_UNDERLAY_ICON 'icons/turf/floors.dmi'
+#define DEFAULT_UNDERLAY_ICON 'icons/turf/floors/floors.dmi'
 #define DEFAULT_UNDERLAY_ICON_STATE "plating"
 
 
@@ -642,16 +642,6 @@ xxx xxx xxx
 			return SOUTHEAST
 		else
 			return NONE
-
-
-//Example smooth wall
-/turf/closed/wall/smooth
-	name = "smooth wall"
-	icon = 'icons/turf/smooth_wall.dmi'
-	icon_state = "smooth"
-	smoothing_flags = SMOOTH_CORNERS|SMOOTH_DIAGONAL_CORNERS|SMOOTH_BORDER
-	smoothing_groups = null
-	canSmoothWith = null
 
 #undef NORTH_JUNCTION
 #undef SOUTH_JUNCTION

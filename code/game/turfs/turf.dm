@@ -63,6 +63,11 @@
 	///Lazylist of movable atoms providing opacity sources.
 	var/list/atom/movable/opacity_sources
 
+	var/list/image/blueprint_data //for the station blueprints, images of objects eg: pipes
+
+	///Icon-smoothing variable to map a diagonal wall corner with a fixed underlay.
+	var/list/fixed_underlay = null
+
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE) // this doesn't parent call for optimisation reasons
 	if(flags_atom & INITIALIZED)
@@ -144,9 +149,6 @@
 
 /turf/ex_act(severity)
 	return 0
-
-/turf/proc/update_icon() //Base parent. - Abby
-	return
 
 /turf/proc/add_cleanable_overlays()
 	for(var/cleanable_type in cleanables)
@@ -821,3 +823,27 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	if(T.dir != dir)
 		T.setDir(dir)
 	return T
+
+/turf/proc/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	underlay_appearance.icon = icon
+	underlay_appearance.icon_state = icon_state
+	underlay_appearance.dir = adjacency_dir
+	return TRUE
+
+/turf/proc/add_blueprints(atom/movable/AM)
+	var/image/I = new
+	SET_PLANE(I, GAME_PLANE, src)
+	I.layer = OBJ_LAYER
+	I.appearance = AM.appearance
+	I.appearance_flags = RESET_COLOR|RESET_ALPHA|RESET_TRANSFORM
+	I.loc = src
+	I.setDir(AM.dir)
+	I.alpha = 128
+	LAZYADD(blueprint_data, I)
+
+/turf/proc/add_blueprints_preround(atom/movable/AM)
+	if(!SSicon_smooth.initialized)
+		if(AM.layer == WIRE_LAYER) //wires connect to adjacent positions after its parent init, meaning we need to wait (in this case, until smoothing) to take its image
+			SSicon_smooth.blueprint_queue += AM
+		else
+			add_blueprints(AM)
