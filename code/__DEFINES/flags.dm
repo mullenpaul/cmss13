@@ -33,3 +33,6 @@
 #define EMOTE_IMPORTANT (1<<2)
 /// Does the emote not have a message?
 #define EMOTE_NO_MESSAGE (1<<3)
+
+/// Should we use the initial icon for display? Mostly used by overlay only objects
+#define HTML_USE_INITAL_ICON_1 (1<<16)

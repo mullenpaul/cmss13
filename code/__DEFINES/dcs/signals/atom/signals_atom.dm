@@ -15,6 +15,12 @@
 #define COMSIG_ATOM_DBLCLICK_ALT "atom_dblclick_alt"
 #define COMSIG_ATOM_DBLCLICK_CTRL "atom_dblclick_ctrl"
 
+///from base of [/atom/proc/smooth_icon]: ()
+#define COMSIG_ATOM_SMOOTHED_ICON "atom_smoothed_icon"
+// gags
+#define COMSIG_ATOM_NO_UPDATE_GREYSCALE		"no_update_greyscale"
+#define COMSIG_GREYSCALE_CONFIG_REFRESHED "greyscale_config_refreshed"
+
 ///called when an atom starts orbiting another atom: (atom)
 #define COMSIG_ATOM_ORBIT_BEGIN "atom_orbit_begin"
 ///called when an atom stops orbiting another atom: (atom)
