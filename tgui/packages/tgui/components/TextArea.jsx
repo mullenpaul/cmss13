@@ -6,14 +6,14 @@
  */
 
 import { classes } from 'common/react';
-import { Component, createRef } from 'inferno';
+import { Component, createRef } from 'react';
 import { Box } from './Box';
 import { toInputValue } from './Input';
 import { KEY_ENTER, KEY_ESCAPE, KEY_TAB } from 'common/keycodes';
 
 export class TextArea extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.textareaRef = props.innerRef || createRef();
     this.state = {
       editing: false,
@@ -185,8 +185,9 @@ export class TextArea extends Component {
       displayedValue,
       ...boxProps
     } = this.props;
+
     // Box props
-    const { className, fluid, ...rest } = boxProps;
+    const { className, fluid, nowrap, ...rest } = boxProps;
     const { scrolledAmount } = this.state;
     return (
       <Box
@@ -205,7 +206,7 @@ export class TextArea extends Component {
                 'TextArea__textarea_custom',
               ])}
               style={{
-                'transform': `translateY(-${scrolledAmount}px)`,
+                transform: `translateY(-${scrolledAmount}px)`,
               }}>
               {displayedValue}
             </div>
@@ -216,6 +217,7 @@ export class TextArea extends Component {
           className={classes([
             'TextArea__textarea',
             scrollbar && 'TextArea__textarea--scrollable',
+            nowrap && 'TextArea__nowrap',
           ])}
           placeholder={placeholder}
           onChange={this.handleOnChange}
@@ -227,7 +229,7 @@ export class TextArea extends Component {
           onScroll={this.handleScroll}
           maxLength={maxLength}
           style={{
-            'color': displayedValue ? 'rgba(0, 0, 0, 0)' : 'inherit',
+            color: displayedValue ? 'rgba(0, 0, 0, 0)' : 'inherit',
           }}
         />
       </Box>

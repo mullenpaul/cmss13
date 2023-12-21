@@ -1,4 +1,4 @@
-import { Component, createRef } from 'inferno';
+import { Component, createRef } from 'react';
 import { resolveAsset } from '../assets';
 import { Box } from './Box';
 
@@ -54,9 +54,9 @@ const bodyZonePixelToZone = (x: number, y: number): BodyZone | null => {
 };
 
 type BodyZoneSelectorProps = {
-  onClick?: (zone: BodyZone) => void;
-  scale?: number;
-  selectedZone: BodyZone | null;
+  readonly onClick?: (zone: BodyZone) => void;
+  readonly scale?: number;
+  readonly selectedZone: BodyZone | null;
 };
 
 type BodyZoneSelectorState = {
@@ -111,10 +111,9 @@ export class BodyZoneSelector extends Component<
             });
           }}
           style={{
-            '-ms-interpolation-mode': 'nearest-neighbor',
-            'position': 'absolute',
-            'width': `${32 * scale}px`,
-            'height': `${32 * scale}px`,
+            position: 'absolute',
+            width: `${32 * scale}px`,
+            height: `${32 * scale}px`,
           }}
         />
 
@@ -123,11 +122,10 @@ export class BodyZoneSelector extends Component<
             as="img"
             src={resolveAsset(`body_zones.${selectedZone}.png`)}
             style={{
-              '-ms-interpolation-mode': 'nearest-neighbor',
-              'pointer-events': 'none',
-              'position': 'absolute',
-              'width': `${32 * scale}px`,
-              'height': `${32 * scale}px`,
+              pointerEvents: 'none',
+              position: 'absolute',
+              width: `${32 * scale}px`,
+              height: `${32 * scale}px`,
             }}
           />
         )}
@@ -137,12 +135,11 @@ export class BodyZoneSelector extends Component<
             as="img"
             src={resolveAsset(`body_zones.${hoverZone}.png`)}
             style={{
-              '-ms-interpolation-mode': 'nearest-neighbor',
-              'opacity': 0.5,
-              'pointer-events': 'none',
-              'position': 'absolute',
-              'width': `${32 * scale}px`,
-              'height': `${32 * scale}px`,
+              opacity: 0.5,
+              pointerEvents: 'none',
+              position: 'absolute',
+              width: `${32 * scale}px`,
+              height: `${32 * scale}px`,
             }}
           />
         )}
