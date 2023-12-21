@@ -1,4 +1,3 @@
-import { Fragment } from 'inferno';
 import { useBackend } from '../backend';
 import { Section, Box, NoticeBox, Collapsible } from '../components';
 import { Window } from '../layouts';
@@ -36,10 +35,10 @@ const KillView = (props, context) => {
       title={entry.mob_name + ' (' + entry.time_of_death + ')'}>
       <Box>Mob: {entry.mob_name}</Box>
       {entry.job_name ? (
-        <Fragment>
+        <>
           <Box height="3px" />
           <Box>Job: {entry.job_name}</Box>
-        </Fragment>
+        </>
       ) : null}
       <Box height="3px" />
       <Box>Area: {entry.area_name}</Box>

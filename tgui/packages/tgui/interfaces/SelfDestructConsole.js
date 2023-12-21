@@ -1,4 +1,3 @@
-import { Fragment } from 'inferno';
 import { useBackend } from '../backend';
 import { Button, NoticeBox, Section } from '../components';
 import { Window } from '../layouts';
@@ -43,7 +42,7 @@ export const SelfDestructConsole = (props, context) => {
             />
           )}
           {dest_status === 2 && (
-            <Fragment>
+            <>
               <Button.Confirm
                 fluid
                 color="red"
@@ -60,7 +59,7 @@ export const SelfDestructConsole = (props, context) => {
                 content="CANCEL"
                 onClick={() => act('dest_cancel')}
               />
-            </Fragment>
+            </>
           )}
         </Section>
       </Window.Content>

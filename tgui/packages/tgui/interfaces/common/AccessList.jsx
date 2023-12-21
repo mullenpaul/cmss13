@@ -1,5 +1,4 @@
 import { sortBy } from 'common/collections';
-import { Fragment } from 'inferno';
 import { useLocalState } from '../../backend';
 import { Button, Section, Stack, Tabs } from '../../components';
 
@@ -18,7 +17,7 @@ const diffMap = {
   },
 };
 
-export const AccessList = (props, context) => {
+export const AccessList = (props) => {
   const {
     accesses = [],
     selectedList = [],
@@ -63,7 +62,7 @@ export const AccessList = (props, context) => {
     <Section
       title="Access"
       buttons={
-        <Fragment>
+        <>
           <Button
             icon="check-double"
             content="Grant All"
@@ -76,7 +75,7 @@ export const AccessList = (props, context) => {
             color="bad"
             onClick={() => denyAll()}
           />
-        </Fragment>
+        </>
       }>
       <Stack>
         <Stack.Item>

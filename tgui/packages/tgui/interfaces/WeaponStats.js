@@ -1,4 +1,3 @@
-import { Fragment } from 'inferno';
 import { map } from 'common/collections';
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
@@ -26,10 +25,10 @@ export const WeaponStats = (props, context) => {
       <Window.Content>
         <GeneralInfo />
         {has_ammo ? (
-          <Fragment>
+          <>
             <DamageTable />
             <Divider />
-          </Fragment>
+          </>
         ) : null}
         <Flex direction="row">
           <Flex.Item grow>
@@ -121,22 +120,22 @@ const Recoil = (props, context) => {
   const { data } = useBackend(context);
   const { recoil, unwielded_recoil, recoil_max, two_handed_only } = data;
   return (
-    <Fragment>
+    <>
       <ProgressBar value={recoil / recoil_max} ranges={GreedRedRange}>
         Wielded recoil: {recoil} / {recoil_max}
       </ProgressBar>
       {!two_handed_only ? (
-        <Fragment>
+        <>
           <Box height="5px" />
           <ProgressBar
             value={unwielded_recoil / recoil_max}
             ranges={GreedRedRange}>
             Unwielded recoil: {unwielded_recoil} / {recoil_max}
           </ProgressBar>
-        </Fragment>
+        </>
       ) : null}
       <Box height="5px" />
-    </Fragment>
+    </>
   );
 };
 
@@ -150,12 +149,12 @@ const Scatter = (props, context) => {
     two_handed_only,
   } = data;
   return (
-    <Fragment>
+    <>
       <ProgressBar value={scatter / scatter_max} ranges={GreedRedRange}>
         Wielded scatter: {scatter} / {scatter_max}
       </ProgressBar>
       {!two_handed_only ? (
-        <Fragment>
+        <>
           <Box height="5px" />
           <ProgressBar
             value={unwielded_scatter / scatter_max}
@@ -168,10 +167,10 @@ const Scatter = (props, context) => {
             ranges={GreedRedRange}>
             Burst scatter multiplier: {burst_scatter} / {scatter_max}
           </ProgressBar>
-        </Fragment>
+        </>
       ) : null}
       <Box height="5px" />
-    </Fragment>
+    </>
   );
 };
 
@@ -186,7 +185,7 @@ const Firerate = (props, context) => {
     burst_amount,
   } = data;
   return (
-    <Fragment>
+    <>
       <ProgressBar value={firerate / firerate_max} ranges={RedGreenRange}>
         Single fire: {firerate}rpm, {firerate_second} per second
       </ProgressBar>
@@ -200,7 +199,7 @@ const Firerate = (props, context) => {
           Shots per burst: {burst_amount}
         </ProgressBar>
       ) : null}
-    </Fragment>
+    </>
   );
 };
 
@@ -223,10 +222,10 @@ const Damage = (props, context) => {
   const { data } = useBackend(context);
   const { damage, damage_max } = data;
   return (
-    <Fragment>
+    <>
       <ProgressBar value={damage / damage_max}>Damage: {damage}</ProgressBar>
       <Box height="5px" />
-    </Fragment>
+    </>
   );
 };
 
@@ -240,30 +239,30 @@ const Accuracy = (props, context) => {
     min_accuracy,
   } = data;
   return (
-    <Fragment>
+    <>
       <ProgressBar value={accuracy / accuracy_max} ranges={RedGreenRange}>
         Wielded accurate range: {accuracy} / {accuracy_max}
       </ProgressBar>
       {!two_handed_only ? (
-        <Fragment>
+        <>
           <Box height="5px" />
           <ProgressBar
             value={unwielded_accuracy / accuracy_max}
             ranges={RedGreenRange}>
             Unwielded accurate range: {unwielded_accuracy} / {accuracy_max}
           </ProgressBar>
-        </Fragment>
+        </>
       ) : null}
       {min_accuracy ? (
-        <Fragment>
+        <>
           <Box height="5px" />
           <ProgressBar value={min_accuracy / accuracy_max}>
             Minimum accurate range: {min_accuracy}
           </ProgressBar>
-        </Fragment>
+        </>
       ) : null}
       <Box height="5px" />
-    </Fragment>
+    </>
   );
 };
 
@@ -271,7 +270,7 @@ const Range = (props, context) => {
   const { data } = useBackend(context);
   const { max_range, range_max, falloff, falloff_max } = data;
   return (
-    <Fragment>
+    <>
       <ProgressBar value={max_range / range_max} ranges={RedGreenRange}>
         Max range: {max_range} / {range_max}
       </ProgressBar>
@@ -280,7 +279,7 @@ const Range = (props, context) => {
         Falloff: {falloff} / {falloff_max}
       </ProgressBar>
       <Box height="5px" />
-    </Fragment>
+    </>
   );
 };
 
@@ -288,7 +287,7 @@ const ArmourPen = (props, context) => {
   const { data } = useBackend(context);
   const { penetration, penetration_max, armor_punch, punch_max } = data;
   return (
-    <Fragment>
+    <>
       <ProgressBar value={penetration / penetration_max} ranges={RedGreenRange}>
         Armour penetration: {penetration} / {penetration_max}
       </ProgressBar>
@@ -296,7 +295,7 @@ const ArmourPen = (props, context) => {
       <ProgressBar value={armor_punch / punch_max} ranges={RedGreenRange}>
         Armour punch: {armor_punch} / {punch_max}
       </ProgressBar>
-    </Fragment>
+    </>
   );
 };
 

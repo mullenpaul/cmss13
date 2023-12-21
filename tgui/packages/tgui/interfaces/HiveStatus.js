@@ -1,6 +1,6 @@
 import { classes } from 'common/react';
 import { createSearch } from 'common/string';
-import { Fragment } from 'inferno';
+import { Fragment } from 'react';
 import { useBackend, useLocalState } from '../backend';
 import { Input, Button, Flex, Divider, Collapsible, Icon, NumberInput, Table } from '../components';
 import { Window } from '../layouts';
@@ -353,7 +353,7 @@ const XenoList = (props, context) => {
               {entry.health < 30 ? (
                 <b style={redFont}>{entry.health}%</b>
               ) : (
-                <Fragment>{entry.health}%</Fragment>
+                <>{entry.health}%</>
               )}
             </Table.Cell>
             <Table.Cell className="noPadCell" textAlign="center">
@@ -423,7 +423,7 @@ const QueenOviButtons = (props, context) => {
   const { target_ref } = props;
 
   return (
-    <Fragment>
+    <>
       <Flex.Item>
         <Button
           content="Heal"
@@ -446,6 +446,6 @@ const QueenOviButtons = (props, context) => {
           }
         />
       </Flex.Item>
-    </Fragment>
+    </>
   );
 };

@@ -1,5 +1,4 @@
 import { capitalizeAll } from 'common/string';
-import { Fragment } from 'inferno';
 import { useBackend } from '../backend';
 import { Section, Box, ProgressBar, Slider, NoticeBox, Button } from '../components';
 import { Window } from '../layouts';

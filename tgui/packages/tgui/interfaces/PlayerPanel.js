@@ -1,4 +1,3 @@
-import { Fragment } from 'inferno';
 import { useBackend, useLocalState } from '../backend';
 import { Input, Button, Stack, Section, Tabs, Box, Dropdown, Slider, Tooltip } from '../components';
 import { Window } from '../layouts';
@@ -654,7 +653,7 @@ const AntagActions = (props, context) => {
         }>
         <Stack align="right" grow={1} mt={1}>
           {!!is_human && (
-            <Fragment>
+            <>
               <Button
                 height="100%"
                 width="100%"
@@ -682,7 +681,7 @@ const AntagActions = (props, context) => {
                 }
                 content="Make Xeno Cultist Leader"
               />
-            </Fragment>
+            </>
           )}
           {!!is_xeno && (
             <Button

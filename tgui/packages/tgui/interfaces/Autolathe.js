@@ -3,7 +3,6 @@ import { Section, Flex, ProgressBar, Box, Button, Tabs, Stack, Input } from '../
 import { capitalize } from 'common/string';
 import { Window } from '../layouts';
 import { ElectricalPanel } from './common/ElectricalPanel';
-import { Fragment } from 'inferno';
 import { createLogger } from '../logging';
 
 export const Autolathe = (_props, context) => {
@@ -226,7 +225,7 @@ const PrintablesSection = (props, context) => {
                     </Flex.Item>
 
                     {(val.has_multipliers && (
-                      <Fragment>
+                      <>
                         <Box width="2.5px" />
                         <Flex.Item>
                           <Flex direction="row">
@@ -250,7 +249,7 @@ const PrintablesSection = (props, context) => {
                             )}
                           </Flex>
                         </Flex.Item>
-                      </Fragment>
+                      </>
                     )) ||
                       null}
                   </Flex>

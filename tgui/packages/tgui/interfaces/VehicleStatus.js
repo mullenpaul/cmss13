@@ -1,4 +1,4 @@
-import { Fragment } from 'inferno';
+import { Fragment } from 'react';
 import { useBackend } from '../backend';
 import { Section, Box, ProgressBar, NoticeBox, Collapsible, Flex, Divider } from '../components';
 import { Window } from '../layouts';
@@ -71,7 +71,7 @@ const ResistanceView = (props, context) => {
 };
 
 const HardpointsView = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { data } = useBackend(context);
   const { hardpoint_data } = data;
   return hardpoint_data.map((hardpoint, index) => (
     <Fragment key={index}>
@@ -100,14 +100,14 @@ const HardpointsView = (props, context) => {
             Ammo: {hardpoint.current_rounds} / {hardpoint.max_rounds}
           </ProgressBar>
           {hardpoint.fpw ? null : (
-            <Fragment>
+            <>
               <Box width="3px" />
               <ProgressBar
                 value={hardpoint.mags / hardpoint.max_mags}
                 width="49%">
                 Mags: {hardpoint.mags} / {hardpoint.max_mags}
               </ProgressBar>
-            </Fragment>
+            </>
           )}
         </Flex>
       ) : null}

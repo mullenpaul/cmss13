@@ -1,4 +1,3 @@
-import { Fragment } from 'inferno';
 import { useBackend, useLocalState } from '../backend';
 import { Box, Button, Stack, Input, Section, Tabs, Table, NumberInput } from '../components';
 import { Window } from '../layouts';
@@ -81,7 +80,7 @@ export const CardContent = (props, context) => {
   );
   const departmentJobs = jobs[selectedDepartment] || [];
   return (
-    <Fragment>
+    <>
       <Section
         title={
           has_id && authenticated ? (
@@ -99,7 +98,7 @@ export const CardContent = (props, context) => {
           )
         }
         buttons={
-          <Fragment>
+          <>
             <Button
               icon="print"
               content="Print"
@@ -118,7 +117,7 @@ export const CardContent = (props, context) => {
                 act(authenticated ? 'PRG_logout' : 'PRG_authenticate');
               }}
             />
-          </Fragment>
+          </>
         }>
         <Button
           fluid
@@ -229,6 +228,6 @@ export const CardContent = (props, context) => {
           )}
         </Box>
       )}
-    </Fragment>
+    </>
   );
 };

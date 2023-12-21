@@ -1,4 +1,3 @@
-import { Fragment } from 'inferno';
 import { useBackend } from '../backend';
 import { Section, Button, LabeledList, Box, Stack, NoticeBox } from '../components';
 import { Window } from '../layouts';
@@ -49,7 +48,7 @@ export const BotanyExtractor = (_props, context) => {
         </Section>
         <Section title="Buffered Genetic Data">
           {(!!hasGenetics && (
-            <Fragment>
+            <>
               {!disk && (
                 <NoticeBox danger>
                   No disk! Genetic data cannot be extracted.
@@ -86,7 +85,7 @@ export const BotanyExtractor = (_props, context) => {
                 disabled={!hasGenetics}
                 onClick={() => act('clear_buffer')}
               />
-            </Fragment>
+            </>
           )) || <NoticeBox danger>No genetic data stored!</NoticeBox>}
         </Section>
       </Window.Content>

@@ -1,5 +1,4 @@
 import { round } from 'common/math';
-import { Fragment } from 'inferno';
 import { useBackend } from '../backend';
 import { Box, Button, Flex, Icon, LabeledList, NoticeBox, ProgressBar, Section } from '../components';
 import { Window } from '../layouts';
@@ -50,12 +49,12 @@ const SleeperMain = (props, context) => {
   const { act, data } = useBackend(context);
   const { occupant } = data;
   return (
-    <Fragment>
+    <>
       <SleeperDialysis />
       <SleeperOccupant />
       <SleeperDamage />
       <SleeperChemicals />
-    </Fragment>
+    </>
   );
 };
 
@@ -114,7 +113,7 @@ const SleeperOccupant = (props, context) => {
           </ProgressBar>
         </LabeledList.Item>
         {!!occupant.hasBlood && (
-          <Fragment>
+          <>
             <LabeledList.Item label="Blood Level">
               <ProgressBar
                 min="0"
@@ -131,7 +130,7 @@ const SleeperOccupant = (props, context) => {
             <LabeledList.Item label="Pulse" verticalAlign="middle">
               {occupant.pulse} BPM
             </LabeledList.Item>
-          </Fragment>
+          </>
         )}
       </LabeledList>
     </Section>

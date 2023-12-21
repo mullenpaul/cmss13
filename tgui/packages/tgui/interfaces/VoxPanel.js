@@ -1,4 +1,3 @@
-import { Fragment } from 'inferno';
 import { useBackend, useLocalState } from '../backend';
 import { Button, Flex, Section, Tabs, Box, Input, Slider } from '../components';
 import { KEY_CTRL, KEY_SHIFT } from 'common/keycodes';
@@ -141,7 +140,7 @@ const SendVOX = (props, context) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Flex direction="row">
         <Flex.Item grow={1}>
           <Section
@@ -243,7 +242,7 @@ const SendVOX = (props, context) => {
           </Flex.Item>
         </Section>
       </Flex>
-    </Fragment>
+    </>
   );
 };
 
