@@ -120,6 +120,7 @@
 #define DROPSHIP_FLYBY_ID "special_flight"
 #define DROPSHIP_LZ1 "dropship-lz1"
 #define DROPSHIP_LZ2 "dropship-lz2"
+#define DROPSHIP_LZ_ALT "dropship-alternative"
 
 #define ESCAPE_SHUTTLE "escape-shuttle"
 #define ESCAPE_SHUTTLE_EAST "escape_shuttle_e"

@@ -198,10 +198,13 @@
 	var/auto_open = FALSE
 	var/landing_lights_on = FALSE
 	var/xeno_announce = FALSE
+	var/is_active = TRUE
 
 /obj/docking_port/stationary/marine_dropship/Initialize(mapload)
 	. = ..()
 	link_landing_lights()
+	RegisterSignal(src, "lz-enabled", PROC_REF(enable_landingzone))
+	RegisterSignal(src, "lz-disabled", PROC_REF(disable_landingzone))
 
 /obj/docking_port/stationary/marine_dropship/Destroy()
 	. = ..()
@@ -210,6 +213,20 @@
 	if(landing_lights)
 		landing_lights.Cut()
 	landing_lights = null // We didn't make them, so lets leave them
+	UnregisterSignal(src, "lz-enabled")
+	UnregisterSignal(src, "lz-disabled")
+
+/obj/docking_port/stationary/marine_dropship/proc/enable_landingzone(mob/living/m)
+	SIGNAL_HANDLER
+	is_active = TRUE
+
+/obj/docking_port/stationary/marine_dropship/proc/disable_landingzone(mob/living/m)
+	SIGNAL_HANDLER
+	if(is_xeno(m))
+		var/mob/living/carbon/xenomorph/xeno = m
+		xeno_announcement(SPAN_XENOANNOUNCE("Our sister [xeno] has disabled the metal nest."), xeno.hivenumber, XENO_GENERAL_ANNOUNCE)
+	is_active = FALSE
+
 
 /obj/docking_port/stationary/marine_dropship/proc/link_landing_lights()
 	var/list/coords = return_coords()

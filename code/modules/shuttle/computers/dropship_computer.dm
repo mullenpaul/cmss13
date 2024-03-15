@@ -134,6 +134,11 @@
 	if(.)
 		return TRUE
 
+	var/obj/docking_port/stationary/marine_dropship/lz = SSshuttle.getDock(linked_lz)
+
+	if(!lz.is_active)
+		return FALSE
+
 	if(!allowed(user))
 		to_chat(user, SPAN_WARNING("Access denied."))
 		return TRUE
@@ -375,10 +380,14 @@
 				dock_reserved = TRUE
 				break
 		var/can_dock = shuttle.canDock(dock)
+
+		var/obj/docking_port/stationary/marine_dropship/lz = dock
+		var/dock_active = lz.is_active
+
 		var/list/dockinfo = list(
 			"id" = dock.id,
 			"name" = dock.name,
-			"available" = can_dock == SHUTTLE_CAN_DOCK && !dock_reserved,
+			"available" = can_dock == SHUTTLE_CAN_DOCK && !dock_reserved && dock_active,
 			"error" = can_dock,
 		)
 		.["destinations"] += list(dockinfo)
@@ -526,6 +535,41 @@
 	shuttle.alarm_sound_loop.stop()
 	shuttle.playing_launch_announcement_alarm = FALSE
 	return
+
+/obj/structure/machinery/computer/shuttle/dropship/flight/lz_alternative
+	icon = 'icons/obj/structures/machinery/computer.dmi'
+	icon_state = "shuttle"
+	linked_lz = DROPSHIP_LZ_ALT
+	is_remote = TRUE
+
+/obj/structure/machinery/computer/shuttle/dropship/flight/lz_alternative/attack_hand(mob/user)
+	. = ..(user)
+	if(.)
+		return TRUE
+
+	var/obj/docking_port/stationary/marine_dropship/lz = SSshuttle.getDock(linked_lz)
+
+	if(!lz.is_active)
+		to_chat(user, SPAN_WARNING("You start to enable the terminal."))
+
+		if(!do_after(user, 10 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, numticks = 20))
+			to_chat(user, SPAN_WARNING("You fail to enable the terminal."))
+			return
+		SEND_SIGNAL(lz, "lz-enabled", user)
+
+/obj/structure/machinery/computer/shuttle/dropship/flight/lz_alternative/attack_alien(mob/living/carbon/xenomorph/xeno)
+
+	var/obj/docking_port/stationary/marine_dropship/lz = SSshuttle.getDock(linked_lz)
+	if(!lz.is_active)
+		to_chat(xeno, SPAN_NOTICE("The terminal is already inactive."))
+		return
+
+	to_chat(xeno, SPAN_WARNING("You start to disable the terminal."))
+	if(!do_after(xeno, 10 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, numticks = 20))
+		to_chat(xeno, SPAN_WARNING("You fail to disable the terminal."))
+		return
+
+	SEND_SIGNAL(lz, "lz-disabled", xeno)
 
 /obj/structure/machinery/computer/shuttle/dropship/flight/lz1
 	icon = 'icons/obj/structures/machinery/computer.dmi'
