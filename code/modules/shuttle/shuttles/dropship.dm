@@ -222,7 +222,7 @@
 
 /obj/docking_port/stationary/marine_dropship/proc/disable_landingzone(mob/living/m)
 	SIGNAL_HANDLER
-	if(is_xeno(m))
+	if(isxeno(m))
 		var/mob/living/carbon/xenomorph/xeno = m
 		xeno_announcement(SPAN_XENOANNOUNCE("Our sister [xeno] has disabled the metal nest."), xeno.hivenumber, XENO_GENERAL_ANNOUNCE)
 	is_active = FALSE
