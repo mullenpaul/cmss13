@@ -12,6 +12,9 @@
 	// Admin disabled
 	var/disabled = FALSE
 
+	// Factions allowed
+	var/list/factions = FACTION_LIST_HUMANOID
+
 	// Is door control locked -- hijack
 	var/dropship_control_lost = FALSE
 	var/door_control_cooldown
@@ -137,6 +140,10 @@
 	var/obj/docking_port/stationary/marine_dropship/lz = SSshuttle.getDock(linked_lz)
 
 	if(!lz.is_active)
+		return FALSE
+
+	if(!(user.faction in factions))
+		to_chat(user, SPAN_WARNING("You are not authorised to access this terminal."))
 		return FALSE
 
 	if(!allowed(user))
@@ -541,6 +548,17 @@
 	icon_state = "shuttle"
 	linked_lz = DROPSHIP_LZ_ALT
 	is_remote = TRUE
+	factions = list()
+
+/obj/structure/machinery/computer/shuttle/dropship/flight/lz_alternative/attackby(obj/item/object, mob/user)
+	if(istype(object, /obj/item/device/multitool))
+		if(!user.faction in factions)
+			if(!do_after(user, 10 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
+				to_chat(user, SPAN_NOTICE("You fail to hack the terminal."))
+			else
+				factions = list(user.faction)
+				to_chat(user, SPAN_NOTICE("You manage to hack the terminal for your faction."))
+	. = ..()
 
 /obj/structure/machinery/computer/shuttle/dropship/flight/lz_alternative/attack_hand(mob/user)
 	. = ..(user)
@@ -555,7 +573,7 @@
 		if(!do_after(user, 10 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, numticks = 20))
 			to_chat(user, SPAN_WARNING("You fail to enable the terminal."))
 			return
-		SEND_SIGNAL(lz, "lz-enabled", user)
+		SEND_SIGNAL(lz, COMSIG_LZ_ENABLED, user)
 
 /obj/structure/machinery/computer/shuttle/dropship/flight/lz_alternative/attack_alien(mob/living/carbon/xenomorph/xeno)
 
@@ -569,7 +587,7 @@
 		to_chat(xeno, SPAN_WARNING("You fail to disable the terminal."))
 		return
 
-	SEND_SIGNAL(lz, "lz-disabled", xeno)
+	SEND_SIGNAL(lz, COMSIG_LZ_DISABLED, xeno)
 
 /obj/structure/machinery/computer/shuttle/dropship/flight/lz1
 	icon = 'icons/obj/structures/machinery/computer.dmi'

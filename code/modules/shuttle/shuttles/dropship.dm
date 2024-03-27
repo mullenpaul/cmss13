@@ -203,8 +203,8 @@
 /obj/docking_port/stationary/marine_dropship/Initialize(mapload)
 	. = ..()
 	link_landing_lights()
-	RegisterSignal(src, "lz-enabled", PROC_REF(enable_landingzone))
-	RegisterSignal(src, "lz-disabled", PROC_REF(disable_landingzone))
+	RegisterSignal(src, COMSIG_LZ_ENABLED, PROC_REF(enable_landingzone))
+	RegisterSignal(src, COMSIG_LZ_DISABLED, PROC_REF(disable_landingzone))
 
 /obj/docking_port/stationary/marine_dropship/Destroy()
 	. = ..()
@@ -213,8 +213,8 @@
 	if(landing_lights)
 		landing_lights.Cut()
 	landing_lights = null // We didn't make them, so lets leave them
-	UnregisterSignal(src, "lz-enabled")
-	UnregisterSignal(src, "lz-disabled")
+	UnregisterSignal(src, COMSIG_LZ_ENABLED)
+	UnregisterSignal(src, COMSIG_LZ_DISABLED)
 
 /obj/docking_port/stationary/marine_dropship/proc/enable_landingzone(mob/living/m)
 	SIGNAL_HANDLER
