@@ -264,8 +264,6 @@ SUBSYSTEM_DEF(ticker)
 
 	setup_economy()
 
-	SSoldshuttle.shuttle_controller?.setup_shuttle_docks()
-
 	PostSetup()
 	return TRUE
 

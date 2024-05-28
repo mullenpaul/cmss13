@@ -87,6 +87,10 @@
 	shuttle_id = MOBILE_SHUTTLE_VEHICLE_ELEVATOR
 	name = "Vehicle Elevator"
 
+/datum/map_template/shuttle/supply_elevator
+	name = "Supply Elevator"
+	shuttle_id = MOBILE_ALMAYER_SUPPLY_SHUTTLE
+
 /datum/map_template/shuttle/trijent_elevator
 	name = "Trijent Elevator"
 	shuttle_id = MOBILE_TRIJENT_ELEVATOR

@@ -146,16 +146,16 @@
 		maptext = new_text
 
 /obj/structure/machinery/status_display/proc/get_supply_shuttle_timer()
-	var/datum/shuttle/ferry/supply/shuttle = GLOB.supply_controller.shuttle
+	var/obj/docking_port/mobile/shuttle = SSshuttle.getShuttle(MOBILE_ALMAYER_SUPPLY_SHUTTLE)
 	if (!shuttle)
 		return "Error"
 
-	if(shuttle.has_arrive_time())
-		var/timeleft = round((shuttle.arrive_time - world.time) / 10,1)
+	if(shuttle.mode != SHUTTLE_IDLE)
+		var/timeleft = shuttle.timeLeft(10)
 		if(timeleft < 0)
 			return "Late"
 		return "[add_zero(num2text((timeleft / 60) % 60),2)]:[add_zero(num2text(timeleft % 60), 2)]"
-	return ""
+	return "--:--"
 
 /obj/structure/machinery/status_display/proc/remove_display()
 	if(overlays.len)

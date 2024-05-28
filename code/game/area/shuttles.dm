@@ -48,6 +48,11 @@
 	icon = 'icons/turf/area_almayer.dmi'
 	icon_state = "lifeboat"
 
+/area/shuttle/supply_shuttle
+	name = "Supply Elevator"
+	icon = 'icons/turf/area_almayer.dmi'
+	icon_state = "lifeboat"
+
 /area/shuttle/trijent_shuttle
 	name = "Trijent Elevator"
 	icon = 'icons/turf/area_almayer.dmi'

@@ -11976,7 +11976,7 @@
 /area/almayer/squads/req)
 "bpR" = (
 /turf/open/floor/almayer/empty/requisitions,
-/area/supply/station)
+/area/almayer/squads/req)
 "bpS" = (
 /obj/structure/machinery/door/poddoor/railing{
 	dir = 8;
@@ -12337,10 +12337,6 @@
 	icon_state = "cargo_arrow"
 	},
 /area/almayer/squads/req)
-"bsK" = (
-/obj/effect/landmark/supply_elevator,
-/turf/open/floor/almayer/empty/requisitions,
-/area/supply/station)
 "bsL" = (
 /obj/structure/machinery/door/poddoor/railing{
 	dir = 8;
@@ -69855,6 +69851,10 @@
 	icon_state = "plate"
 	},
 /area/almayer/maint/upper/u_a_s)
+"tOl" = (
+/obj/docking_port/stationary/almayer_supply,
+/turf/open/floor/almayer/empty/requisitions,
+/area/almayer/squads/req)
 "tOr" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -125759,7 +125759,7 @@ pjG
 boA
 bpR
 bpR
-bsK
+tOl
 bpR
 bpR
 bxh

@@ -407,8 +407,6 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 	var/ordernum
 	var/list/shoppinglist = list()
 	var/list/requestlist = list()
-	//shuttle movement
-	var/datum/shuttle/ferry/supply/shuttle
 
 	var/obj/structure/machinery/computer/supplycomp/bound_supply_computer_list
 
@@ -545,7 +543,7 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 
 // Called when the elevator is lowered.
 /datum/controller/supply/proc/sell()
-	var/area/area_shuttle = shuttle.get_location_area()
+	var/area/area_shuttle = /area/shuttle/supply_shuttle
 	if(!area_shuttle)
 		return
 
@@ -599,7 +597,7 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 
 //Buyin
 /datum/controller/supply/proc/buy()
-	var/area/area_shuttle = shuttle?.get_location_area()
+	var/area/area_shuttle = /area/shuttle/supply_shuttle
 	if(!area_shuttle || !shoppinglist.len)
 		return
 
@@ -743,9 +741,9 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 	if(temp)
 		dat = temp
 	else
-		var/datum/shuttle/ferry/supply/shuttle = GLOB.supply_controller.shuttle
+		var/obj/docking_port/mobile/shuttle = SSshuttle.getShuttle(MOBILE_ALMAYER_SUPPLY_SHUTTLE)
 		if (shuttle)
-			dat += {"Location: [shuttle.has_arrive_time() ? "Raising platform":shuttle.at_station() ? "Raised":"Lowered"]<BR>
+			dat += {"Location: [shuttle.mode != SHUTTLE_IDLE ? "Raising platform":shuttle.mode != SHUTTLE_ESCAPE ? "Raised":"Lowered"]<BR>
 			<HR>Supply budget: $[GLOB.supply_controller.points * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>
 		<BR>\n<A href='?src=\ref[src];order=categories'>Request items</A><BR><BR>
 		<A href='?src=\ref[src];vieworders=1'>View approved orders</A><BR><BR>
@@ -875,37 +873,19 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 	if (temp)
 		dat = temp
 	else
-		var/datum/shuttle/ferry/supply/shuttle = GLOB.supply_controller.shuttle
+		var/obj/docking_port/mobile/shuttle = SSshuttle.getShuttle(MOBILE_ALMAYER_SUPPLY_SHUTTLE)
 		if (shuttle)
 			dat += "\nPlatform position: "
-			if (shuttle.has_arrive_time())
+			if (shuttle.mode != SHUTTLE_IDLE)
 				dat += "Moving<BR>"
 			else
-				if (shuttle.at_station())
-					if (shuttle.docking_controller)
-						switch(shuttle.docking_controller.get_docking_status())
-							if ("docked") dat += "Raised<BR>"
-							if ("undocked") dat += "Lowered<BR>"
-							if ("docking") dat += "Raising [shuttle.can_force()? SPAN_WARNING("<A href='?src=\ref[src];force_send=1'>Force</A>") : ""]<BR>"
-							if ("undocking") dat += "Lowering [shuttle.can_force()? SPAN_WARNING("<A href='?src=\ref[src];force_send=1'>Force</A>") : ""]<BR>"
-					else
-						dat += "Raised<BR>"
-
-					if (shuttle.can_launch())
-						dat += "<A href='?src=\ref[src];send=1'>Lower platform</A>"
-					else if (shuttle.can_cancel())
-						dat += "<A href='?src=\ref[src];cancel_send=1'>Cancel</A>"
-					else
-						dat += "*ASRS is busy*"
+				if (shuttle.mode == SHUTTLE_IDLE)
+					dat += "Raised<BR>"
+					dat += "<A href='?src=\ref[src];send=1'>Lower platform</A>"
 					dat += "<BR>\n<BR>"
 				else
 					dat += "Lowered<BR>"
-					if (shuttle.can_launch())
-						dat += "<A href='?src=\ref[src];send=1'>Raise platform</A>"
-					else if (shuttle.can_cancel())
-						dat += "<A href='?src=\ref[src];cancel_send=1'>Cancel</A>"
-					else
-						dat += "*ASRS is busy*"
+					dat += "<A href='?src=\ref[src];send=1'>Raise platform</A>"
 					dat += "<BR>\n<BR>"
 
 
@@ -924,7 +904,7 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 	if(!GLOB.supply_controller)
 		world.log << "## ERROR: Eek. The GLOB.supply_controller controller datum is missing somehow."
 		return
-	var/datum/shuttle/ferry/supply/shuttle = GLOB.supply_controller.shuttle
+	var/obj/docking_port/mobile/supply_elevator/shuttle = SSshuttle.getShuttle(MOBILE_ALMAYER_SUPPLY_SHUTTLE)
 	if (!shuttle)
 		world.log << "## ERROR: Eek. The supply/shuttle datum is missing somehow."
 		return
@@ -936,22 +916,16 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 
 	//Calling the shuttle
 	if(href_list["send"])
-		if(shuttle.at_station())
+		if(shuttle.mode == SHUTTLE_IDLE)
 			if (shuttle.forbidden_atoms_check())
 				temp = "For safety reasons, the Automated Storage and Retrieval System cannot store live organisms, classified nuclear weaponry or homing beacons.<BR><BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 			else
-				shuttle.launch(src)
+				shuttle.lower()
 				temp = "Lowering platform. \[[SPAN_WARNING("<A href='?src=\ref[src];force_send=1'>Force</A>")]\]<BR><BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 		else
-			shuttle.launch(src)
+			shuttle.raise()
 			temp = "Raising platform.<BR><BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 			post_signal("supply")
-
-	if (href_list["force_send"])
-		shuttle.force_launch(src)
-
-	if (href_list["cancel_send"])
-		shuttle.cancel_launch(src)
 
 	else if (href_list["order"])
 		//if(!shuttle.idle()) return //this shouldn't be necessary it seems
@@ -1254,7 +1228,7 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 	play_sound_handler('sound/handling/click_2.ogg', 11 SECONDS) // armor suit light turns off (cause he died)
 
 	var/list/turf/open/clear_turfs = list()
-	var/area/area_shuttle = shuttle?.get_location_area()
+	var/area/area_shuttle = /area/shuttle/supply_shuttle
 	if(!area_shuttle)
 		return
 	for(var/turf/elevator_turfs in area_shuttle)

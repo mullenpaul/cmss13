@@ -99,6 +99,9 @@
 #define MOBILE_SHUTTLE_ID_ERT_SMALL "ert_small_shuttle_north"
 #define MOBILE_SHUTTLE_ID_ERT_BIG "ert_shuttle_big"
 
+#define MOBILE_ALMAYER_SUPPLY_SHUTTLE "almayer_supply_shuttle"
+#define ALMAYER_SUPPLY_LZ "almayer_supply_lz"
+
 #define MOBILE_TRIJENT_ELEVATOR "trijentshuttle2"
 #define STAT_TRIJENT_EMPTY "trijent_empty"
 #define STAT_TRIJENT_OCCUPIED "trijent_occupied"
