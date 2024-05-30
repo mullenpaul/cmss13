@@ -3,10 +3,10 @@
 	id = MOBILE_ALMAYER_SUPPLY_SHUTTLE
 	height=5
 	width=5
+	dwidth=2
+	dheight=2
 	preferred_direction = NORTH
 	port_direction = SOUTH
-
-	area_type = /area/shuttle/supply_shuttle
 
 	// Shuttle timings
 	callTime = 30 SECONDS
@@ -35,4 +35,6 @@
 	dir=NORTH
 	width=5
 	height=5
+	dwidth = 2
+	dheight = 2
 	roundstart_template = /datum/map_template/shuttle/supply_elevator

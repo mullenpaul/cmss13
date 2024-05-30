@@ -99,7 +99,7 @@
 #define MOBILE_SHUTTLE_ID_ERT_SMALL "ert_small_shuttle_north"
 #define MOBILE_SHUTTLE_ID_ERT_BIG "ert_shuttle_big"
 
-#define MOBILE_ALMAYER_SUPPLY_SHUTTLE "almayer_supply_shuttle"
+#define MOBILE_ALMAYER_SUPPLY_SHUTTLE "supply_shuttle"
 #define ALMAYER_SUPPLY_LZ "almayer_supply_lz"
 
 #define MOBILE_TRIJENT_ELEVATOR "trijentshuttle2"
