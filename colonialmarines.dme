@@ -1600,6 +1600,7 @@
 #include "code\modules\clothing\suits\marine_armor\ert.dm"
 #include "code\modules\clothing\suits\marine_armor\ghillie.dm"
 #include "code\modules\clothing\suits\marine_armor\intel.dm"
+#include "code\modules\clothing\suits\marine_armor\modular_armor.dm"
 #include "code\modules\clothing\suits\marine_armor\smartgunner.dm"
 #include "code\modules\clothing\suits\marine_armor\spec_fire.dm"
 #include "code\modules\clothing\under\color.dm"
