@@ -20,6 +20,24 @@
 	var/list/clothing_traits // Trait modification, lazylist of traits to add/take away, on equipment/drop in the correct slot
 	var/clothing_traits_active = TRUE //are the clothing traits that are applied to the item active (acting on the mob) or not?
 
+	///Assoc list of available slots. Since this keeps track of all currently equiped attachments per object, this cannot be a string_list()
+	var/list/attachments_by_slot = list()
+	///Typepath list of allowed attachment types.
+	var/list/attachments_allowed = list()
+
+	///Pixel offsets for specific attachment slots. Is not used currently.
+	var/list/attachment_offsets = list()
+	///List of attachment types that is attached to the object on initialize.
+	var/list/starting_attachments = list()
+
+/obj/item/clothing/Initialize(mapload, ...)
+	. = ..()
+	attachments_allowed = string_list(attachments_allowed)
+	starting_attachments = string_list(starting_attachments)
+	if(!length(attachments_allowed) || !length(attachments_by_slot))
+		return
+	AddComponent(/datum/component/attachment_handler, attachments_by_slot, attachments_allowed, attachment_offsets, starting_attachments, null, null, null)
+
 /obj/item/clothing/get_examine_line(mob/user)
 	. = ..()
 	var/list/ties = list()

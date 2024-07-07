@@ -13,6 +13,20 @@
 #define COMSIG_BINOCULAR_ATTACK_SELF "binocular_attack_self"
 #define COMSIG_BINOCULAR_HANDLE_CLICK "binocular_handle_click"
 
+// /obj/item signals
+#define COMSIG_ITEM_APPLY_CUSTOM_OVERLAY "item_apply_custom_overlay" //from base of obj/item/apply_custom(): (/image/standing)
+
+#define COMSIG_ATTACHMENT_ATTACHED "attachment_attached"
+#define COMSIG_ATTACHMENT_ATTACHED_TO_ITEM "attachment_attached_to_item"
+#define COMSIG_ATTACHMENT_DETACHED "attachment_detached"
+#define COMSIG_ATTACHMENT_DETACHED_FROM_ITEM "attachment_detached_from_item"
+
+#define COMSIG_ITEM_IS_ATTACHING "item_is_attaching" //from base of /datum/component/attachment_handler/handle_attachment : (/obj/item, /mob)
+
+// /obj/item/armor_module signals
+#define COMSIG_ARMOR_MODULE_ATTACHING "armor_module_attaching"
+#define COMSIG_ARMOR_MODULE_DETACHED "armor_module_detached"
+
 ///from base of obj/item/dropped(): (mob/user)
 #define COMSIG_ITEM_DROPPED "item_drop"
 /// From base of /obj/item/proc/equipped(): (mob/user, slot)

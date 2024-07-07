@@ -55,3 +55,6 @@
 
 /// Called when an atom has emp_act called on it, from /atom/emp_act: (severity)
 #define COMSIG_ATOM_EMP_ACT "atom_emp_act"
+
+///from base of [/atom/update_overlays]: (list/new_overlays)
+#define COMSIG_ATOM_UPDATE_OVERLAYS "atom_update_overlays"
