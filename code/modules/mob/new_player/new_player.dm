@@ -29,43 +29,183 @@
 		new_player_panel_proc()
 
 
+/mob/new_player/tgui_interact(mob/user = client.mob, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "WelcomeMenu", "Welcome Menu")
+		ui.open()
+
+/mob/new_player/ui_status(mob/user, datum/ui_state/state)
+	return UI_INTERACTIVE
+
+
+/mob/new_player/ui_data(mob/user)
+	. = list()
+	var/tempnumber = rand(1, 999)
+	var/postfix_text = (client.xeno_postfix) ? ("-"+client.xeno_postfix) : ""
+	var/prefix_text = (client.xeno_prefix) ? client.xeno_prefix : "XX"
+	var/round_start = !SSticker || !SSticker.mode || SSticker.current_state <= GAME_STATE_PREGAME
+	var/is_pread = SSticker.mode.flags_round_type & MODE_PREDATOR
+	var/pred_latejoin = SSticker.mode.check_predator_late_join(src, 0)
+
+	.["human_name"] = (client.prefs && client.prefs.real_name) ? client.prefs.real_name : client.key
+	.["xeno_name"] = "[prefix_text]-[tempnumber][postfix_text]"
+	.["join_pred"] = is_pread && pred_latejoin
+	.["is_round_start"] = round_start
+	.["is_ready"] = ready
+	.["map"] = SSmapping.configs?[GROUND_MAP]?.map_name || "Loading..."
+	.["roundid"] = GLOB.round_id ? GLOB.round_id : "NULL"
+	.["server_time"] = time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss")
+	.["round_time"] = gameTimestamp()
+	.["operation_time"] = worldtime2text()
+	.["loaded"] = 1
+
+
+/mob/new_player/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	switch(action)
+		if("show_preferences")
+			if(SSticker.current_state < GAME_STATE_PREGAME)
+				to_chat(src, "Game is still starting up, please wait")
+				return FALSE
+			if(!SSentity_manager.ready)
+				to_chat(src, "DB is still starting up, please wait")
+				return FALSE
+			client.prefs.ShowChoices(src)
+			return TRUE
+		if("show_playtimes")
+			if(!SSentity_manager.ready)
+				to_chat(src, "DB is still starting up, please wait")
+				return FALSE
+			if(client.player_data)
+				client.player_data.tgui_interact(src)
+			return TRUE
+
+		if("ready")
+			if( (SSticker.current_state <= GAME_STATE_PREGAME) && !ready) // Make sure we don't ready up after the round has started
+				ready = TRUE
+				GLOB.readied_players++
+
+			return TRUE
+
+		if("unready")
+			if((SSticker.current_state <= GAME_STATE_PREGAME) && ready) // Make sure we don't ready up after the round has started
+				ready = FALSE
+				GLOB.readied_players--
+
+			return TRUE
+
+		if("observe")
+			return do_observe()
+
+		if("late_join")
+
+			if(SSticker.current_state != GAME_STATE_PLAYING || !SSticker.mode)
+				to_chat(src, SPAN_WARNING("The round is either not ready, or has already finished..."))
+				return
+
+			if(SSticker.mode.flags_round_type & MODE_NO_LATEJOIN)
+				to_chat(src, SPAN_WARNING("Sorry, you cannot late join during [SSticker.mode.name]. You have to start at the beginning of the round. You may observe or try to join as an alien, if possible."))
+				return
+
+			if(client.player_data?.playtime_loaded && (client.get_total_human_playtime() < CONFIG_GET(number/notify_new_player_age)) && !length(client.prefs.completed_tutorials))
+				if(tgui_alert(src, "You have little playtime and haven't completed any tutorials. Would you like to go to the tutorial menu?", "Tutorial", list("Yes", "No")) == "Yes")
+					tutorial_menu()
+					return
+
+			LateChoices()
+
+		if("late_join_xeno")
+			if(SSticker.current_state != GAME_STATE_PLAYING || !SSticker.mode)
+				to_chat(src, SPAN_WARNING("The round is either not ready, or has already finished..."))
+				return
+
+			if(alert(src,"Are you sure you want to attempt joining as a xenomorph?","Confirmation","Yes","No") == "Yes" )
+				if(SSticker.mode.check_xeno_late_join(src))
+					var/mob/new_xeno = SSticker.mode.attempt_to_join_as_xeno(src, 0)
+					if(new_xeno && !istype(new_xeno, /mob/living/carbon/xenomorph/larva))
+						SSticker.mode.transfer_xeno(src, new_xeno)
+						close_spawn_windows()
+
+		if("late_join_pred")
+			if(SSticker.current_state != GAME_STATE_PLAYING || !SSticker.mode)
+				to_chat(src, SPAN_WARNING("The round is either not ready, or has already finished..."))
+				return FALSE
+
+			if(alert(src,"Are you sure you want to attempt joining as a predator?","Confirmation","Yes","No") == "Yes" )
+				if(SSticker.mode.check_predator_late_join(src,0))
+					close_spawn_windows()
+					SSticker.mode.attempt_to_join_as_predator(src)
+				else
+					to_chat(src, SPAN_WARNING("You are no longer able to join as predator."))
+					new_player_panel()
+
+		if("manifest")
+			ViewManifest()
+
+		if("hiveleaders")
+			ViewHiveLeaders()
+
+		if("SelectedJob")
+
+			if(!GLOB.enter_allowed)
+				to_chat(usr, SPAN_WARNING("There is an administrative lock on entering the game! (The dropship likely crashed into the Almayer. This should take at most 20 minutes.)"))
+				return
+
+			AttemptLateSpawn(params["job_selected"])
+			return
+
+		if("tutorial")
+			tutorial_menu()
+
+
 /mob/new_player/proc/new_player_panel_proc(refresh = FALSE)
 	if(!client)
 		return
 
-	var/tempnumber = rand(1, 999)
-	var/postfix_text = (client.xeno_postfix) ? ("-"+client.xeno_postfix) : ""
-	var/prefix_text = (client.xeno_prefix) ? client.xeno_prefix : "XX"
-	var/xeno_text = "[prefix_text]-[tempnumber][postfix_text]"
-	var/round_start = !SSticker || !SSticker.mode || SSticker.current_state <= GAME_STATE_PREGAME
-
-	var/output = "<div align='center'>Welcome,"
-	output +="<br><b>[(client.prefs && client.prefs.real_name) ? client.prefs.real_name : client.key]</b>"
-	output +="<br><b>[xeno_text]</b>"
-	output += "<p><a href='byond://?src=\ref[src];lobby_choice=tutorial'>Tutorial</A></p>"
-	output += "<p><a href='byond://?src=\ref[src];lobby_choice=show_preferences'>Setup Character</A></p>"
-
-	output += "<p><a href='byond://?src=\ref[src];lobby_choice=show_playtimes'>View Playtimes</A></p>"
-
-	if(round_start)
-		output += "<p>\[ [ready? "<b>Ready</b>":"<a href='byond://?src=\ref[src];lobby_choice=ready'>Ready</a>"] | [ready? "<a href='byond://?src=\ref[src];lobby_choice=unready'>Not Ready</a>":"<b>Not Ready</b>"] \]</p>"
-		output += "<b>Be Xenomorph:</b> [(client.prefs && (client.prefs.get_job_priority(JOB_XENOMORPH))) ? "Yes" : "No"]"
-
-	else
-		output += "<a href='byond://?src=\ref[src];lobby_choice=manifest'>View the Crew Manifest</A><br><br>"
-		output += "<a href='byond://?src=\ref[src];lobby_choice=hiveleaders'>View Hive Leaders</A><br><br>"
-		output += "<p><a href='byond://?src=\ref[src];lobby_choice=late_join'>Join the USCM!</A></p>"
-		output += "<p><a href='byond://?src=\ref[src];lobby_choice=late_join_xeno'>Join the Hive!</A></p>"
-		if(SSticker.mode.flags_round_type & MODE_PREDATOR)
-			if(SSticker.mode.check_predator_late_join(src,0)) output += "<p><a href='byond://?src=\ref[src];lobby_choice=late_join_pred'>Join the Hunt!</A></p>"
-
-	output += "<p><a href='byond://?src=\ref[src];lobby_choice=observe'>Observe</A></p>"
-
-	output += "</div>"
-	if (refresh)
-		close_browser(src, "playersetup")
-	show_browser(src, output, null, "playersetup", "size=240x[round_start ? 500 : 610];can_close=0;can_minimize=0")
+	tgui_interact()
 	return
+
+/mob/new_player/proc/do_observe()
+	if(!SSticker || SSticker.current_state == GAME_STATE_STARTUP)
+		to_chat(src, SPAN_WARNING("The game is still setting up, please try again later."))
+		return FALSE
+	if(alert(src,"Are you sure you wish to observe? When you observe, you will not be able to join as marine. It might also take some time to become a xeno or responder!","Player Setup","Yes","No") == "Yes")
+		if(!client)
+			return TRUE
+		if(!client.prefs?.preview_dummy)
+			client.prefs.update_preview_icon()
+		var/mob/dead/observer/observer = new /mob/dead/observer(get_turf(pick(GLOB.latejoin)), client.prefs.preview_dummy)
+		observer.set_lighting_alpha_from_pref(client)
+		spawning = TRUE
+		observer.started_as_observer = TRUE
+
+		close_spawn_windows()
+
+		var/obj/effect/landmark/observer_start/O = SAFEPICK(GLOB.observer_starts)
+		if(istype(O))
+			to_chat(src, SPAN_NOTICE("Now teleporting."))
+			observer.forceMove(O.loc)
+		else
+			to_chat(src, SPAN_DANGER("Could not locate an observer spawn point. Use the Teleport verb to jump to the station map."))
+		observer.icon = 'icons/mob/humans/species/r_human.dmi'
+		observer.icon_state = "anglo_example"
+		observer.alpha = 127
+
+		if(client.prefs.be_random_name)
+			client.prefs.real_name = random_name(client.prefs.gender)
+		observer.real_name = client.prefs.real_name
+		observer.name = observer.real_name
+
+		mind.transfer_to(observer, TRUE)
+
+		if(observer.client)
+			observer.client.change_view(GLOB.world_view_size)
+
+		observer.set_huds_from_prefs()
+
+		qdel(src)
+		return TRUE
 
 /mob/new_player/Topic(href, href_list[])
 	. = ..()
@@ -113,45 +253,7 @@
 			new_player_panel_proc(TRUE)
 
 		if("observe")
-			if(!SSticker || SSticker.current_state == GAME_STATE_STARTUP)
-				to_chat(src, SPAN_WARNING("The game is still setting up, please try again later."))
-				return
-			if(alert(src,"Are you sure you wish to observe? When you observe, you will not be able to join as marine. It might also take some time to become a xeno or responder!","Player Setup","Yes","No") == "Yes")
-				if(!client)
-					return TRUE
-				if(!client.prefs?.preview_dummy)
-					client.prefs.update_preview_icon()
-				var/mob/dead/observer/observer = new /mob/dead/observer(get_turf(pick(GLOB.latejoin)), client.prefs.preview_dummy)
-				observer.set_lighting_alpha_from_pref(client)
-				spawning = TRUE
-				observer.started_as_observer = TRUE
-
-				close_spawn_windows()
-
-				var/obj/effect/landmark/observer_start/O = SAFEPICK(GLOB.observer_starts)
-				if(istype(O))
-					to_chat(src, SPAN_NOTICE("Now teleporting."))
-					observer.forceMove(O.loc)
-				else
-					to_chat(src, SPAN_DANGER("Could not locate an observer spawn point. Use the Teleport verb to jump to the station map."))
-				observer.icon = 'icons/mob/humans/species/r_human.dmi'
-				observer.icon_state = "anglo_example"
-				observer.alpha = 127
-
-				if(client.prefs.be_random_name)
-					client.prefs.real_name = random_name(client.prefs.gender)
-				observer.real_name = client.prefs.real_name
-				observer.name = observer.real_name
-
-				mind.transfer_to(observer, TRUE)
-
-				if(observer.client)
-					observer.client.change_view(GLOB.world_view_size)
-
-				observer.set_huds_from_prefs()
-
-				qdel(src)
-				return TRUE
+			return do_observe()
 
 		if("late_join")
 
@@ -212,9 +314,6 @@
 
 		if("tutorial")
 			tutorial_menu()
-
-		else
-			new_player_panel()
 
 /mob/new_player/proc/tutorial_menu()
 	if(SSticker.current_state <= GAME_STATE_SETTING_UP)

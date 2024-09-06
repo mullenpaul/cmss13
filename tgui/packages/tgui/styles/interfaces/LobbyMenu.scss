@@ -1,0 +1,27 @@
+.Topbar {
+  width: 100%;
+  hr {
+    border: 1px solid #8ac8ff;
+  }
+
+  .Flex {
+    justify-content: space-between;
+  }
+}
+
+.WelcomeCrt {
+  padding: 6px;
+}
+
+.Test {
+  border: 1px solid red;
+}
+
+.MenuContainer {
+  justify-content: space-between;
+}
+
+.Menu {
+  align-items: center;
+  justify-content: space-between;
+}
