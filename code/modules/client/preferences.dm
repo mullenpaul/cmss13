@@ -189,7 +189,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 	var/gen_record = ""
 	var/exploit_record = ""
 
-	var/nanotrasen_relation = "Neutral"
+	var/weyland_yutani_relation = "Neutral"
 
 	var/uplinklocation = "PDA"
 
@@ -404,7 +404,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 
 			if(length(gear))
 				dat += "<br>"
-				for(var/i = 1; i <= gear.len; i++)
+				for(var/i = 1; i <= length(gear); i++)
 					var/datum/gear/G = GLOB.gear_datums_by_name[gear[i]]
 					if(G)
 						total_cost += G.cost
@@ -416,7 +416,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 
 			if(total_cost < MAX_GEAR_COST)
 				dat += " <a href='byond://?src=\ref[user];preference=loadout;task=input'><b>Add</b></a>"
-				if(gear && gear.len)
+				if(LAZYLEN(gear))
 					dat += " <a href='byond://?src=\ref[user];preference=loadout;task=clear'><b>Clear</b></a>"
 
 			dat += "</div>"
@@ -426,7 +426,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 			dat += "<b>Origin:</b> <a href='?_src_=prefs;preference=origin;task=input'><b>[origin]</b></a><br/>"
 			dat += "<b>Religion:</b> <a href='?_src_=prefs;preference=religion;task=input'><b>[religion]</b></a><br/>"
 
-			dat += "<b>Corporate Relation:</b> <a href ='?_src_=prefs;preference=nt_relation;task=input'><b>[nanotrasen_relation]</b></a><br>"
+			dat += "<b>Corporate Relation:</b> <a href ='?_src_=prefs;preference=wy_relation;task=input'><b>[weyland_yutani_relation]</b></a><br>"
 			dat += "<b>Preferred Squad:</b> <a href ='?_src_=prefs;preference=prefsquad;task=input'><b>[preferred_squad]</b></a><br>"
 
 			dat += "<h2><b><u>Fluff Information:</u></b></h2>"
@@ -667,7 +667,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
  * * width - Screen' width.
  * * height - Screen's height.
  */
-/datum/preferences/proc/SetChoices(mob/user, limit = 20, list/splitJobs = list(JOB_CHIEF_REQUISITION, JOB_WO_CMO), width = 950, height = 750)
+/datum/preferences/proc/SetChoices(mob/user, limit = 21, list/splitJobs = list(JOB_CHIEF_REQUISITION, JOB_WO_CMO), width = 950, height = 750)
 	if(!GLOB.RoleAuthority)
 		return
 
@@ -785,7 +785,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
  * * width - Screen' width.
  * * height - Screen's height.
  */
-/datum/preferences/proc/set_job_slots(mob/user, limit = 20, list/splitJobs = list(JOB_CHIEF_REQUISITION, JOB_WO_CMO), width = 950, height = 750)
+/datum/preferences/proc/set_job_slots(mob/user, limit = 21, list/splitJobs = list(JOB_CHIEF_REQUISITION, JOB_WO_CMO), width = 950, height = 750)
 	if(!GLOB.RoleAuthority)
 		return
 
@@ -1041,7 +1041,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 					var/datum/gear/G
 					if(isnull(gear) || !islist(gear))
 						gear = list()
-					if(gear.len)
+					if(length(gear))
 						for(var/gear_name in gear)
 							G = GLOB.gear_datums_by_name[gear_name]
 							total_cost += G?.cost
@@ -1056,7 +1056,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 
 				if("remove")
 					var/i_remove = text2num(href_list["gear"])
-					if(i_remove < 1 || i_remove > gear.len) return
+					if(i_remove < 1 || i_remove > length(gear)) return
 					gear.Cut(i_remove, i_remove + 1)
 
 				if("clear")
@@ -1641,10 +1641,10 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 					if(new_backbag)
 						backbag = GLOB.backbaglist.Find(new_backbag)
 
-				if("nt_relation")
+				if("wy_relation")
 					var/new_relation = input(user, "Choose your relation to the Weyland-Yutani company. Note that this represents what others can find out about your character by researching your background, not what your character actually thinks.", "Character Preference")  as null|anything in list("Loyal", "Supportive", "Neutral", "Skeptical", "Opposed")
 					if(new_relation)
-						nanotrasen_relation = new_relation
+						weyland_yutani_relation = new_relation
 
 				if("prefsquad")
 					var/new_pref_squad = input(user, "Choose your preferred squad.", "Character Preference")  as null|anything in list("Alpha", "Bravo", "Charlie", "Delta", "None")
