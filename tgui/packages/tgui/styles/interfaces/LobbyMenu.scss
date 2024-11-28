@@ -1,7 +1,7 @@
 .Topbar {
   width: 100%;
   hr {
-    border: 1px solid #8ac8ff;
+    border: 1px solid;
   }
 
   .Flex {
@@ -11,6 +11,18 @@
 
 .WelcomeCrt {
   padding: 6px;
+  font-size: 14px;
+  font-family: monospace;
+  width: 100%;
+  height: 500px;
+  .PreGameMenuItem {
+    padding: 1em 0 1em 0;
+    .Button {
+      width: 150px;
+      text-align: center;
+      height: 2em;
+    }
+  }
 }
 
 .Test {

@@ -28,6 +28,17 @@
 		client.player_entity.update_panel_data(null)
 		new_player_panel_proc()
 
+/mob/new_player/proc/on_startup()
+	SIGNAL_HANDLER
+	tgui_interact()
+	UnregisterGlobalSignal(COMSIG_GLOB_MODE_PREGAME_LOBBY)
+
+/mob/new_player/proc/try_tgui_interact(mob/user = client.mob, datum/tgui/ui)
+	// if server is not up, register signal for server ready and re-trigger this proc
+	if(SSticker.current_state == GAME_STATE_STARTUP)
+		RegisterGlobalSignal(COMSIG_GLOB_MODE_PREGAME_LOBBY, PROC_REF(on_startup))
+		return
+	tgui_interact()
 
 /mob/new_player/tgui_interact(mob/user = client.mob, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -45,8 +56,11 @@
 	var/postfix_text = (client.xeno_postfix) ? ("-"+client.xeno_postfix) : ""
 	var/prefix_text = (client.xeno_prefix) ? client.xeno_prefix : "XX"
 	var/round_start = !SSticker || !SSticker.mode || SSticker.current_state <= GAME_STATE_PREGAME
-	var/is_pread = SSticker.mode.flags_round_type & MODE_PREDATOR
-	var/pred_latejoin = SSticker.mode.check_predator_late_join(src, 0)
+	var/is_pread = !SSticker || !SSticker.mode || SSticker.mode.flags_round_type & MODE_PREDATOR
+	var/pred_latejoin = !SSticker || !SSticker.mode || SSticker.mode.check_predator_late_join(src, 0)
+
+	var/ticker_time = SSticker ? SSticker.GetTimeLeft() : 0
+	var/time_remaining = ticker_time > 0 ? floor(ticker_time) : "Unknown"
 
 	.["human_name"] = (client.prefs && client.prefs.real_name) ? client.prefs.real_name : client.key
 	.["xeno_name"] = "[prefix_text]-[tempnumber][postfix_text]"
@@ -59,6 +73,12 @@
 	.["round_time"] = gameTimestamp()
 	.["operation_time"] = worldtime2text()
 	.["loaded"] = 1
+	.["time_remaining"] = time_remaining
+	.["allowed_enter"] = GLOB.enter_allowed
+
+	.["selected_roles"] = list()
+	if(ready)
+		.["selected_roles"] = user.client.prefs.job_preference_list
 
 
 /mob/new_player/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
@@ -159,11 +179,11 @@
 			tutorial_menu()
 
 
-/mob/new_player/proc/new_player_panel_proc(refresh = FALSE)
+/mob/new_player/proc/new_player_panel_proc()
 	if(!client)
 		return
 
-	tgui_interact()
+	try_tgui_interact()
 	return
 
 /mob/new_player/proc/do_observe()

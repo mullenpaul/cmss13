@@ -23,13 +23,19 @@
       font-family: $font-family;
       font-weight: bold;
       border: 1px solid $lightcolor;
+      background-color: $lightcolor;
+      color: $dark;
       &:hover,
       &:focus,
       &:visited,
       &:target {
-        background-color: $lightcolor;
-        color: $dark;
+        background-color: $dark;
+        color: $lightcolor;
       }
+    }
+
+    hr {
+      border: 1px solid $lightcolor;
     }
 
     ::after {

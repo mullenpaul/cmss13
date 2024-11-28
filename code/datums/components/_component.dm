@@ -205,6 +205,21 @@
 	signal_enabled = TRUE
 
 /**
+* Register to listen for a global signal
+*
+* This sets up a listening relationship such that when a global signal is emitted
+* this proc is called upon and will receive a callback to the given proctype
+* Return values from procs registered must be a bitfield
+*
+* Arguments:
+* * sig_type_or_types Either a string signal name, or a list of signal names (strings)
+* * proctype The proc to call back when the signal is emitted
+* * override If a previous registration exists you must explicitly set this
+*/
+/datum/proc/RegisterGlobalSignal(sig_type_or_types, proctype, override = FALSE)
+	RegisterSignal(SSdcs, sig_type_or_types, proctype, override)
+
+/**
 * Stop listening to a given signal from target
 *
 * Breaks the relationship between target and source datum, removing the callback when the signal fires
@@ -245,6 +260,19 @@
 	signal_procs[target] -= sig_type_or_types
 	if(!length(signal_procs[target]))
 		signal_procs -= target
+
+/**
+* Stop listening to a given global signal
+*
+* Breaks the relationship between the global signal and this datum removing the callback when the signal fires
+*
+* Doesn't care if a registration exists or not
+*
+* Arguments:
+* * sig_typeor_types Signal string key or list of signal keys to stop listening to specifically
+*/
+/datum/proc/UnregisterGlobalSignal(sig_type_or_types)
+	UnregisterSignal(SSdcs, sig_type_or_types)
 
 /**
 * Called on a component when a component of the same type was added to the same parent
