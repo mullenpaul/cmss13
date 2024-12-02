@@ -27,6 +27,14 @@
 	base_lighting_alpha = 255
 	is_resin_allowed = FALSE
 
+/area/shuttle/dropship/hover
+	name = "\improper Dropship Hover Area"
+	icon_state = "shuttlered"
+	base_muffle = MUFFLE_HIGH
+	base_lighting_alpha = 255
+	is_resin_allowed = FALSE
+	unique = TRUE
+
 /area/shuttle/drop1/LV624
 	name = "\improper Dropship Alamo"
 	ambience_exterior = AMBIENCE_LV624

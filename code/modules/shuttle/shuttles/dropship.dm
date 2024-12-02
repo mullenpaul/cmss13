@@ -163,6 +163,8 @@
 		return
 
 	var/obj/docking_port/stationary/marine_dropship/dropzone = destination
+	if(!istype(destination, /obj/docking_port/stationary/marine_dropship))
+		return
 	if(mode == SHUTTLE_PREARRIVAL && !dropzone.landing_lights_on)
 		if(istype(destination, /obj/docking_port/stationary/marine_dropship))
 			dropzone.turn_on_landing_lights()
