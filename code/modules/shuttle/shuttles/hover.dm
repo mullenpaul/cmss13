@@ -5,7 +5,7 @@
 	dwidth = 15
 	dheight = 20
 
-/obj/docking_port/stationary/dropship_hover/on_arrival(obj/docking_port/mobile/arriving_shuttle)
+/obj/docking_port/stationary/dropship_hover/on_prearrival(obj/docking_port/mobile/arriving_shuttle)
 	. = ..()
 	var/list/levels = SSmapping.levels_by_trait(ZTRAIT_GROUND)
 	log_debug("found [levels] [length(levels)] maps")
