@@ -34,6 +34,8 @@
 	/// If this computer should respect the faction variable of destination LZ
 	var/use_factions = TRUE
 
+	var/is_hover = FALSE
+
 /obj/structure/machinery/computer/shuttle/dropship/flight/upp
 	icon_state = "console_upp"
 	req_one_access = list(ACCESS_UPP_FLIGHT)
@@ -424,6 +426,15 @@
 
 	// Launch Alarm Variables
 	.["playing_launch_announcement_alarm"] = shuttle?.playing_launch_announcement_alarm
+	.["is_hover"] = FALSE
+
+	var/obj/docking_port/stationary/dockedAt = shuttle?.get_docked()
+	if(dockedAt?.name == "Dropship hover")
+		var/obj/docking_port/stationary/dropship_hover/hov = dockedAt
+		.["is_hover"] = TRUE
+		.["hover_x"] = hov.target_x
+		.["hover_y"] = hov.target_y
+		.["hover_z"] = hov.target_z
 
 	.["destinations"] = list()
 	// add flight
@@ -474,6 +485,14 @@
 		return FALSE
 
 	switch(action)
+		if("start-hover")
+		if("end-hover")
+		if("set-hover-coordinates")
+			var/target_x = params["target_x"]
+			var/target_y = params["target_y"]
+			log_admin("setting coords [target_x] [target_y]")
+			SEND_SIGNAL(shuttle, COMSIG_HOVER_LOCATION, target_x, target_y)
+			return TRUE
 		if("move")
 			if(!shuttle)
 				return FALSE

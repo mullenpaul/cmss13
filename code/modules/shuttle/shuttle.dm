@@ -173,6 +173,9 @@
 /obj/docking_port/proc/get_docked()
 	return locate(/obj/docking_port/stationary) in loc
 
+/obj/docking_port/proc/get_mobile_docked()
+	return locate(/obj/docking_port/mobile) in loc
+
 /obj/docking_port/proc/getDockedId()
 	var/obj/docking_port/P = get_docked()
 	if(P)

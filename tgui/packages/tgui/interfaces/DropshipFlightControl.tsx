@@ -59,6 +59,10 @@ interface DropshipNavigationProps extends NavigationProps {
   playing_launch_announcement_alarm: boolean;
   can_change_shuttle: 0 | 1;
   alternative_shuttles: Array<ShuttleRef>;
+  is_hover: 0 | 1;
+  hover_x?: number;
+  hover_y?: number;
+  hover_z?: number;
 }
 
 const DropshipDoorControl = () => {
@@ -438,10 +442,77 @@ const DropshipSelector = () => {
   );
 };
 
+const HoverMenu = () => {
+  const { data, act } = useBackend<DropshipNavigationProps>();
+  return (
+    <Section title="Hover">
+      <Stack>
+        <Stack.Item>
+          <Button
+            icon="ban"
+            onClick={() => {
+              act('set-hover-coordinates', {
+                target_x: (data.hover_x ?? 100) - 2,
+                target_y: data.hover_y ?? 100,
+              });
+              act('button-push');
+            }}
+          >
+            x-1
+          </Button>
+        </Stack.Item>
+        <Stack.Item>
+          <Button
+            icon="ban"
+            onClick={() => {
+              act('set-hover-coordinates', {
+                target_x: (data.hover_x ?? 100) + 2,
+                target_y: data.hover_y ?? 100,
+              });
+              act('button-push');
+            }}
+          >
+            x+1
+          </Button>
+        </Stack.Item>
+        <Stack.Item>
+          <Button
+            icon="ban"
+            onClick={() => {
+              act('set-hover-coordinates', {
+                target_x: data.hover_x ?? 100,
+                target_y: (data.hover_y ?? 100) - 2,
+              });
+              act('button-push');
+            }}
+          >
+            y-1
+          </Button>
+        </Stack.Item>
+        <Stack.Item>
+          <Button
+            icon="ban"
+            onClick={() => {
+              act('set-hover-coordinates', {
+                target_x: data.hover_x ?? 100,
+                target_y: (data.hover_y ?? 100) + 2,
+              });
+              act('button-push');
+            }}
+          >
+            y+1
+          </Button>
+        </Stack.Item>
+      </Stack>
+    </Section>
+  );
+};
+
 const RenderScreen = () => {
   const { data } = useBackend<DropshipNavigationProps>();
   return (
     <>
+      {data.is_hover === 1 && <HoverMenu />}
       {data.alternative_shuttles.length > 0 && <DropshipSelector />}
       {data.shuttle_mode === 'idle' && <DropshipDestinationSelection />}
       {data.shuttle_mode === 'idle' && data.can_set_automated === 1 && (

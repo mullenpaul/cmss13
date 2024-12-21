@@ -60,3 +60,6 @@
 #define COMSIG_DROPSHIP_REMOVE_EQUIPMENT "dropship_remove_equipment"
 
 #define COMSIG_STRUCTURE_CRATE_SQUAD_LAUNCHED "structure_crate_squad_launched"
+
+#define COMSIG_HOVER_REGISTER "dropship_hover_register"
+#define COMSIG_HOVER_LOCATION "dropship_hover_location"

@@ -1,7 +1,3 @@
-/obj/structure/blocker/fog/upwash
-	opacity = FALSE
-	density = FALSE
-
 /obj/docking_port/stationary/dropship_hover
 	name = "Dropship hover"
 	width = 30
@@ -16,11 +12,22 @@
 	// populate the ground map
 	var/target_z = null
 
-/obj/docking_port/stationary/dropship_hover/proc/set_hover_target(var/x, var/y)
+	var/atom/movable/screen/background/roof = new
+
+
+/obj/docking_port/stationary/dropship_hover/Initialize(mapload)
+	. = ..()
+	RegisterSignal(src, COMSIG_HOVER_LOCATION, PROC_REF(set_hover_target))
+	roof.icon = 'icons/turf/floors/roof.dmi'
+	roof.icon_state = "rooftop1"
+
+/obj/docking_port/stationary/dropship_hover/proc/set_hover_target(source, x, y)
+	SIGNAL_HANDLER
 	target_x = x
 	target_y = y
+	set_visual_on_target()
 
-/obj/docking_port/stationary/dropship_hover/proc/set_z(var/z=null)
+/obj/docking_port/stationary/dropship_hover/proc/set_z(z=null)
 	var/list/levels = SSmapping.levels_by_trait(ZTRAIT_GROUND)
 
 	if(z == null)
@@ -46,7 +53,7 @@
 /obj/docking_port/stationary/dropship_hover/proc/valid_coordinates()
 	return get_z() != null
 
-/obj/docking_port/stationary/dropship_hover/proc/can_see_turf(var/turf/T, var/nearby=FALSE)
+/obj/docking_port/stationary/dropship_hover/proc/can_see_turf(turf/T, nearby=FALSE)
 	var/area/targ_area = get_area(T)
 	var/is_visible = FALSE
 	switch(targ_area.ceiling)
@@ -101,21 +108,14 @@
 		return TRUE
 	return FALSE
 
-/obj/docking_port/stationary/dropship_hover/on_prearrival(obj/docking_port/mobile/arriving_shuttle)
-	. = ..()
+/obj/docking_port/stationary/dropship_hover/proc/set_visual_on_target()
 
 	if(!valid_coordinates())
 		return
 
 	var/target_level = get_z()
 
-	log_debug("starting viscontents")
 	var/list/turfs = get_area_turfs(/area/shuttle/dropship/hover)
-	log_debug("found [length(turfs)] turfs")
-
-	var/atom/movable/screen/background/roof = new
-	roof.icon = 'icons/turf/floors/roof.dmi'
-	roof.icon_state = "rooftop1"
 
 	var/datum/weather_event/sand/weather = new
 
@@ -125,22 +125,54 @@
 	curr_master_turf_overlay.alpha = weather.turf_overlay_alpha
 
 	for(var/turf/T as anything in turfs)
-		log_debug("turf [T]")
 		var/offset_x = T.x - src.x
 		var/offset_y = T.y - src.y
 		var/turf/target_tile = locate(target_x + offset_x, target_y + offset_y, target_level)
-		var/is_visible = can_see_turf(target_tile, nearby=TRUE)
+
 
 		T.vis_contents.Cut()
+		T.vis_flags = VIS_UNDERLAY | VIS_INHERIT_LAYER
+		for(var/obj/O in target_tile)
+			O.vis_flags = VIS_UNDERLAY | VIS_INHERIT_LAYER
+
+		var/is_visible = can_see_turf(target_tile, nearby=TRUE)
 		if(is_visible)
 			T.vis_contents.Add(target_tile)
 		else
 			T.vis_contents.Add(roof)
 
-		T.overlays += curr_master_turf_overlay
+		//T.overlays += curr_master_turf_overlay
+		T.underlays += curr_master_turf_overlay
 
-	log_debug("end viscontents")
+	var/obj/docking_port/mobile/shuttle = get_mobile_docked()
+	var/area/A = get_area(shuttle)
+	for(var/turf/T as anything in A)
+		var/offset_x = T.x - src.x
+		var/offset_y = T.y - src.y
+		var/turf/target_tile = locate(target_x + offset_x, target_y + offset_y, target_level)
+		//target_tile.vis_flags = VIS_UNDERLAY | VIS_INHERIT_LAYER
+		for(var/obj/O in target_tile)
+			O.vis_flags = VIS_UNDERLAY | VIS_INHERIT_LAYER
 
+		T.vis_contents.Cut()
+		if(locate(/obj/structure/shuttle) in T)
+			var/is_visible = can_see_turf(target_tile, nearby=TRUE)
+			if(is_visible)
+				T.vis_contents.Add(target_tile)
+			else
+				T.vis_contents.Add(roof)
+
+
+		//T.vis_flags |= VIS_UNDERLAY
+
+		//if(is_visible)
+		//	T.vis_contents.Add(target_tile)
+
+
+/obj/docking_port/stationary/dropship_hover/on_prearrival(obj/docking_port/mobile/arriving_shuttle)
+	. = ..()
+	SEND_SIGNAL(arriving_shuttle, COMSIG_HOVER_REGISTER)
+	set_visual_on_target()
 
 /obj/docking_port/stationary/dropship_hover/on_departure(obj/docking_port/mobile/arriving_shuttle)
 	. = ..()
