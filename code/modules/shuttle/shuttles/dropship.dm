@@ -31,6 +31,8 @@
 	var/automated_timer
 	var/datum/cas_signal/paradrop_signal
 
+	var/obj/docking_port/stationary/dropship_hover/hover
+
 
 /obj/docking_port/mobile/marine_dropship/Initialize(mapload)
 	. = ..()
@@ -50,12 +52,25 @@
 
 	RegisterSignal(src, COMSIG_DROPSHIP_ADD_EQUIPMENT, PROC_REF(add_equipment))
 	RegisterSignal(src, COMSIG_DROPSHIP_REMOVE_EQUIPMENT, PROC_REF(remove_equipment))
+	RegisterSignal(src, COMSIG_HOVER_REGISTER, PROC_REF(register_hover_lz))
+	RegisterSignal(src, COMSIG_HOVER_LOCATION, PROC_REF(forward_hover_target))
 
 /obj/docking_port/mobile/marine_dropship/Destroy(force)
 	. = ..()
 	qdel(door_control)
 	UnregisterSignal(src, COMSIG_DROPSHIP_ADD_EQUIPMENT)
 	UnregisterSignal(src, COMSIG_DROPSHIP_REMOVE_EQUIPMENT)
+	UnregisterSignal(src, COMSIG_HOVER_REGISTER)
+	UnregisterSignal(src, COMSIG_HOVER_LOCATION)
+
+/obj/docking_port/mobile/marine_dropship/proc/forward_hover_target(obj/docking_port/mobile/marine_dropship/dropship, x, y)
+	SIGNAL_HANDLER
+	var/obj/docking_port/stationary/dockedAt = get_docked()
+	SEND_SIGNAL(dockedAt, COMSIG_HOVER_LOCATION, x, y)
+
+/obj/docking_port/mobile/marine_dropship/proc/register_hover_lz(obj/docking_port/mobile/marine_dropship/dropship, obj/docking_port/stationary/dropship_hover/src_hover)
+	SIGNAL_HANDLER
+	hover = src_hover
 
 /obj/docking_port/mobile/marine_dropship/proc/send_for_flyby()
 	in_flyby = TRUE
