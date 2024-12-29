@@ -11,6 +11,8 @@ import {
   Stack,
 } from '../components';
 import { Window } from '../layouts';
+import { MfdPanel, MfdProps } from './MfdPanels/MultifunctionDisplay';
+import { mfdState, otherMfdState } from './MfdPanels/stateManagers';
 import {
   CancelLaunchButton,
   DisabledScreen,
@@ -508,7 +510,7 @@ const HoverMenu = () => {
   );
 };
 
-const RenderScreen = () => {
+const OldScreen = () => {
   const { data } = useBackend<DropshipNavigationProps>();
   return (
     <>
@@ -536,6 +538,11 @@ const RenderScreen = () => {
   );
 };
 
+const RenderScreen = () => {
+  const { data } = useBackend<DropshipNavigationProps>();
+  return <OldScreen />;
+};
+
 const DropshipDisabledScreen = () => {
   const { data } = useBackend<DropshipNavigationProps>();
   return (
@@ -546,12 +553,67 @@ const DropshipDisabledScreen = () => {
   );
 };
 
+const BaseMfdPanel = (props: MfdProps) => {
+  const { setPanelState } = mfdState(props.panelStateId);
+  const { otherPanelState } = otherMfdState(props.otherPanelStateId);
+
+  return (
+    <MfdPanel
+      panelStateId={props.panelStateId}
+      topButtons={[
+        { children: 'EQUIP' },
+        {
+          children: 'FLIGHT',
+        },
+        {
+          children: 'HOVER',
+        },
+        {
+          children: 'DOOR',
+        },
+      ]}
+    >
+      <Box className="NavigationMenu">
+        <div className="welcome-page">
+          <h1>U.S.C.M.</h1>
+          <h1>Dropship Flight Control System</h1>
+          <h3>UA Northbridge</h3>
+          <h3>V 0.1</h3>
+        </div>
+      </Box>
+    </MfdPanel>
+  );
+};
+const PrimaryPanel = (props: MfdProps) => {
+  const { panelState } = mfdState(props.panelStateId);
+  switch (panelState) {
+    default:
+      return <BaseMfdPanel {...props} />;
+  }
+};
+
 export const DropshipFlightControl = () => {
   const { data } = useBackend<DropshipNavigationProps>();
   return (
-    <Window theme="crtgreen" height={500} width={700}>
-      <Window.Content className="NavigationMenu" scrollable>
-        {data.is_disabled === 0 ? <RenderScreen /> : <DropshipDisabledScreen />}
+    <Window height={700} width={1400}>
+      <Window.Content scrollable>
+        <Box className="WeaponsConsoleBackground">
+          <Stack className="WeaponsConsole">
+            <Stack.Item>
+              <PrimaryPanel
+                panelStateId="left-screen"
+                otherPanelStateId="right-screen"
+              />
+            </Stack.Item>{' '}
+            <Stack.Item>
+              {data.is_disabled === 0 ? (
+                <RenderScreen />
+              ) : (
+                <DropshipDisabledScreen />
+              )}
+            </Stack.Item>
+          </Stack>
+        </Box>
       </Window.Content>
     </Window>
   );
