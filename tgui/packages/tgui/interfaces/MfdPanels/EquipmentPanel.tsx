@@ -1,6 +1,7 @@
 import { useBackend } from '../../backend';
 import { Box } from '../../components';
 import { DropshipEquipment } from '../DropshipWeaponsConsole';
+import { GenericErrorPanel } from './GenericErrorPanel';
 import { MfdPanel, MfdProps } from './MultifunctionDisplay';
 import { mfdState, useEquipmentState, useWeaponState } from './stateManagers';
 import { EquipmentContext } from './types';
@@ -279,6 +280,10 @@ export const EquipmentMfdPanel = (props: MfdProps) => {
   const { setWeaponState } = useWeaponState(props.panelStateId);
 
   const { setEquipmentState } = useEquipmentState(props.panelStateId);
+
+  if (data.equipment_data === undefined) {
+    return <GenericErrorPanel panelStateId={props.panelStateId} />;
+  }
 
   const weap1 = data.equipment_data.find((x) => x.mount_point === 1);
   const weap2 = data.equipment_data.find((x) => x.mount_point === 2);

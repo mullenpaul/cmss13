@@ -11,6 +11,9 @@ import {
   Stack,
 } from '../components';
 import { Window } from '../layouts';
+import { EquipmentMfdPanel } from './MfdPanels/EquipmentPanel';
+import { FlightMfdPanel } from './MfdPanels/FlightControlPanel';
+import { MapMfdPanel } from './MfdPanels/MapPanel';
 import { MfdPanel, MfdProps } from './MfdPanels/MultifunctionDisplay';
 import { mfdState, otherMfdState } from './MfdPanels/stateManagers';
 import {
@@ -515,7 +518,7 @@ const OldScreen = () => {
   return (
     <>
       {data.is_hover === 1 && <HoverMenu />}
-      {data.alternative_shuttles.length > 0 && <DropshipSelector />}
+      {false && data.alternative_shuttles.length > 0 && <DropshipSelector />}
       {data.shuttle_mode === 'idle' && <DropshipDestinationSelection />}
       {data.shuttle_mode === 'idle' && data.can_set_automated === 1 && (
         <AutopilotConfig />
@@ -530,7 +533,9 @@ const OldScreen = () => {
         <DropshipDestinationSelection />
       )}
       {data.door_status.length > 0 && <DropshipDoorControl />}
-      {data.alternative_shuttles.length === 0 && <LaunchAnnouncementAlarm />}
+      {false && data.alternative_shuttles.length === 0 && (
+        <LaunchAnnouncementAlarm />
+      )}
     </>
   );
 };
@@ -558,9 +563,10 @@ const BaseMfdPanel = (props: MfdProps) => {
     <MfdPanel
       panelStateId={props.panelStateId}
       topButtons={[
-        { children: 'EQUIP' },
+        { children: 'EQUIP', onClick: () => setPanelState('equipment') },
         {
           children: 'FLIGHT',
+          onClick: () => setPanelState('flight'),
         },
         {
           children: 'HOVER',
@@ -568,7 +574,10 @@ const BaseMfdPanel = (props: MfdProps) => {
         {
           children: 'DOOR',
         },
+        { children: 'CAMERA' },
       ]}
+      bottomButtons={[{ children: 'MAP', onClick: () => setPanelState('map') }]}
+      leftButtons={[{ children: 'NAV' }]}
     >
       <Box className="NavigationMenu">
         <div className="welcome-page">
@@ -584,9 +593,19 @@ const BaseMfdPanel = (props: MfdProps) => {
 const PrimaryPanel = (props: MfdProps) => {
   const { panelState } = mfdState(props.panelStateId);
   switch (panelState) {
+    case 'equipment':
+      return <EquipmentMfdPanel {...props} />;
+    case 'flight':
+      return <FlightMfdPanel {...props} />;
+    case 'map':
+      return <MapMfdPanel {...props} />;
     default:
       return <BaseMfdPanel {...props} />;
   }
+};
+
+const FlightPanels = () => {
+  return null;
 };
 
 export const DropshipFlightControl = () => {
