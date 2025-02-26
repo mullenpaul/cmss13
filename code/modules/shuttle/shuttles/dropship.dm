@@ -66,6 +66,30 @@
 	UnregisterSignal(src, COMSIG_HOVER_REGISTER)
 	UnregisterSignal(src, COMSIG_HOVER_LOCATION)
 
+/obj/docking_port/mobile/marine_dropship/proc/get_sanitised_equipment(mob/user)
+	. = list()
+	var/element_nbr = 1
+	for(var/obj/structure/dropship_equipment/equipment in equipments)
+		var/list/data = list(
+			"name"= equipment.name,
+			"shorthand" = equipment.shorthand,
+			"eqp_tag" = element_nbr,
+			"is_weapon" = equipment.is_weapon,
+			"is_interactable" = equipment.is_interactable,
+			"mount_point" = equipment.ship_base.attach_id,
+			"is_missile" = istype(equipment,  /obj/structure/dropship_equipment/weapon/rocket_pod),
+			"ammo_name" = equipment.ammo_equipped?.name,
+			"ammo" = equipment.ammo_equipped?.ammo_count,
+			"max_ammo" = equipment.ammo_equipped?.max_ammo_count,
+			"firemission_delay" = equipment.ammo_equipped?.fire_mission_delay,
+			"burst" = equipment.ammo_equipped?.ammo_used_per_firing,
+			"data" = equipment.ui_data(user)
+		)
+
+		. += list(data)
+
+		element_nbr++
+
 /obj/docking_port/mobile/marine_dropship/proc/forward_hover_target(obj/docking_port/mobile/marine_dropship/dropship, x, y)
 	SIGNAL_HANDLER
 	var/obj/docking_port/stationary/dockedAt = get_docked()

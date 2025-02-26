@@ -36,14 +36,23 @@
 
 	var/is_hover = FALSE
 
+	var/datum/tacmap/tacmap
+	var/minimap_type = MINIMAP_FLAG_USCM
+
 /obj/structure/machinery/computer/shuttle/dropship/flight/upp
 	icon_state = "console_upp"
 	req_one_access = list(ACCESS_UPP_FLIGHT)
 	faction = FACTION_UPP
+	minimap_type = MINIMAP_FLAG_UPP
 
 /obj/structure/machinery/computer/shuttle/dropship/flight/Initialize(mapload, ...)
 	. = ..()
 	compatible_landing_zones = get_landing_zones()
+	tacmap = new(src, minimap_type)
+
+/obj/structure/machinery/computer/shuttle/dropship/flight/Destroy()
+	. = ..()
+	QDEL_NULL(tacmap)
 
 /obj/structure/machinery/computer/shuttle/dropship/flight/Destroy()
 	. = ..()
@@ -104,7 +113,13 @@
 
 /obj/structure/machinery/computer/shuttle/dropship/flight/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
+
+	if(!tacmap.map_holder)
+		var/level = SSmapping.levels_by_trait(tacmap.targeted_ztrait)
+		tacmap.map_holder = SSminimaps.fetch_tacmap_datum(level[1], tacmap.allowed_flags)
+
 	if (!ui)
+		user.client.register_map_obj(tacmap.map_holder.map)
 		var/obj/docking_port/mobile/shuttle = SSshuttle.getShuttle(shuttleId)
 		var/name = shuttle?.name
 		if(can_change_shuttle)
@@ -400,6 +415,11 @@
 	playsound(loc, 'sound/machines/terminal_success.ogg', KEYBOARD_SOUND_VOLUME, 1)
 	dropship_control_lost = FALSE
 
+
+/obj/structure/machinery/computer/shuttle/dropship/flight/ui_static_data(mob/user)
+	. = list()
+	.["tactical_map_ref"] = tacmap.map_holder.map_ref
+
 /obj/structure/machinery/computer/shuttle/dropship/flight/ui_data(mob/user)
 	var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttleId)
 	. = list()
@@ -407,6 +427,7 @@
 	.["shuttle_mode"] = shuttle?.mode
 	.["flight_time"] = shuttle?.timeLeft(0)
 	.["is_disabled"] = disabled
+	.["equipment_data"] = get_sanitised_equipment(user, shuttle)
 	if(shuttle?.is_hijacked)
 		.["is_disabled"] = TRUE
 	.["locked_down"] = FALSE
@@ -629,6 +650,9 @@
 		if ("change_shuttle")
 			var/new_shuttle = params["new_shuttle"]
 			return set_shuttle(new_shuttle)
+
+/obj/structure/machinery/computer/shuttle/dropship/flight/proc/get_sanitised_equipment(mob/user, obj/docking_port/mobile/marine_dropship/dropship)
+	. = dropship.get_sanitised_equipment(user)
 
 /obj/structure/machinery/computer/shuttle/dropship/flight/proc/set_shuttle(new_shuttle)
 	var/mob/user = usr
