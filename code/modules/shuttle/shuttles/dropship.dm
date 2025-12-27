@@ -10,7 +10,6 @@
 	rechargeTime = SHUTTLE_RECHARGE
 	ignitionTime = DROPSHIP_WARMUP_TIME
 	prearrivalTime = DROPSHIP_WARMUP_TIME
-	var/datum/door_controller/aggregate/door_control
 
 	// Door control has been overridden
 	var/door_override = FALSE
@@ -29,25 +28,14 @@
 	var/automated_lz_id
 	var/automated_delay
 	var/automated_timer
+
+	// dropship paradrop
 	var/datum/cas_signal/paradrop_signal
 	var/faction = FACTION_MARINE
 
 /obj/docking_port/mobile/marine_dropship/Initialize(mapload)
 	. = ..()
-	door_control = new()
-	for(var/place in shuttle_areas)
-		for(var/obj/structure/machinery/door/air in place)
-			switch(air.id)
-				if("starboard_door")
-					door_control.add_door(air, "starboard")
-				if("port_door")
-					door_control.add_door(air, "port")
-				if("aft_door")
-					door_control.add_door(air, "aft")
-
-			var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/hatch = air
-			if(istype(hatch))
-				hatch.linked_dropship = src
+	AddComponent(/datum/component/dropship_door_controller)
 
 	RegisterSignal(src, COMSIG_DROPSHIP_ADD_EQUIPMENT, PROC_REF(add_equipment))
 	RegisterSignal(src, COMSIG_DROPSHIP_REMOVE_EQUIPMENT, PROC_REF(remove_equipment))
@@ -55,7 +43,6 @@
 
 /obj/docking_port/mobile/marine_dropship/Destroy(force)
 	. = ..()
-	qdel(door_control)
 	UnregisterSignal(src, COMSIG_DROPSHIP_ADD_EQUIPMENT)
 	UnregisterSignal(src, COMSIG_DROPSHIP_REMOVE_EQUIPMENT)
 	UnregisterSignal(src, COMSIG_ATOM_DIR_CHANGE)
@@ -74,16 +61,12 @@
 	equipments -= equipment
 
 /obj/docking_port/mobile/marine_dropship/proc/get_door_data()
-	return door_control.get_data()
-
-/obj/docking_port/mobile/marine_dropship/proc/control_doors(action, direction, force, asynchronous = TRUE)
-	// its been locked down by the queen
-	if(door_override)
-		return
-	door_control.control_doors(action, direction, force, asynchronous)
+	var/list/door_data = SEND_SIGNAL(src, COMSIG_DROPSHIP_GET_DOOR_DATA)
+	return door_data
 
 /obj/docking_port/mobile/marine_dropship/proc/is_door_locked(direction)
-	return door_control.is_door_locked(direction)
+	var/door_locked = SEND_SIGNAL(src, COMSIG_DROPSHIP_GET_DOOR_LOCKED, direction)
+	return door_locked
 
 /obj/docking_port/mobile/marine_dropship/enterTransit()
 	. = ..()
@@ -92,7 +75,7 @@
 
 /obj/docking_port/mobile/marine_dropship/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
 	. = ..()
-	control_doors("force-lock-launch", "all", force=TRUE, asynchronous = FALSE)
+	SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-lock-launch", force=TRUE, asynchronous=FALSE)
 
 	if(is_hijacked)
 		return
@@ -266,7 +249,7 @@
 
 	if(auto_open && istype(arriving_shuttle, /obj/docking_port/mobile/marine_dropship))
 		dropship.in_flyby = FALSE
-		dropship.control_doors("unlock", "all", force=FALSE)
+		SEND_SIGNAL(dropship, COMSIG_DROPSHIP_CONTROL_DOOR, "unlock", "all")
 		var/obj/structure/machinery/computer/shuttle/dropship/flight/console = dropship.getControlConsole()
 		console?.update_equipment()
 	if(is_ground_level(z) && !SSobjectives.first_drop_complete)

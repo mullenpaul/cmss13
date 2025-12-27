@@ -256,10 +256,14 @@
 				direction = "port"
 			if("aft_door")
 				direction = "aft"
-		if(!linked_dropship || !linked_dropship.door_control.door_controllers[direction])
+		if (!linked_dropship)
 			return ..()
-		var/datum/door_controller/single/control = linked_dropship.door_control.door_controllers[direction]
-		if (control.status != SHUTTLE_DOOR_BROKEN)
+
+		var/list/door_data = SEND_SIGNAL(linked_dropship, COMSIG_DROPSHIP_GET_DOOR_DATA)
+		if(!door_data[direction])
+			return ..()
+
+		if (door_data[direction]["value"] != SHUTTLE_DOOR_BROKEN)
 			return ..()
 		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED) && !skillcheck(user, SKILL_PILOT, SKILL_PILOT_TRAINED))
 			to_chat(user, SPAN_WARNING("You don't seem to understand how to restore a remote connection to [src]."))
@@ -273,7 +277,7 @@
 			return
 		unlock(TRUE)
 		close(FALSE)
-		control.status = SHUTTLE_DOOR_UNLOCKED
+		SEND_SIGNAL(linked_dropship, COMSIG_DROPSHIP_FORCE_STATUS_DOOR, SHUTTLE_DOOR_UNLOCKED)
 		to_chat(user, SPAN_WARNING("You successfully restored the remote connection to [src]."))
 		return
 	. = ..()
@@ -304,18 +308,22 @@
 			direction = "port"
 		if("aft_door")
 			direction = "aft"
-	var/datum/door_controller/single/control
-	if(linked_dropship && linked_dropship.door_control.door_controllers[direction])
-		control = linked_dropship.door_control.door_controllers[direction]
 
-	if(control && control.status == SHUTTLE_DOOR_BROKEN)
+	if(!linked_dropship)
+		return
+
+	var/list/door_data = SEND_SIGNAL(linked_dropship, COMSIG_DROPSHIP_GET_DOOR_DATA)
+
+	if(!door_data[direction])
+		return
+
+	if(door_data[direction]["value"] == SHUTTLE_DOOR_BROKEN)
 		to_chat(xeno, SPAN_NOTICE("The door is already disabled."))
 		return
 
 	to_chat(xeno, SPAN_WARNING("You try and force the doors open!"))
 	if(do_after(xeno, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
-		if(control)
-			control.status = SHUTTLE_DOOR_BROKEN
+		SEND_SIGNAL(linked_dropship, COMSIG_DROPSHIP_FORCE_STATUS_DOOR, SHUTTLE_DOOR_BROKEN)
 		unlock(TRUE)
 		open(TRUE)
 		lock(TRUE)

@@ -30,7 +30,7 @@
 			air.linked_shuttle = src
 
 /obj/docking_port/mobile/crashable/escape_shuttle/proc/cancel_evac()
-	door_handler.control_doors("force-unlock")
+	SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-unlock", "all")
 	evac_set = FALSE
 
 	var/obj/structure/machinery/computer/shuttle/escape_pod_panel/panel = getControlConsole()
@@ -42,7 +42,7 @@
 			cryotube.dock_state = STATE_IDLE
 
 /obj/docking_port/mobile/crashable/escape_shuttle/proc/prepare_evac()
-	door_handler.control_doors("force-unlock")
+	SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-unlock", "all")
 	evac_set = TRUE
 	for(var/area/interior_area in shuttle_areas)
 		for(var/obj/structure/machinery/cryopod/evacuation/cryotube in interior_area)
@@ -66,7 +66,7 @@
 	if(panel.pod_state == STATE_DELAYED)
 		return
 
-	door_handler.control_doors("force-lock-launch")
+	SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-lock-launch", "all")
 	var/occupant_count = 0
 	var/list/cryos = list()
 	for(var/area/interior_area in shuttle_areas)
@@ -85,7 +85,7 @@
 		sleep(25)
 		for(var/obj/structure/machinery/cryopod/evacuation/cryotube in cryos)
 			cryotube.go_out()
-		door_handler.control_doors("force-unlock")
+		SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-unlock", "all")
 		return
 
 	set_mode(SHUTTLE_IGNITING)
@@ -110,8 +110,7 @@
 
 /obj/docking_port/mobile/crashable/escape_shuttle/open_doors()
 	. = ..()
-
-	door_handler.control_doors("force-unlock")
+	SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-unlock", "all")
 
 /obj/docking_port/mobile/crashable/escape_shuttle/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
 	. = ..()

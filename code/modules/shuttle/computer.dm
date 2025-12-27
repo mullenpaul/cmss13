@@ -263,23 +263,23 @@
 		if("open")
 			if(ert.mode == SHUTTLE_CALL || ert.mode == SHUTTLE_RECALL)
 				return TRUE
-			ert.control_doors("open", external_only = TRUE)
+			SEND_SIGNAL(ert, COMSIG_DROPSHIP_CONTROL_DOOR, "open", external_only=TRUE)
 		if("close")
 			if(ert.mode == SHUTTLE_CALL || ert.mode == SHUTTLE_RECALL)
 				return TRUE
-			ert.control_doors("close", external_only = TRUE)
+			SEND_SIGNAL(ert, COMSIG_DROPSHIP_CONTROL_DOOR, "close", external_only=TRUE)
 		if("lockdown")
 			if(ert.mode == SHUTTLE_CALL || ert.mode == SHUTTLE_RECALL)
 				return TRUE
-			ert.control_doors("force-lock", external_only = TRUE)
+			SEND_SIGNAL(ert, COMSIG_DROPSHIP_CONTROL_DOOR, "force-lock", external_only=TRUE)
 		if("lock")
 			if(ert.mode == SHUTTLE_CALL || ert.mode == SHUTTLE_RECALL)
 				return TRUE
-			ert.control_doors("lock", external_only = TRUE)
+			SEND_SIGNAL(ert, COMSIG_DROPSHIP_CONTROL_DOOR, "lock", external_only=TRUE)
 		if("unlock")
 			if(ert.mode == SHUTTLE_CALL || ert.mode == SHUTTLE_RECALL)
 				return TRUE
-			ert.control_doors("unlock", external_only = TRUE)
+			SEND_SIGNAL(ert, COMSIG_DROPSHIP_CONTROL_DOOR, "unlock", external_only=TRUE)
 		if("move")
 			if(ert.mode != SHUTTLE_IDLE)
 				to_chat(usr, SPAN_WARNING("You can't move to a new destination whilst in transit."))

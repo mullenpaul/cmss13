@@ -71,7 +71,7 @@
 	if(is_mainship_level(z)) // on the almayer
 		return
 
-	shuttle.control_doors("force-lock", "all", force=FALSE)
+	SEND_SIGNAL(shuttle, COMSIG_DROPSHIP_CONTROL_DOOR, "force-lock", "all", FALSE)
 
 /obj/structure/machinery/door_control/proc/handle_door()
 	for(var/obj/structure/machinery/door/airlock/D in range(range))

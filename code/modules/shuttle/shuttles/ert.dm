@@ -28,7 +28,7 @@
 	RegisterSignal(src, COMSIG_ATOM_DIR_CHANGE, PROC_REF(on_dir_change))
 
 /obj/docking_port/mobile/emergency_response/enterTransit()
-	control_doors("force-lock-launch", force = TRUE, external_only = TRUE)
+	SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-lock-launch", force = TRUE, external_only = TRUE)
 	UnregisterSignal(src, COMSIG_ATOM_DIR_CHANGE)
 	..()
 
@@ -52,30 +52,6 @@
 
 	var/obj/structure/machinery/computer/shuttle/ert/console = getControlConsole()
 	console.must_launch_home = TRUE
-
-/obj/docking_port/mobile/emergency_response/proc/control_doors(action, force = FALSE, external_only = FALSE)
-	var/list/door_list = doors
-	if(external_only)
-		door_list = external_doors
-
-	for(var/obj/structure/machinery/door/airlock/door in door_list)
-		var/is_external = door.borders_space()
-		// do not allow the user to normally control external doors
-		if(!force && is_external)
-			continue
-		switch(action)
-			if("open")
-				INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock, open))
-			if("close")
-				INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock, close))
-			if("force-lock")
-				INVOKE_ASYNC(src, PROC_REF(lockdown_door), door)
-			if("lock")
-				INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock, lock))
-			if("unlock")
-				INVOKE_ASYNC(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock, unlock))
-			if("force-lock-launch")
-				INVOKE_ASYNC(src, PROC_REF(lockdown_door_launch), door)
 
 /obj/docking_port/mobile/emergency_response/proc/lockdown_door_launch(obj/structure/machinery/door/airlock/air)
 	for(var/mob/living/blocking_mob in air.loc) // Bump all mobs outta the way for outside airlocks of shuttles
@@ -206,7 +182,7 @@
 	. = ..()
 	if(istype(arriving_shuttle, /obj/docking_port/mobile/emergency_response))
 		var/obj/docking_port/mobile/emergency_response/ert = arriving_shuttle
-		ert.control_doors("unlock", force = FALSE)
+		SEND_SIGNAL(ert, COMSIG_DROPSHIP_CONTROL_DOOR, "unlock", "all")
 
 	if(lockdown_on_land)
 		var/obj/structure/machinery/computer/shuttle/ert/console = arriving_shuttle.getControlConsole()

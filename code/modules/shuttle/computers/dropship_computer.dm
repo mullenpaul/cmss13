@@ -301,7 +301,7 @@
 
 	// door controls being overridden
 	if(!dropship_control_lost && do_after(xeno, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
-		dropship.control_doors("unlock", "all", TRUE)
+		SEND_SIGNAL(dropship, COMSIG_DROPSHIP_CONTROL_DOOR, "unlock", "all", TRUE)
 		dropship_control_lost = TRUE
 		update_icon()
 		door_control_cooldown = addtimer(CALLBACK(src, PROC_REF(remove_door_lock)), SHUTTLE_LOCK_COOLDOWN, TIMER_STOPPABLE|TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_NO_HASH_WAIT)
@@ -565,7 +565,7 @@
 			var/interaction = params["interaction"]
 			var/location = params["location"]
 			if(!dropship_control_lost)
-				shuttle.control_doors(interaction, location)
+				SEND_SIGNAL(shuttle, COMSIG_DROPSHIP_CONTROL_DOOR, interaction, location)
 			else
 				playsound(loc, 'sound/machines/terminal_error.ogg', KEYBOARD_SOUND_VOLUME, 1)
 				to_chat(user, SPAN_WARNING("Door controls have been overridden. Please call technical support."))

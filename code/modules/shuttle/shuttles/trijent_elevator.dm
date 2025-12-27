@@ -35,7 +35,7 @@
 
 /obj/docking_port/mobile/trijent_elevator/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
 	. = ..()
-	door_control.control_doors("force-lock-launch", "all", force=TRUE)
+	SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-lock-launch", "all", TRUE)
 
 /obj/docking_port/stationary/trijent_elevator
 	dir=NORTH
@@ -58,13 +58,10 @@
 	// open elevator doors
 	if(istype(arriving_shuttle, /obj/docking_port/mobile/trijent_elevator))
 		var/obj/docking_port/mobile/trijent_elevator/elevator = arriving_shuttle
-		elevator.door_control.control_doors("open", airlock_exit)
+		SEND_SIGNAL(elevator, COMSIG_DROPSHIP_CONTROL_DOOR, "open", airlock_exit)
 
 	// open dock doors
-	var/datum/door_controller/single/door_control = new()
-	door_control.doors = get_doors()
-	door_control.control_doors("open", FALSE, FALSE)
-	qdel(door_control)
+	SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "open", "all")
 
 	playsound(src, 'sound/machines/ping.ogg', 25, 1)
 	playsound(arriving_shuttle, 'sound/machines/ping.ogg', 25, 1)
@@ -73,7 +70,7 @@
 	. = ..()
 	var/datum/door_controller/single/door_control = new()
 	door_control.doors = get_doors()
-	door_control.control_doors("force-lock-launch")
+	SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-lock-launch", "all")
 	qdel(door_control)
 
 /obj/docking_port/stationary/trijent_elevator/occupied

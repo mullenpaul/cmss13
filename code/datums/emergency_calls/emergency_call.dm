@@ -303,7 +303,7 @@
 
 		var/datum/map_template/shuttle/new_shuttle = SSmapping.shuttle_templates[shuttle_id]
 		shuttle = SSshuttle.load_template_to_transit(new_shuttle)
-		shuttle.control_doors("force-lock", force = TRUE, external_only = TRUE)
+		SEND_SIGNAL(shuttle, COMSIG_DROPSHIP_CONTROL_DOOR, "force-lock", "all", TRUE)
 		shuttle.distress_beacon = src
 
 	if(shuttle && auto_shuttle_launch)

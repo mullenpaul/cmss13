@@ -39,7 +39,7 @@
 		WARNING("Direction [direction] does not exist.")
 	return FALSE
 
-/datum/door_controller/aggregate/proc/control_doors(action, direction, force, asynchronous = TRUE)
+/datum/door_controller/aggregate/proc/control_doors(action, direction, force, asynchronous = TRUE, external_only = FALSE)
 	if(direction == "all")
 		if(allow_multicast)
 			for(var/door_group in door_controllers)
@@ -74,13 +74,14 @@
 /datum/door_controller/single
 	var/label = "dropship"
 	var/list/doors = list()
+	var/list/external_doors = list()
 	var/status = SHUTTLE_DOOR_UNLOCKED
 
 /datum/door_controller/single/Destroy(force, ...)
 	. = ..()
 	doors = null
 
-/datum/door_controller/single/proc/control_doors(action, force = FALSE, asynchronous = TRUE)
+/datum/door_controller/single/proc/control_doors(action, force = FALSE, asynchronous = TRUE, external_only = FALSE)
 	for(var/D in doors)
 		var/obj/structure/machinery/door/door = D
 		var/is_external = door.borders_space()
@@ -224,3 +225,63 @@
 	if(istype(target, /obj/structure/machinery/door/poddoor))
 		target.open()
 
+/datum/component/dropship_door_controller
+	var/datum/door_controller/aggregate/door_control
+	var/door_override = FALSE
+
+/datum/component/dropship_door_controller/RegisterWithParent()
+	. = ..()
+	door_control = new()
+	if (!istype(parent, /obj/docking_port/mobile))
+		return
+	var/obj/docking_port/mobile/p = parent
+	var/list/shuttle_areas = p.shuttle_areas
+	for(var/place in shuttle_areas)
+		for(var/obj/structure/machinery/door/air in place)
+			switch(air.id)
+				if("starboard_door")
+					door_control.add_door(air, "starboard")
+				if("port_door")
+					door_control.add_door(air, "port")
+				if("aft_door")
+					door_control.add_door(air, "aft")
+				else
+					door_control.add_door(air, "unspecified")
+
+			var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/hatch = air
+			if(istype(hatch))
+				hatch.linked_dropship = src
+
+	RegisterSignal(parent, COMSIG_DROPSHIP_CONTROL_DOOR, PROC_REF(control_doors))
+	RegisterSignal(parent, COMSIG_DROPSHIP_OVERRIDE_DOOR, PROC_REF(set_door_override))
+	RegisterSignal(parent, COMSIG_DROPSHIP_FORCE_STATUS_DOOR, PROC_REF(force_update_status))
+	RegisterSignal(parent, COMSIG_DROPSHIP_GET_DOOR_DATA, PROC_REF(get_door_data))
+	RegisterSignal(parent, COMSIG_DROPSHIP_GET_DOOR_LOCKED, PROC_REF(is_door_locked))
+
+/datum/component/dropship_door_controller/UnregisterFromParent()
+	. = ..()
+	qdel(door_control)
+
+/datum/component/dropship_door_controller/proc/get_door_data()
+	SIGNAL_HANDLER
+	return door_control.get_data()
+
+/datum/component/dropship_door_controller/proc/set_door_override(value)
+	SIGNAL_HANDLER
+	door_override = value
+
+/datum/component/dropship_door_controller/proc/is_door_locked(direction)
+	SIGNAL_HANDLER
+	return door_control.is_door_locked(direction)
+
+/datum/component/dropship_door_controller/proc/force_update_status(direction, value)
+	SIGNAL_HANDLER
+	var/datum/door_controller/single/s = door_control.door_controllers[direction]
+	s.status = value
+
+/datum/component/dropship_door_controller/proc/control_doors(action, direction = "all", force = FALSE, asynchronous = TRUE, external_only = FALSE)
+	SIGNAL_HANDLER
+	// its been locked down by the queen
+	if(door_override)
+		return
+	door_control.control_doors(action, direction, force, asynchronous)

@@ -522,14 +522,14 @@
 	var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_tag)
 	if(!shuttle || !shuttle.paradrop_signal || shuttle.mode != SHUTTLE_CALL)
 		return
-	shuttle.door_control.control_doors("force-unlock", "aft", TRUE)
+	SEND_SIGNAL(shuttle, COMSIG_DROPSHIP_CONTROL_DOOR, "force-unlock", "aft", TRUE)
 
 /obj/structure/machinery/computer/dropship_weapons/proc/clear_locked_turf_and_lock_aft()
 	SIGNAL_HANDLER
 	var/obj/docking_port/mobile/marine_dropship/shuttle = SSshuttle.getShuttle(shuttle_tag)
 	if(!shuttle)
 		return
-	shuttle.door_control.control_doors("force-lock", "aft", TRUE)
+	SEND_SIGNAL(shuttle, COMSIG_DROPSHIP_CONTROL_DOOR, "force-lock", "aft", TRUE)
 	visible_message(SPAN_WARNING("[src] displays an alert as it loses the paradrop target."))
 	for(var/obj/structure/dropship_equipment/paradrop_system/parad in shuttle.equipments)
 		parad.visible_message(SPAN_WARNING("[parad] displays an alert as it loses the paradrop target."))

@@ -83,9 +83,9 @@
 		if("lock_door")
 			var/obj/structure/machinery/door/target_door = shuttle.door_handler.doors[1]
 			if(target_door.density) //Closed
-				shuttle.door_handler.control_doors("force-unlock")
+				SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-unlock", "all")
 			else //Open
-				shuttle.door_handler.control_doors("force-lock-launch")
+				SEND_SIGNAL(src, COMSIG_DROPSHIP_CONTROL_DOOR, "force-lock-launch", "all")
 			. = TRUE
 
 /obj/structure/machinery/computer/shuttle/escape_pod_panel/liaison

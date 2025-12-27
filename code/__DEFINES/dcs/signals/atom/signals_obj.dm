@@ -70,6 +70,12 @@
 #define COMSIG_DROPSHIP_ADD_EQUIPMENT "dropship_add_equipment"
 #define COMSIG_DROPSHIP_REMOVE_EQUIPMENT "dropship_remove_equipment"
 
+#define COMSIG_DROPSHIP_CONTROL_DOOR "dropship_control_door"
+#define COMSIG_DROPSHIP_OVERRIDE_DOOR "dropship_door_override"
+#define COMSIG_DROPSHIP_FORCE_STATUS_DOOR "dropship_force_status_door"
+#define COMSIG_DROPSHIP_GET_DOOR_DATA "dropship_get_door_data"
+#define COMSIG_DROPSHIP_GET_DOOR_LOCKED "dropship_is_door_locked"
+
 #define COMSIG_STRUCTURE_CRATE_SQUAD_LAUNCHED "structure_crate_squad_launched"
 
 // from /obj/item/device/binoculars/range/designator/acquire_target()
