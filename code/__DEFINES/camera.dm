@@ -6,6 +6,8 @@
 #define CAMERA_NET_BRIG "Brig"
 #define CAMERA_NET_ALAMO "Alamo"
 #define CAMERA_NET_NORMANDY "Normandy"
+#define CAMERA_NET_MOHAWK "Mohawk"
+#define CAMERA_NET_BIGHORN "Bighorn"
 #define CAMERA_NET_SAIPAN "Saipan"
 #define CAMERA_NET_MORANA "Morana"
 #define CAMERA_NET_DEVANA "Devana"

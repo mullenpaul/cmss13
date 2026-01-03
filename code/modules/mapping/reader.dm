@@ -384,6 +384,15 @@
 	// Building y coordinate ranges
 	var/y_relative_to_absolute = y_offset - 1
 	var/x_relative_to_absolute = x_offset - 1
+	var/z_relative_to_absolute = z_offset - 1
+
+	message_admins("Map [src] has [gridSets.len] gridsets")
+	var/minz = 9999
+	var/maxz = 0
+	for(var/datum/grid_set/g in gridSets)
+		minz = min(minz, g.zcrd)
+		maxz = max(maxz, g.zcrd)
+	message_admins("Map [src] z's [minz] [maxz]")
 
 	// Ok so like. something important
 	// We talk in "relative" coords here, so the coordinate system of the map datum

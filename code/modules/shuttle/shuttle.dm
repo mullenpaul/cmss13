@@ -29,10 +29,14 @@
 	var/width = 0
 	///size of covered area, parallel to dir
 	var/height = 0
+	///z levels of shuttle
+	var/depth = 0
 	///position relative to covered area, perpendicular to dir
 	var/dwidth = 0
 	///position relative to covered area, parallel to dir
 	var/dheight = 0
+
+	var/ddepth = 0
 	var/area_type
 	///are we invisible to shuttle navigation computers?
 	var/hidden = FALSE
@@ -69,14 +73,16 @@
 /obj/docking_port/shuttleRotate()
 	return //we don't rotate with shuttles via this code.
 
-//returns a list(x0,y0, x1,y1) where points 0 and 1 are bounding corners of the projected rectangle
-/obj/docking_port/proc/return_coords(_x, _y, _dir)
+//returns a list(x0,y0,z0 x1,y1,z1) where points 0 and 1 are bounding corners of the projected rectangle
+/obj/docking_port/proc/return_coords(_x, _y, _z, _dir)
 	if(_dir == null)
 		_dir = dir
 	if(_x == null)
 		_x = x
 	if(_y == null)
 		_y = y
+	if(_z == null)
+		_z = z
 
 	//byond's sin and cos functions are inaccurate. This is faster and perfectly accurate
 	var/cos = 1
@@ -95,19 +101,21 @@
 	return list(
 		_x + (-dwidth*cos) - (-dheight*sin),
 		_y + (-dwidth*sin) + (-dheight*cos),
+		_z,
 		_x + (-dwidth+width-1)*cos - (-dheight+height-1)*sin,
-		_y + (-dwidth+width-1)*sin + (-dheight+height-1)*cos
+		_y + (-dwidth+width-1)*sin + (-dheight+height-1)*cos,
+		_z + depth
 		)
 
 /// Return number of turfs
 /obj/docking_port/proc/return_number_of_turfs()
 	var/list/L = return_coords()
-	return (L[3]-L[1]) * (L[4]-L[2])
+	return (L[4]-L[1]) * (L[5]-L[2])
 
 ///returns turfs within our projected rectangle in no particular order
 /obj/docking_port/proc/return_turfs()
 	var/list/L = return_coords()
-	return block(L[1], L[2], z, L[3], L[4], z)
+	return block(L[1], L[2], L[3], L[4], L[5], L[6])
 
 /obj/docking_port/proc/return_center_turf()
 	var/list/L = return_coords()
@@ -125,7 +133,8 @@
 			sin = -1
 	var/_x = L[1] + (floor(width/2))*cos - (floor(height/2))*sin
 	var/_y = L[2] + (floor(width/2))*sin + (floor(height/2))*cos
-	return locate(_x, _y, z)
+	var/_z = L[3] + floor(depth/2)
+	return locate(_x, _y, _z)
 
 //returns turfs within our projected rectangle in a specific order.
 //this ensures that turfs are copied over in the same order, regardless of any rotation
@@ -159,13 +168,13 @@
 //Debug proc used to highlight bounding area
 /obj/docking_port/proc/highlight(_color)
 	var/list/L = return_coords()
-	for(var/turf/T as anything in block(L[1], L[2], z, L[3], L[4], z))
+	for(var/turf/T as anything in block(L[1], L[2], L[3], L[4], L[5], L[6]))
 		T.color = _color
 		T.maptext = null
 	if(_color)
-		var/turf/T = locate(L[1], L[2], z)
+		var/turf/T = locate(L[1], L[2], L[3])
 		T.color = "#0f0"
-		T = locate(L[3], L[4], z)
+		T = locate(L[4], L[5], L[6])
 		T.color = "#00f"
 #endif
 
@@ -182,16 +191,20 @@
 	if(!target)
 		return FALSE
 	var/turf/target_turf = get_turf(target)
-	if(!target_turf || target_turf.z != z)
+	if(!target_turf)
 		return FALSE
 	var/list/bounds = return_coords()
 	var/x0 = bounds[1]
 	var/y0 = bounds[2]
-	var/x1 = bounds[3]
-	var/y1 = bounds[4]
+	var/z0 = bounds[3]
+	var/x1 = bounds[4]
+	var/y1 = bounds[5]
+	var/z1 = bounds[6]
 	if(!ISINRANGE(target_turf.x, min(x0, x1), max(x0, x1)))
 		return FALSE
 	if(!ISINRANGE(target_turf.y, min(y0, y1), max(y0, y1)))
+		return FALSE
+	if(!ISINRANGE(target_turf.z, min(z0, z1), max(z0, z1)))
 		return FALSE
 	return TRUE
 
@@ -380,6 +393,7 @@
 
 #define WORLDMAXX_CUTOFF (world.maxx + 1)
 #define WORLDMAXY_CUTOFF (world.maxx + 1)
+#define WORLDMAXZ_CUTOFF (world.maxz + 1)
 /**
  * Calculated and populates the information used for docking and some internal vars.
  * This can also be used to calculate from shuttle_areas so that you can expand/shrink shuttles!
@@ -390,33 +404,43 @@
 /obj/docking_port/mobile/proc/calculate_docking_port_information(datum/map_template/shuttle/loading_from)
 	var/port_x_offset = loading_from?.port_x_offset
 	var/port_y_offset = loading_from?.port_y_offset
+	var/port_z_offset = loading_from?.port_z_offset
 	var/width = loading_from?.width
 	var/height = loading_from?.height
+	var/depth = loading_from?.depth
 	if(!loading_from)
 		if(!length(shuttle_areas))
 			CRASH("Attempted to calculate a docking port's information without a template before it was assigned any areas!")
 		// no template given, use shuttle_areas to calculate width and height
 		var/min_x = -1
 		var/min_y = -1
+		var/min_z = -1
 		var/max_x = WORLDMAXX_CUTOFF
 		var/max_y = WORLDMAXY_CUTOFF
+		var/max_z = WORLDMAXZ_CUTOFF
 		for(var/area/area as anything in shuttle_areas)
 			for(var/turf/turf in area)
 				min_x = max(turf.x, min_x)
 				max_x = min(turf.x, max_x)
 				min_y = max(turf.y, min_y)
 				max_y = min(turf.y, max_y)
+				min_z = max(turf.z, max_z)
+				max_z = min(turf.z, max_z)
 			CHECK_TICK
 
 		if(min_x == -1 || max_x == WORLDMAXX_CUTOFF)
 			CRASH("Failed to locate shuttle boundaries when iterating through shuttle areas, somehow.")
 		if(min_y == -1 || max_y == WORLDMAXY_CUTOFF)
 			CRASH("Failed to locate shuttle boundaries when iterating through shuttle areas, somehow.")
+		if(min_z == -1 || max_z == WORLDMAXZ_CUTOFF)
+			CRASH("Failed to locate shuttle boundaries when iterating through shuttle areas, somehow.")
 
 		width = (max_x - min_x) + 1
 		height = (max_y - min_y) + 1
+		depth = (max_z - min_z) + 1
 		port_x_offset = min_x - x
 		port_y_offset = min_y - y
+		port_z_offset = min_z - z - 1
 
 	if(dir in list(EAST, WEST))
 		src.width = height
@@ -424,6 +448,8 @@
 	else
 		src.width = width
 		src.height = height
+
+	ddepth = depth - port_z_offset
 
 	switch(dir)
 		if(NORTH)
@@ -474,7 +500,13 @@
 		name = "shuttle[length(SSshuttle.mobile)]"
 
 	shuttle_areas = list()
-	var/list/all_turfs = return_ordered_turfs(x, y, z, dir)
+	var/list/all_turfs = list()
+
+	var/base_z = z - ddepth
+	var/top_z = base_z + depth - 1
+	for(var/z_i in base_z to top_z)
+		all_turfs += return_ordered_turfs(x, y, z_i, dir)
+
 	for(var/i in 1 to length(all_turfs))
 		var/turf/curT = all_turfs[i]
 		var/area/cur_area = get_area(curT)
@@ -549,6 +581,12 @@
 
 	if(width-dwidth > S.width-S.dwidth)
 		return SHUTTLE_WIDTH_TOO_LARGE
+
+	if(ddepth > S.ddepth)
+		return SHUTTLE_DWIDTH_TOO_LARGE
+
+	if(depth-ddepth > S.depth-S.ddepth)
+		return SHUTTLE_DEPTH_TOO_LARGE
 
 	if(dheight > S.dheight)
 		return SHUTTLE_DHEIGHT_TOO_LARGE
@@ -687,6 +725,8 @@
 	if(current_dock && current_dock.area_type)
 		underlying_area_type = current_dock.area_type
 
+	// TODO MULTIZ
+	message_admins("TODO /obj/docking_port/mobile/proc/jumpToNullSpace MULTIZ")
 	var/list/old_turfs = return_ordered_turfs(x, y, z, dir)
 
 	var/area/underlying_area = GLOB.areas_by_type[underlying_area_type]
@@ -740,6 +780,7 @@
 /obj/docking_port/mobile/proc/ripple_area(obj/docking_port/stationary/S1)
 	if(!S1)
 		return list()
+	// TODO MULTIZ
 	var/list/L0 = return_ordered_turfs(x, y, z, dir)
 	var/list/L1 = return_ordered_turfs(S1.x, S1.y, S1.z, S1.dir)
 

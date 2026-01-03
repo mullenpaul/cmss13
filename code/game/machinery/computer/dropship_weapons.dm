@@ -910,6 +910,23 @@
 		firemission_envelope.change_current_loc(shootloc)
 	return TRUE
 
+
+/obj/structure/machinery/computer/dropship_weapons/proc/simulate_firemission(mob/living/user)
+	if(!configuration)
+		to_chat(user, SPAN_WARNING("Configure a firemission before attempting to run the simulation."))
+		return
+	if(configuration.check(src) != FIRE_MISSION_ALL_GOOD)
+		to_chat(user, SPAN_WARNING("Configured firemission has errors, fix the errors before attempting to run the simulation."))
+		return
+
+	simulation.spawn_mobs(user)
+
+	if(!simulation.sim_camera)
+		to_chat(user, SPAN_WARNING("The simulator has malfunctioned!"))
+
+	//acutal firemission
+	configuration.simulate_execute_firemission(src, get_turf(simulation.sim_camera), user)
+
 /obj/structure/machinery/computer/dropship_weapons/dropship1
 	name = "\improper 'Alamo' weapons controls"
 	req_one_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP, ACCESS_WY_FLIGHT)
@@ -928,18 +945,18 @@
 	firemission_envelope = new /datum/cas_fire_envelope/uscm_dropship()
 	shuttle_tag = DROPSHIP_SAIPAN
 
-/obj/structure/machinery/computer/dropship_weapons/proc/simulate_firemission(mob/living/user)
-	if(!configuration)
-		to_chat(user, SPAN_WARNING("Configure a firemission before attempting to run the simulation."))
-		return
-	if(configuration.check(src) != FIRE_MISSION_ALL_GOOD)
-		to_chat(user, SPAN_WARNING("Configured firemission has errors, fix the errors before attempting to run the simulation."))
-		return
+/obj/structure/machinery/computer/dropship_weapons/mohawk
+	name = "\improper 'Mohawk' weapons controls"
+	req_one_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP, ACCESS_WY_FLIGHT)
+	firemission_envelope = new /datum/cas_fire_envelope/uscm_dropship()
+	shuttle_tag = DROPSHIP_MOHAWK
+	icon = 'icons/obj/structures/machinery/mohawk/mohawk-controls.dmi'
+	icon_state = "weapons-console"
 
-	simulation.spawn_mobs(user)
-
-	if(!simulation.sim_camera)
-		to_chat(user, SPAN_WARNING("The simulator has malfunctioned!"))
-
-	//acutal firemission
-	configuration.simulate_execute_firemission(src, get_turf(simulation.sim_camera), user)
+/obj/structure/machinery/computer/dropship_weapons/bighorn
+	name = "\improper 'Bighorn' weapons controls"
+	req_one_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP, ACCESS_WY_FLIGHT)
+	firemission_envelope = new /datum/cas_fire_envelope/uscm_dropship()
+	shuttle_tag = DROPSHIP_BIGHORN
+	icon = 'icons/obj/structures/machinery/mohawk/mohawk-controls2.dmi'
+	icon_state = "weapons-console"

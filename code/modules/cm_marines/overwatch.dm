@@ -1479,6 +1479,16 @@ GLOBAL_LIST_EMPTY_TYPED(active_overwatch_consoles, /obj/structure/machinery/comp
 	icon = 'icons/obj/structures/machinery/computer.dmi'
 	icon_state = "overwatch"
 
+/obj/structure/machinery/computer/overwatch/mohawk
+	density = FALSE
+	icon = 'icons/obj/structures/machinery/mohawk/mohawk-modules.dmi'
+	icon_state = "command-module"
+
+/obj/structure/machinery/computer/overwatch/bighorn
+	density = FALSE
+	icon = 'icons/obj/structures/machinery/mohawk/mohawk-modules2.dmi'
+	icon_state = "command-module"
+
 /obj/structure/machinery/computer/overwatch/almayer/broken
 	name = "Broken Overwatch Console"
 

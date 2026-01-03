@@ -64,8 +64,16 @@ SUBSYSTEM_DEF(mapping)
 	repopulate_sorted_areas()
 	preloadTemplates()
 	// Add the first transit level
-	var/datum/space_level/base_transit = add_reservation_zlevel()
+	var/datum/space_level/base_transit = add_reservation_zlevel(null, TRUE)
+	var/datum/space_level/base_transit2 = add_reservation_zlevel(null)
+	var/datum/space_level/base_transit3 = add_reservation_zlevel(null)
 	initialize_reserved_level(base_transit.z_value)
+	initialize_reserved_level(base_transit2.z_value)
+	initialize_reserved_level(base_transit3.z_value)
+	// TODO fix this proc, doesnt want to work
+	SSmapping.add_reservation_z_direction()
+
+	message_admins("Init reserved for z [base_transit.z_value] [base_transit2.z_value] [base_transit3.z_value]")
 	repopulate_sorted_areas()
 
 	if(configs[GROUND_MAP])
@@ -324,9 +332,10 @@ SUBSYSTEM_DEF(mapping)
 
 /// Adds a new reservation z level. A bit of space that can be handed out on request
 /// Of note, reservations default to transit turfs, to make their most common use, shuttles, faster
-/datum/controller/subsystem/mapping/proc/add_reservation_zlevel(for_shuttles)
+/datum/controller/subsystem/mapping/proc/add_reservation_zlevel(for_shuttles, is_ground = FALSE, below_z = null, above_z = null)
 	num_of_res_levels++
-	return add_new_zlevel("Transit/Reserved #[num_of_res_levels]", list(ZTRAIT_RESERVED = TRUE))
+	var/list/traits = list(ZTRAIT_RESERVED = TRUE)
+	return add_new_zlevel("Transit/Reserved #[num_of_res_levels]", traits)
 
 /// Requests a /datum/turf_reservation based on the given width, height, and z_size. You can specify a z_reservation to use a specific z level, or leave it null to use any z level.
 /datum/controller/subsystem/mapping/proc/request_turf_block_reservation(
@@ -346,6 +355,7 @@ SUBSYSTEM_DEF(mapping)
 			if(reserve.reserve(width, height, z_size, i))
 				return reserve
 		//If we didn't return at this point, theres a good chance we ran out of room on the exisiting reserved z levels, so lets try a new one
+		//TODO how are we gonna do z updown?
 		var/datum/space_level/newReserved = add_reservation_zlevel()
 		initialize_reserved_level(newReserved.z_value)
 		if(reserve.reserve(width, height, z_size, newReserved.z_value))

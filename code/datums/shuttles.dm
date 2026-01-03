@@ -13,6 +13,7 @@
 
 	var/port_x_offset
 	var/port_y_offset
+	var/port_z_offset
 
 /datum/map_template/shuttle/proc/prerequisites_met()
 	return TRUE

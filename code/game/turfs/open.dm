@@ -1319,7 +1319,31 @@
 /turf/open/shuttle/dropship/can_surgery/medium_grey_single_wide_up_to_down
 	icon_state = "rasputin15"
 
+/turf/open/shuttle/mohawk
+	name = "floor"
+	icon_state = "mohawk-floor"
+	icon = 'icons/turf/mohawk/mohawk-floors.dmi'
 
+/turf/open/shuttle/mohawk/grated
+	icon_state = "mohawk-floor-grated"
+
+/turf/open/shuttle/mohawk/external
+	icon_state = "mohawk-external"
+
+/turf/open/shuttle/mohawk/cargo
+	icon_state = "mohawk-cargo"
+
+/turf/open/shuttle/mohawk/ceiling
+	name = "roof"
+	icon_state = "no name"
+	icon = 'icons/turf/mohawk/mohawk-top-view.dmi'
+
+/turf/open/shuttle/mohawk/ceiling/Initialize(mapload, ...)
+	ADD_TRAIT(src, TURF_Z_TRANSPARENT_TRAIT, TRAIT_SOURCE_INHERENT)
+	. = ..()
+
+/turf/open/shuttle/mohawk/ceiling/update_vis_contents()
+	. = ..(TRUE)
 
 /turf/open/shuttle/predship
 	name = "ship floor"

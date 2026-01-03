@@ -429,6 +429,18 @@
 	name = "\improper 'Saipan' camera controls"
 	network = list(CAMERA_NET_RESEARCH, CAMERA_NET_LASER_TARGETS)
 
+/obj/structure/machinery/computer/cameras/dropship/mohawk
+	name = "\improper 'Mohawk' camera controls"
+	network = list(CAMERA_NET_MOHAWK, CAMERA_NET_LASER_TARGETS)
+	icon = 'icons/obj/structures/machinery/mohawk/mohawk-controls.dmi'
+	icon_state = "system-monitor"
+
+/obj/structure/machinery/computer/cameras/dropship/bighorn
+	name = "\improper 'Bighorn' camera controls"
+	network = list(CAMERA_NET_BIGHORN, CAMERA_NET_LASER_TARGETS)
+	icon = 'icons/obj/structures/machinery/mohawk/mohawk-controls2.dmi'
+	icon_state = "system-monitor"
+
 /obj/structure/machinery/computer/cameras/internal
 	name = "Internal Camera Link"
 	desc = "If you can see this, someone messed up."

@@ -475,7 +475,9 @@
 /turf/closed/shuttle/elevator/button/arrivals
 	icon_state = "wall_button_arrivals"
 
-
+// Mohawk Dropship
+/turf/closed/shuttle/mohawk
+	icon = 'icons/turf/walls/mohawk-walls.dmi'
 
 // Transit Shuttle
 /turf/closed/shuttle/transit

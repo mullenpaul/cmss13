@@ -114,9 +114,9 @@
 /datum/controller/subsystem/mapping/proc/same_z_map(z1, z2)
 	if(z1 == z2)
 		return TRUE
-	
+
 	var/diff = z2 - z1
-	var/direction = diff > 0 ? ZTRAIT_UP : ZTRAIT_DOWN  
+	var/direction = diff > 0 ? ZTRAIT_UP : ZTRAIT_DOWN
 
 	for(var/step in 1 to abs(diff))
 		if(!level_trait(z1, direction))
@@ -127,5 +127,32 @@
 		if(z1 == z2)
 			return TRUE
 
-	return FALSE 
-		
+	return FALSE
+
+// TODO fix this proc, doesnt want to work
+/datum/controller/subsystem/mapping/proc/add_reservation_z_direction()
+	var/list/levels = levels_by_trait(ZTRAIT_RESERVED)
+	var/min_z = 999
+	var/max_z = 0
+	for(var/i in levels)
+		var/datum/space_level/S = z_list[i]
+		min_z = min(min_z, S.z_value)
+		max_z = max(max_z, S.z_value)
+	message_admins("Z of reservation [min_z] [max_z]")
+	if(min_z == max_z || min_z == 999)
+		return
+
+	for(var/i in levels)
+		var/datum/space_level/S = z_list[i]
+		if(S.z_value > min_z && S.z_value <= max_z)
+			S.traits[ZTRAIT_DOWN] = S.z_value - 1
+			SSmapping.z_trait_levels[ZTRAIT_DOWN][S.z_value] = S.z_value - 1
+			message_admins("Adding down_trait to [S.z_value]=[S.z_value-1]")
+
+		if(S.z_value < max_z && S.z_value >= min_z)
+			S.traits[ZTRAIT_UP] = S.z_value + 1
+			SSmapping.z_trait_levels[ZTRAIT_UP][S.z_value] = S.z_value + 1
+			message_admins("Adding UP_trait to [S.z_value]=[S.z_value+1]")
+
+
+

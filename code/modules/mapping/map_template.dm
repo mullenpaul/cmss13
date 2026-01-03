@@ -2,6 +2,7 @@
 	var/name = "Default Template Name"
 	var/width = 0
 	var/height = 0
+	var/depth = 0
 	var/mappath = null
 	var/loaded = 0 // Times loaded this round
 	var/datum/parsed_map/cached_map
@@ -35,6 +36,7 @@
 	if(bounds)
 		width = bounds[MAP_MAXX] // Assumes all templates are rectangular, have a single Z level, and begin at 1,1,1
 		height = bounds[MAP_MAXY]
+		depth = bounds[MAP_MAXZ]
 		if(cache)
 			cached_map = parsed
 	return bounds
@@ -80,6 +82,7 @@
 /datum/map_template/proc/load_new_z(secret = FALSE, traits = list())
 	var/x = floor((world.maxx - width) * 0.5) + 1
 	var/y = floor((world.maxy - height) * 0.5) + 1
+	var/z = floor((world.maxz - depth) * 0.5) + 1
 
 	var/datum/space_level/level = SSmapping.add_new_zlevel(name, traits, contain_turfs = FALSE)
 	var/datum/parsed_map/parsed = load_map(
@@ -98,18 +101,20 @@
 	repopulate_sorted_areas()
 	//initialize things that are normally initialized after map load
 	initTemplateBounds(bounds)
-	log_game("Z-level [name] loaded at [x],[y],[world.maxz]")
+	log_game("Z-level [name] loaded at [x],[y],[z]")
 
 	return level
 
 /datum/map_template/proc/load(turf/T, centered = FALSE, delete = FALSE)
 	if(centered)
-		T = locate(T.x - floor(width/2) , T.y - floor(height/2) , T.z)
+		T = locate(T.x - floor(width/2) , T.y - floor(height/2) , T.z - floor(depth/2))
 	if(!T)
 		return
 	if((T.x+width) - 1 > world.maxx)
 		return
 	if((T.y+height) - 1 > world.maxy)
+		return
+	if((T.z+depth) - 1 > world.maxz)
 		return
 
 	// Accept cached maps, but don't save them automatically - we don't want

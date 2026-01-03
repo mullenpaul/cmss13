@@ -168,6 +168,35 @@
 	name = "\improper Saipan Landing Zone"
 	icon_state = "away2"
 
+
+/area/shuttle/mohawk
+	name = "\improper Dropship Mohawk"
+	icon_state = "shuttlered"
+	//soundscape_playlist = list('sound/soundscape/drum1.ogg')
+	soundscape_interval = 30 //seconds
+	flags_area = AREA_NOTUNNEL
+	is_landing_zone = TRUE
+	ceiling = CEILING_REINFORCED_METAL
+	base_lighting_alpha = 0
+
+/area/shuttle/mohawk/lower
+	name = "\improper Dropship Mohawk Undercarriage"
+	icon_state = "shuttlered"
+	//soundscape_playlist = list('sound/soundscape/drum1.ogg')
+	soundscape_interval = 30 //seconds
+	is_landing_zone = TRUE
+	ceiling = CEILING_REINFORCED_METAL
+	base_lighting_alpha = 0
+
+/area/shuttle/mohawk/roof
+	name = "\improper Dropship Mohawk Roof"
+	icon_state = "shuttlered"
+	//soundscape_playlist = list('sound/soundscape/drum1.ogg')
+	soundscape_interval = 30 //seconds
+	is_landing_zone = TRUE
+	ceiling = CEILING_NO_PROTECTION
+	base_lighting_alpha = 0
+
 //UPP DROPSHIP
 
 /area/shuttle/drop_upp/Enter(atom/movable/O, atom/oldloc)

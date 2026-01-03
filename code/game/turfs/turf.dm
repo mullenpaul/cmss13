@@ -145,8 +145,10 @@
 	vis_contents += vis
 	name = null // Makes it invisible on right click
 
-/turf/proc/update_vis_contents()
+/turf/proc/update_vis_contents(log=FALSE)
 	if(!istransparentturf(src))
+		if(log)
+			message_admins("[src] not transparent")
 		return
 
 	vis_contents.Cut()
@@ -154,6 +156,10 @@
 		qdel(holder)
 
 	var/turf/below = SSmapping.get_turf_below(src)
+	if(log && below)
+		message_admins("below [below.z]")
+	if(log && !below)
+		message_admins("no below")
 	var/depth = 0
 	while(below)
 		new /obj/vis_contents_holder(src, below, depth)

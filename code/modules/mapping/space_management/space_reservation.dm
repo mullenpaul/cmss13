@@ -27,7 +27,7 @@
 	var/height = 0
 
 	/// The z stack size of the reservation. Note that reservations are ALWAYS reserved from the bottom up
-	var/z_size = 0
+	var/depth = 0
 
 	/// List of the bottom left turfs. Indexed by what their z index for this reservation is
 	var/list/bottom_left_turfs = list()
@@ -107,16 +107,25 @@
 	//swap the area with the pre-cordoning area
 
 /// Internal proc which handles reserving the area for the reservation.
-/datum/turf_reservation/proc/_reserve_area(width, height, zlevel)
+/datum/turf_reservation/proc/_reserve_area(width, height, depth, zlevel)
 	src.width = width
 	src.height = height
+	src.depth = depth
 	if(width > world.maxx || height > world.maxy || width < 1 || height < 1)
 		return FALSE
-	var/list/avail = SSmapping.unused_turfs["[zlevel]"]
+	var/list/avail = list()
+
+	for(var/i in 1 to depth)
+		avail += SSmapping.unused_turfs["[zlevel + i - 1]"]
+
 	var/turf/BL
 	var/turf/TR
 	var/list/turf/final = list()
 	var/passing = FALSE
+
+	var/minz = 99999
+	var/maxz = 0
+
 	for(var/i in avail)
 		CHECK_TICK
 		BL = i
@@ -124,10 +133,14 @@
 			continue
 		if(BL.x + width > world.maxx || BL.y + height > world.maxy)
 			continue
-		TR = locate(BL.x + width - 1, BL.y + height - 1, BL.z)
+		TR = locate(BL.x + width - 1, BL.y + height - 1, BL.z + depth - 1)
 		if(!(TR.turf_flags & UNUSED_RESERVATION_TURF))
 			continue
 		final = block(BL, TR)
+
+		minz = min(minz, BL.z)
+		maxz = max(maxz, BL.z + depth - 1)
+
 		if(!final)
 			continue
 		passing = TRUE
@@ -149,18 +162,18 @@
 		SSmapping.used_turfs[T] = src
 		T.turf_flags = (T.turf_flags | RESERVATION_TURF) & ~UNUSED_RESERVATION_TURF
 		T.ChangeTurf(turf_type, turf_type)
+		if(T.z > minz)
+			T.ChangeTurf(/turf/open_space, /turf/open_space)
+			T.update_vis_contents()
 
 	bottom_left_turfs += BL
 	top_right_turfs += TR
 	return TRUE
 
-/datum/turf_reservation/proc/reserve(width, height, z_size, z_reservation)
-	src.z_size = z_size
+/datum/turf_reservation/proc/reserve(width, height, depth, z_reservation)
 	var/failed_reservation = FALSE
-	for(var/_ in 1 to z_size)
-		if(!_reserve_area(width, height, z_reservation))
-			failed_reservation = TRUE
-			break
+	if(!_reserve_area(width, height, depth, z_reservation))
+		failed_reservation = TRUE
 
 	if(failed_reservation)
 		Release()
@@ -171,18 +184,23 @@
 
 /// Calculates the effective bounds information for the given turf. Returns a list of the information, or null if not applicable.
 /datum/turf_reservation/proc/calculate_turf_bounds_information(turf/target)
-	for(var/z_idx in 1 to z_size)
+	for(var/z_idx in 1 to depth)
 		var/turf/bottom_left = bottom_left_turfs[z_idx]
 		var/turf/top_right = top_right_turfs[z_idx]
 		var/bl_x = bottom_left.x
 		var/bl_y = bottom_left.y
+		var/bl_z = bottom_left.z
 		var/tr_x = top_right.x
 		var/tr_y = top_right.y
+		var/tr_z = top_right.z
 
 		if(target.x < bl_x)
 			continue
 
 		if(target.y < bl_y)
+			continue
+
+		if(target.z < bl_z)
 			continue
 
 		if(target.x > tr_x)
@@ -191,10 +209,14 @@
 		if(target.y > tr_y)
 			continue
 
+		if(target.z > tr_z)
+			continue
+
 		var/list/return_information = list()
 		return_information["z_idx"] = z_idx
 		return_information["offset_x"] = target.x - bl_x
 		return_information["offset_y"] = target.y - bl_y
+		return_information["offset_z"] = target.z - bl_z
 		return return_information
 	return null
 
@@ -206,13 +228,14 @@
 
 	var/z_idx = bounds_info["z_idx"]
 	// check what z level, if its the max, then there is no turf below
-	if(z_idx == z_size)
+	if(z_idx == depth)
 		return null
 
 	var/offset_x = bounds_info["offset_x"]
 	var/offset_y = bounds_info["offset_y"]
+	var/offset_z = bounds_info["offset_z"]
 	var/turf/bottom_left = bottom_left_turfs[z_idx + 1]
-	return locate(bottom_left.x + offset_x, bottom_left.y + offset_y, bottom_left.z)
+	return locate(bottom_left.x + offset_x, bottom_left.y + offset_y, bottom_left.z + offset_z)
 
 /// Gets the turf above the given target. Returns null if there is no turf above the target
 /datum/turf_reservation/proc/get_turf_above(turf/target)
@@ -227,8 +250,9 @@
 
 	var/offset_x = bounds_info["offset_x"]
 	var/offset_y = bounds_info["offset_y"]
+	var/offset_z = bounds_info["offset_z"]
 	var/turf/bottom_left = bottom_left_turfs[z_idx - 1]
-	return locate(bottom_left.x + offset_x, bottom_left.y + offset_y, bottom_left.z)
+	return locate(bottom_left.x + offset_x, bottom_left.y + offset_y, bottom_left.z + offset_z)
 
 /datum/turf_reservation/New()
 	LAZYADD(SSmapping.turf_reservations, src)

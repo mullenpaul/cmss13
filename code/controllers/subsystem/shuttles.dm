@@ -198,6 +198,7 @@ SUBSYSTEM_DEF(shuttle)
 
 	var/transit_width = SHUTTLE_TRANSIT_BORDER * 2
 	var/transit_height = SHUTTLE_TRANSIT_BORDER * 2
+	var/transit_depth = M.depth
 
 	// Shuttles travelling on their side have their dimensions swapped
 	// from our perspective
@@ -219,7 +220,7 @@ SUBSYSTEM_DEF(shuttle)
 	var/datum/turf_reservation/proposal = SSmapping.request_turf_block_reservation(
 		transit_width,
 		transit_height,
-		z_size = 1, //if this is changed the turf uncontain code below has to be updated to support multiple zs
+		z_size = transit_depth, //if this is changed the turf uncontain code below has to be updated to support multiple zs
 		reservation_type = /datum/turf_reservation/transit,
 		turf_type_override = transit_path,
 	)
@@ -230,7 +231,8 @@ SUBSYSTEM_DEF(shuttle)
 
 	var/turf/bottomleft = proposal.bottom_left_turfs[1]
 	// Then create a transit docking port in the middle
-	var/coords = M.return_coords(0, 0, dock_dir)
+	// TODO update below to understand z axis
+	var/coords = M.return_coords(0, 0, 0, dock_dir)
 	/*  0------2
 	*   |      |
 	*   |      |
@@ -240,20 +242,29 @@ SUBSYSTEM_DEF(shuttle)
 
 	var/x0 = coords[1]
 	var/y0 = coords[2]
-	var/x1 = coords[3]
-	var/y1 = coords[4]
+	var/z0 = coords[3]
+	var/x1 = coords[4]
+	var/y1 = coords[5]
+	var/z1 = coords[6]
+
 	// Then we want the point closest to -infinity,-infinity
 	var/xmin = min(x0, x1)
 	var/ymin = min(y0, y1)
+	var/zmin = min(z0, z1)
 
 	// Then invert the numbers
 	var/transit_x = bottomleft.x + SHUTTLE_TRANSIT_BORDER + abs(xmin)
 	var/transit_y = bottomleft.y + SHUTTLE_TRANSIT_BORDER + abs(ymin)
+	var/transit_z = bottomleft.z + floor((z1 - zmin)/2)
 
-	var/turf/midpoint = locate(transit_x, transit_y, bottomleft.z)
+	message_admins("transit coords [transit_x] [transit_y] [transit_z]")
+	message_admins("z coords [z0] [z1]")
+
+	var/turf/midpoint = locate(transit_x, transit_y, transit_z)
 	if(!midpoint)
 		log_mapping("generate_transit_dock() failed to get a midpoint")
 		return FALSE
+	message_admins("transit midpoint [midpoint.x] [midpoint.y] [midpoint.z]")
 	var/area/shuttle/transit/new_area = new()
 	//new_area.parallax_movedir = travel_dir
 	new_area.contents = proposal.reserved_turfs
@@ -324,6 +335,7 @@ SUBSYSTEM_DEF(shuttle)
 		if(port.is_in_shuttle_bounds(A))
 			. += port
 
+// TODO z LEVEL SCHENANGIANS
 /datum/controller/subsystem/shuttle/proc/get_dock_overlap(x0, y0, x1, y1, z)
 	. = list()
 	var/list/stationary_cache = stationary
@@ -332,7 +344,7 @@ SUBSYSTEM_DEF(shuttle)
 		if(!port || port.z != z)
 			continue
 		var/list/bounds = port.return_coords()
-		var/list/overlap = get_overlap(x0, y0, x1, y1, bounds[1], bounds[2], bounds[3], bounds[4])
+		var/list/overlap = get_overlap(x0, y0, x1, y1, bounds[1], bounds[2], bounds[4], bounds[5])
 		var/list/xs = overlap[1]
 		var/list/ys = overlap[2]
 		if(length(xs) && length(ys))
@@ -501,16 +513,33 @@ SUBSYSTEM_DEF(shuttle)
 	preview_reservation = SSmapping.request_turf_block_reservation(
 		loading_template.width,
 		loading_template.height,
-		1,
+		loading_template.depth,
 		reservation_type = /datum/turf_reservation/transit,
 	)
 	if(!preview_reservation)
 		CRASH("failed to reserve an area for shuttle template loading")
-	var/turf/bottom_left = preview_reservation.bottom_left_turfs[1]
-	loading_template.load(bottom_left, centered = FALSE, register = FALSE)
 
-	var/affected = loading_template.get_affected_turfs(bottom_left, centered=FALSE)
+	var/list/affected = list()
 
+	var/result = loading_template.load(preview_reservation.bottom_left_turfs[1], centered = FALSE, register = FALSE)
+	message_admins("load result [loading_template] [result]")
+
+	for(var/i in 1 to loading_template.depth)
+		var/turf/bl = preview_reservation.bottom_left_turfs[1]
+		var/turf/target = locate(bl.x, bl.y, bl.z + i - 1)
+		message_admins("target [target.x] [target.y] [target.z]")
+		var/affected_2 = loading_template.get_affected_turfs(target, centered=FALSE)
+		affected = affected + affected_2
+
+/*
+	for(var/turf/bl in preview_reservation.bottom_left_turfs)
+		message_admins("bl [bl.x] [bl.y] [bl.z]")
+
+		var/affected_2 = loading_template.get_affected_turfs(bl, centered=FALSE)
+		message_admins("bl [affected_2[1].x] [affected_2[1].y] [affected_2[1].z]")
+		affected = affected + affected_2
+*/
+	//message_admins("total affected [affected.len]")
 	var/found = 0
 	// Search the turfs for docking ports
 	// - We need to find the mobile docking port because that is the heart of

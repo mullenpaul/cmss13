@@ -25,8 +25,24 @@
 		The bitflag contains the data for what inhabitants of that coordinate should be moved to the new location
 		The bitflags can be found in __DEFINES/shuttles.dm
 	*/
-	var/list/old_turfs = return_ordered_turfs(x, y, z, dir)
-	var/list/new_turfs = return_ordered_turfs(new_dock.x, new_dock.y, new_dock.z, new_dock.dir)
+
+	// get 3d old turfs
+	var/old_base_z = z - ddepth
+	var/old_top_z = old_base_z + depth - 1
+
+	var/new_base_z = new_dock.z - ddepth
+	var/new_top_z = new_base_z + depth - 1
+
+	var/list/old_turfs = list()
+	var/list/new_turfs = list()
+	for(var/z_i in old_base_z to old_top_z)
+		message_admins("initiate_dock old: ([x],[y],[z_i])")
+		old_turfs += return_ordered_turfs(x, y, z_i, dir)
+
+	for(var/z_i in new_base_z to new_top_z)
+		message_admins("initiate_dock new: ([new_dock.x],[new_dock.y],[z_i])", new_dock.x, new_dock.y, z_i)
+		new_turfs += return_ordered_turfs(new_dock.x, new_dock.y, z_i, new_dock.dir)
+
 	CHECK_TICK
 	/**************************************************************************************************************/
 

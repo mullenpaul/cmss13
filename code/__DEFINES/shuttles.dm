@@ -20,6 +20,8 @@
 #define SHUTTLE_NOT_A_DOCKING_PORT "not a docking port"
 #define SHUTTLE_DWIDTH_TOO_LARGE "docking width too large"
 #define SHUTTLE_WIDTH_TOO_LARGE "width too large"
+#define SHUTTLE_DDEPTH_TOO_LARGE "docking depth too large"
+#define SHUTTLE_DEPTH_TOO_LARGE "depth too large"
 #define SHUTTLE_DHEIGHT_TOO_LARGE "docking height too large"
 #define SHUTTLE_HEIGHT_TOO_LARGE "height too large"
 #define SHUTTLE_ALREADY_DOCKED "we are already docked"
@@ -117,6 +119,8 @@
 #define DROPSHIP_SAIPAN "dropship_saipan"
 #define DROPSHIP_MORANA "dropship_morana"
 #define DROPSHIP_DEVANA "dropship_devana"
+#define DROPSHIP_MOHAWK "dropship_mohawk"
+#define DROPSHIP_BIGHORN "dropship_bighorn"
 
 #define ALMAYER_DROPSHIP_LZ1 "almayer-hangar-lz1"
 #define ALMAYER_DROPSHIP_LZ2 "almayer-hangar-lz2"
